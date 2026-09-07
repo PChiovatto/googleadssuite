@@ -162,20 +162,30 @@
                 <div class="grid grid-cols-2 gap-1 pt-0.5">
                   <button
                     type="button"
+                    @click="scheduleQuickEstimate(lead)"
+                    :disabled="schedulingId === lead.id"
+                    class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold text-[10px] py-1 px-1 rounded-md transition-colors flex items-center justify-center gap-1"
+                    title="Agendar visita presencial de orçamento e disparar SMS"
+                  >
+                    <span>📅 Agendar Visita</span>
+                  </button>
+                  <button
+                    type="button"
                     @click="$emit('openLeadDetails', lead)"
                     class="bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-bold text-[10px] py-1 px-1 rounded-md transition-colors flex items-center justify-center gap-1"
                   >
                     <span>💬 Roteiro IA</span>
                   </button>
-                  <button
-                    type="button"
-                    @click="changeLeadStatus(lead.id, 'PERDIDO')"
-                    :disabled="updatingStatusId === lead.id"
-                    class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-semibold text-[10px] py-1 px-1 rounded-md transition-colors"
-                  >
-                    <span>✖ Marcar Perdido</span>
-                  </button>
                 </div>
+
+                <button
+                  type="button"
+                  @click="changeLeadStatus(lead.id, 'PERDIDO')"
+                  :disabled="updatingStatusId === lead.id"
+                  class="w-full bg-slate-100 hover:bg-rose-50 text-slate-500 hover:text-rose-700 font-semibold text-[9px] py-0.5 rounded transition-colors"
+                >
+                  ✖ Descartar Lead / Perdido
+                </button>
               </div>
 
               <!-- ETAPA 3: PROPOSTA ENVIADA -->
@@ -188,6 +198,18 @@
                 >
                   <span>✔ Fechar / Marcar Ganho</span>
                   <span>🏆</span>
+                </button>
+
+                <!-- MA Contract Generator Button -->
+                <button
+                  type="button"
+                  @click="generateLegalContract(lead)"
+                  :disabled="generatingContractId === lead.id"
+                  class="w-full bg-orange-50 hover:bg-orange-100 text-orange-800 border border-orange-200 font-bold text-[10px] py-1 px-2 rounded-md transition-colors flex items-center justify-center gap-1"
+                  title="Gerar Contrato Legal de Massachusetts (M.G.L. c. 142A) com Assinatura Digital e Depósito de 1/3"
+                >
+                  <span>📄 Gerar Contrato MA</span>
+                  <span class="text-[9px] bg-orange-200 text-orange-900 px-1 rounded font-black">HIC</span>
                 </button>
 
                 <div class="grid grid-cols-2 gap-1 pt-0.5">
@@ -231,13 +253,23 @@
 
                   <button
                     type="button"
-                    @click="generateStripeLink(lead)"
-                    :disabled="creatingStripeId === lead.id"
-                    class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold text-[10px] py-1 px-1 rounded-md transition-colors flex items-center justify-center gap-1"
+                    @click="requestGoogleReview(lead)"
+                    :disabled="requestingReviewId === lead.id"
+                    class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-bold text-[10px] py-1 px-1 rounded-md transition-colors flex items-center justify-center gap-1"
+                    title="Disparar SMS/E-mail solicitando avaliação 5 estrelas no Google Meu Negócio"
                   >
-                    <span>💳 Depósito</span>
+                    <span>⭐ Pedir Review</span>
                   </button>
                 </div>
+
+                <button
+                  type="button"
+                  @click="generateStripeLink(lead)"
+                  :disabled="creatingStripeId === lead.id"
+                  class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold text-[10px] py-1 px-2 rounded-md transition-colors flex items-center justify-center gap-1"
+                >
+                  <span>💳 Depósito / Pagamento Stripe</span>
+                </button>
               </div>
 
               <!-- ETAPA 5: PERDIDO -->
@@ -300,6 +332,9 @@ const claimingId = ref(null)
 const updatingStatusId = ref(null)
 const creatingStripeId = ref(null)
 const sendingOfflineId = ref(null)
+const generatingContractId = ref(null)
+const schedulingId = ref(null)
+const requestingReviewId = ref(null)
 const toastMessage = ref('')
 const toastSuccess = ref(true)
 
@@ -474,6 +509,110 @@ async function generateStripeLink(lead) {
     setTimeout(() => {
       toastMessage.value = ''
     }, 4500)
+  }
+}
+
+// Massachusetts HIC Legal Contract Generator
+async function generateLegalContract(lead) {
+  generatingContractId.value = lead.id
+  try {
+    const res = await $fetch('/api/contracts/generate', {
+      method: 'POST',
+      body: {
+        leadId: lead.id,
+        totalAmount: lead.dealValue || 4500,
+        title: `Contrato de Pintura Residencial MA - ${lead.serviceInterested || 'Serviços'}`
+      }
+    })
+
+    if (res.success && res.signingUrl) {
+      const fullUrl = window.location.origin + res.signingUrl
+      if (navigator && navigator.clipboard) {
+        await navigator.clipboard.writeText(fullUrl).catch(() => {})
+      }
+      toastSuccess.value = true
+      toastMessage.value = `📄 Contrato MA gerado! Link de assinatura copiado: ${res.signingUrl}`
+      emit('refresh')
+      prompt('Contrato MA gerado (M.G.L. c. 142A)! Copie o link abaixo para enviar ao cliente assinar digitalmente:', fullUrl)
+    } else {
+      toastSuccess.value = false
+      toastMessage.value = res.message || 'Erro ao gerar contrato.'
+    }
+  } catch (err) {
+    toastSuccess.value = false
+    toastMessage.value = 'Falha ao conectar com o gerador de contratos.'
+  } finally {
+    generatingContractId.value = null
+    setTimeout(() => {
+      toastMessage.value = ''
+    }, 5000)
+  }
+}
+
+// Quick In-Home Estimate Scheduling with SMS Reminder
+async function scheduleQuickEstimate(lead) {
+  schedulingId.value = lead.id
+  try {
+    const tomorrow = new Date()
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    tomorrow.setHours(10, 0, 0, 0)
+
+    const res = await $fetch('/api/calendar/schedule', {
+      method: 'POST',
+      body: {
+        leadId: lead.id,
+        date: tomorrow.toISOString(),
+        address: lead.address || `${lead.city || 'Boston'}, MA`,
+        sendSms: true
+      }
+    })
+
+    if (res.success) {
+      toastSuccess.value = true
+      toastMessage.value = `📅 Visita agendada para amanhã às 10h! SMS de confirmação enviado a ${lead.name}.`
+      emit('refresh')
+    } else {
+      toastSuccess.value = false
+      toastMessage.value = res.message || 'Erro ao agendar visita.'
+    }
+  } catch (err) {
+    toastSuccess.value = false
+    toastMessage.value = 'Falha ao agendar visita.'
+  } finally {
+    schedulingId.value = null
+    setTimeout(() => {
+      toastMessage.value = ''
+    }, 5000)
+  }
+}
+
+// Google 5-Star Review Request Automation
+async function requestGoogleReview(lead) {
+  requestingReviewId.value = lead.id
+  try {
+    const res = await $fetch('/api/reputation/request-review', {
+      method: 'POST',
+      body: {
+        leadId: lead.id,
+        channel: 'BOTH'
+      }
+    })
+
+    if (res.success) {
+      toastSuccess.value = true
+      toastMessage.value = `⭐ Solicitação de review Google enviada com sucesso para ${lead.name}!`
+    } else {
+      toastSuccess.value = false
+      toastMessage.value = res.message || 'Falha ao enviar pedido de review.'
+    }
+  } catch (err) {
+    toastSuccess.value = false
+    toastMessage.value = 'Erro ao solicitar avaliação Google.'
+  } finally {
+    requestingReviewId.value = null
+    setTimeout(() => {
+      toastMessage.value = ''
+    }, 5000)
   }
 }
 </script>

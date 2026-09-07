@@ -121,6 +121,10 @@ model Lead {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
+  appointments      Appointment[]
+  contracts         Contract[]
+  reviewRequests    ReviewRequest[]
+
   @@index([source])
   @@index([status])
   @@index([ownerId])
@@ -152,6 +156,60 @@ model AuditLog {
 
   @@index([userId])
   @@index([timestamp])
+}
+
+model Appointment {
+  id              String   @id @default(cuid())
+  leadId          String
+  lead            Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  title           String?  // e.g. "Free In-Home Estimate - Exterior Painting"
+  date            DateTime
+  durationMinutes Int      @default(60)
+  status          String   @default("SCHEDULED") // SCHEDULED, CONFIRMED, COMPLETED, CANCELLED, NO_SHOW
+  address         String?
+  notes           String?
+  reminderSent    Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([leadId])
+  @@index([date])
+}
+
+model Contract {
+  id               String    @id @default(cuid())
+  leadId           String
+  lead             Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  contractNumber   String    @unique
+  title            String    // "Residential Painting Agreement - MA HIC Compliant"
+  scopeOfWork      String    // Detailed scope (Prep, Sanding, Primer, 2 Coats)
+  totalAmount      Float     // Total in USD
+  depositAmount    Float     // Initial deposit (Max 1/3 under MA Law)
+  status           String    @default("DRAFT") // DRAFT, SENT, SIGNED, PAID, CANCELLED
+  documentUrl      String?
+  signed           Boolean   @default(false)
+  signedAt         DateTime?
+  signerName       String?
+  signerIp         String?
+  signatureData    String?   // Base64 signature image or digital signature hash
+  stripeSessionId  String?
+  stripePaymentUrl String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([leadId])
+}
+
+model ReviewRequest {
+  id               String   @id @default(cuid())
+  leadId           String
+  lead             Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  channel          String   @default("SMS") // SMS, EMAIL, BOTH
+  googleReviewLink String
+  status           String   @default("SENT") // SENT, CLICKED, COMPLETED
+  sentAt           DateTime @default(now())
+
+  @@index([leadId])
 }
 
 

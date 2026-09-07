@@ -51,6 +51,24 @@
           </NuxtLink>
 
           <NuxtLink
+            to="/dashboard/calendar"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
+            :class="$route.path === '/dashboard/calendar' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+          >
+            <Calendar class="w-4 h-4" />
+            <span>Agenda & In-Home Estimates</span>
+          </NuxtLink>
+
+          <NuxtLink
+            to="/dashboard/financial"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
+            :class="$route.path === '/dashboard/financial' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+          >
+            <TrendingUp class="w-4 h-4 text-emerald-400" />
+            <span>ROAS Real & Financeiro</span>
+          </NuxtLink>
+
+          <NuxtLink
             to="/dashboard/calls"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
             :class="$route.path === '/dashboard/calls' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
@@ -65,7 +83,7 @@
             :class="$route.path === '/dashboard/marketing' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <Mail class="w-4 h-4" />
-            <span>E-mail Marketing & Base</span>
+            <span>E-mail Marketing & SES</span>
           </NuxtLink>
 
           <!-- Restricted Manager Section -->
@@ -158,7 +176,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Home, LayoutDashboard, Users, PhoneCall, Mail, Award, Sliders, RefreshCw } from 'lucide-vue-next'
+import { Home, LayoutDashboard, Users, PhoneCall, Mail, Award, Sliders, RefreshCw, Calendar, TrendingUp } from 'lucide-vue-next'
 
 const syncing = ref(false)
 const toastMessage = ref('')

@@ -8,9 +8,12 @@
           <span class="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold uppercase tracking-wider">
             TCPA / US Compliant
           </span>
+          <span class="text-xs px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold uppercase tracking-wider">
+            Amazon SES Native
+          </span>
         </h1>
         <p class="text-xs text-slate-500 mt-1">
-          Nutrição automatizada de leads capturados no Google Ads e exportação para Google Customer Match
+          Nutrição automatizada de leads capturados no Google Ads via Amazon SES e exportação para Google Customer Match
         </p>
       </div>
 
@@ -313,10 +316,13 @@ async function dispatchBroadcast() {
   try {
     const res = await $fetch('/api/marketing/broadcast', {
       method: 'POST',
-      body: broadcastForm.value
+      body: {
+        ...broadcastForm.value,
+        sendVia: 'AMAZON_SES'
+      }
     })
     if (res.success) {
-      alert(`Campanha disparada com sucesso para ${res.recipientsCount} contatos!`)
+      alert(`Campanha disparada com sucesso via Amazon SES para ${res.recipientsCount} contatos!`)
       showModal.value = false
     }
   } catch (err) {

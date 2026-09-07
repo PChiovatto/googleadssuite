@@ -1,10 +1,11 @@
 import { defineEventHandler, readBody } from 'h3'
 import { prisma } from '../../utils/prisma'
+import { sendSesEmail } from '../../utils/sesClient'
 
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event).catch(() => ({}))
-    const { subject, bodyHtml, segment, sendVia } = body
+    const { subject, bodyHtml, segment, sendVia = 'AMAZON_SES' } = body
 
     if (!subject || !bodyHtml) {
       return {
@@ -28,18 +29,32 @@ export default defineEventHandler(async (event) => {
 
     const campaignId = 'CAMP_' + Date.now().toString(36).toUpperCase()
 
-    // Log the broadcast campaign
+    // Dispatch via Amazon SES
+    const emailsList = recipients.map(r => r.email).filter(Boolean) as string[]
+    let sesResult = { success: true, messageId: 'sim-broadcast-001', provider: 'AMAZON_SES_SIMULATED' }
+
+    if (emailsList.length > 0) {
+      sesResult = await sendSesEmail({
+        to: emailsList,
+        subject,
+        bodyHtml
+      })
+    }
+
+    // Log the broadcast campaign with AuditLog
     await prisma.auditLog.create({
       data: {
         action: 'EMAIL_CAMPAIGN_BROADCAST',
         userId: body.userId || 'SYSTEM_MARKETING',
-        userName: 'Email Marketing Engine',
+        userName: 'Amazon SES Marketing Engine',
         details: JSON.stringify({
           campaignId,
           subject,
           segment: segment || 'ALL',
           recipientsCount: recipients.length,
-          sendVia: sendVia || 'SIMULATED_SMTP'
+          sendVia,
+          sesMessageId: sesResult.messageId,
+          provider: sesResult.provider
         })
       }
     })
@@ -49,7 +64,9 @@ export default defineEventHandler(async (event) => {
       campaignId,
       recipientsCount: recipients.length,
       status: 'QUEUED_AND_DISPATCHED',
-      message: `Campanha "${subject}" disparada com sucesso para ${recipients.length} contatos.`
+      provider: sesResult.provider,
+      sesMessageId: sesResult.messageId,
+      message: `Campanha "${subject}" disparada via Amazon SES para ${recipients.length} contatos.`
     }
   } catch (error: any) {
     console.error('Error broadcasting marketing email:', error)
