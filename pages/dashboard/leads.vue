@@ -62,12 +62,42 @@
       </div>
     </div>
 
+    <!-- View Toggle Bar -->
+    <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200/80 shadow-2xs">
+      <span class="text-xs font-bold text-slate-700">Modo de Visualização do Pipeline:</span>
+      <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
+        <button
+          @click="currentView = 'kanban'"
+          class="px-3 py-1 text-xs font-bold rounded-md transition-all flex items-center gap-1.5"
+          :class="currentView === 'kanban' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500 hover:text-slate-800'"
+        >
+          <span>📋 Funil Kanban (Com Trava de Lead)</span>
+        </button>
+        <button
+          @click="currentView = 'table'"
+          class="px-3 py-1 text-xs font-bold rounded-md transition-all flex items-center gap-1.5"
+          :class="currentView === 'table' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500 hover:text-slate-800'"
+        >
+          <span>📑 Tabela Detalhada</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Kanban View -->
+    <KanbanBoard
+      v-if="currentView === 'kanban'"
+      :leads="leads"
+      @refresh="fetchLeads"
+    />
+
     <!-- Leads Table Component -->
     <LeadsTable
+      v-else
       :leads="leads"
       @refresh="fetchLeads"
       @open-lead-details="openModal"
     />
+
 
     <!-- Lead Details & WhatsApp AI Script Modal -->
     <div
@@ -195,6 +225,8 @@ const selectedLead = ref(null)
 const simulating = ref(false)
 const syncingGbp = ref(false)
 const copied = ref(false)
+const currentView = ref('kanban')
+
 
 async function fetchLeads() {
   try {

@@ -51,6 +51,35 @@
           </NuxtLink>
 
           <NuxtLink
+            to="/dashboard/calls"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
+            :class="$route.path === '/dashboard/calls' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+          >
+            <PhoneCall class="w-4 h-4" />
+            <span>Central VoIP & Áudios</span>
+          </NuxtLink>
+
+          <!-- Restricted Manager Section -->
+          <div class="pt-2">
+            <span class="text-[9px] uppercase font-extrabold tracking-widest text-slate-500 px-3.5 block mb-1">
+              Área do Gestor (RBAC)
+            </span>
+            <NuxtLink
+              to="/admin/performance"
+              class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
+              :class="$route.path === '/admin/performance' ? 'bg-purple-600 text-white shadow-sm' : 'text-purple-300 hover:text-white hover:bg-purple-950/40'"
+            >
+              <div class="flex items-center gap-3">
+                <Award class="w-4 h-4 text-purple-400" />
+                <span>Ranking & SLA da Equipe</span>
+              </div>
+              <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-purple-500/30 text-purple-200">
+                PRO
+              </span>
+            </NuxtLink>
+          </div>
+
+          <NuxtLink
             to="/settings"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
             :class="$route.path === '/settings' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
@@ -120,7 +149,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Home, LayoutDashboard, Users, Sliders, RefreshCw } from 'lucide-vue-next'
+import { Home, LayoutDashboard, Users, PhoneCall, Award, Sliders, RefreshCw } from 'lucide-vue-next'
 
 const syncing = ref(false)
 const toastMessage = ref('')
