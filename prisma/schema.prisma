@@ -8,12 +8,15 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  email     String    @unique
+  id        String         @id @default(cuid())
+  email     String         @unique
   name      String?
-  role      String    @default("CONSULTANT") // "CONSULTANT" or "MANAGER"
+  password  String         @default("admin123")
+  role      String         @default("CONSULTANT") // "CONSULTANT" or "MANAGER"
+  avatarUrl String?
   leads     Lead[]
-  createdAt DateTime  @default(now())
+  emails    EmailMessage[]
+  createdAt DateTime       @default(now())
 }
 
 model CampaignMetrics {
@@ -124,6 +127,7 @@ model Lead {
   appointments      Appointment[]
   contracts         Contract[]
   reviewRequests    ReviewRequest[]
+  emails            EmailMessage[]
 
   @@index([source])
   @@index([status])
@@ -210,6 +214,30 @@ model ReviewRequest {
   sentAt           DateTime @default(now())
 
   @@index([leadId])
+}
+
+model EmailMessage {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leadId    String?
+  lead      Lead?    @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  direction String   // 'INBOUND' ou 'OUTBOUND'
+  folder    String   @default("INBOX") // INBOX, SENT, STARRED, DRAFTS, TRASH
+  from      String
+  to        String
+  subject   String
+  body      String
+  read      Boolean  @default(false)
+  starred   Boolean  @default(false)
+  messageId String?  // Amazon SES message ID
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([leadId])
+  @@index([folder])
+  @@index([createdAt])
 }
 
 

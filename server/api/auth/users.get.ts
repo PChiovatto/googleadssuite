@@ -1,0 +1,82 @@
+import { defineEventHandler } from 'h3'
+import { prisma } from '../../utils/prisma'
+
+export default defineEventHandler(async () => {
+  try {
+    let users = await prisma.user.findMany({
+      orderBy: { createdAt: 'asc' },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        avatarUrl: true,
+        createdAt: true,
+        _count: {
+          select: { leads: true, emails: true }
+        }
+      }
+    })
+
+    // Seed default corporate team if fewer than 3 users
+    if (users.length < 3) {
+      const defaultUsers = [
+        {
+          name: 'Marcos Silva (Owner & General Manager)',
+          email: 'marcos@bostonpaintersandservices.com',
+          password: 'admin',
+          role: 'MANAGER',
+          avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
+        },
+        {
+          name: 'John Miller (Senior Commercial Estimator)',
+          email: 'john@bostonpaintersandservices.com',
+          password: '123',
+          role: 'CONSULTANT',
+          avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80'
+        },
+        {
+          name: 'Sarah Jenkins (Residential Sales Specialist)',
+          email: 'sarah@bostonpaintersandservices.com',
+          password: '123',
+          role: 'CONSULTANT',
+          avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80'
+        }
+      ]
+
+      for (const u of defaultUsers) {
+        const existing = await prisma.user.findUnique({ where: { email: u.email } })
+        if (!existing) {
+          await prisma.user.create({ data: u })
+        }
+      }
+
+      users = await prisma.user.findMany({
+        orderBy: { createdAt: 'asc' },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          avatarUrl: true,
+          createdAt: true,
+          _count: {
+            select: { leads: true, emails: true }
+          }
+        }
+      })
+    }
+
+    return {
+      success: true,
+      users
+    }
+  } catch (error: any) {
+    console.error('Error fetching team users:', error)
+    return {
+      success: false,
+      error: error.message,
+      users: []
+    }
+  }
+})
