@@ -142,6 +142,16 @@
             <!-- Actions -->
             <td class="py-3.5 px-4 text-right">
               <div class="flex items-center justify-end gap-1.5">
+                <!-- Stripe Checkout Button -->
+                <button
+                  @click="generateStripeLink(lead)"
+                  class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 shadow-2xs"
+                  title="Gerar Link de Pagamento Stripe"
+                >
+                  <span>💳</span>
+                  <span>Stripe</span>
+                </button>
+
                 <!-- Qualify with AI Button -->
                 <button
                   @click="qualifyWithAi(lead.id)"
@@ -150,7 +160,7 @@
                   title="Qualificar Lead e Gerar Roteiro com Gemini"
                 >
                   <Sparkles class="w-3.5 h-3.5" :class="{ 'animate-spin': qualifyingId === lead.id }" />
-                  <span>{{ qualifyingId === lead.id ? 'Analisando...' : 'Qualificar IA' }}</span>
+                  <span>{{ qualifyingId === lead.id ? 'Analisando...' : 'Qualificar' }}</span>
                 </button>
 
                 <!-- WhatsApp Modal Button -->
@@ -245,6 +255,25 @@ async function qualifyWithAi(leadId) {
     console.error('Erro ao qualificar lead:', err)
   } finally {
     qualifyingId.value = null
+  }
+}
+
+async function generateStripeLink(lead) {
+  try {
+    const res = await $fetch('/api/stripe/create-checkout', {
+      method: 'POST',
+      body: {
+        leadId: lead.id,
+        amount: lead.dealValue || 1500,
+        description: lead.serviceInterested || 'Serviços de Pintura'
+      }
+    })
+    if (res.success && res.checkoutUrl) {
+      prompt('Link de pagamento Stripe gerado com sucesso! Copie para enviar ao cliente:', res.checkoutUrl)
+      emit('refresh')
+    }
+  } catch (err) {
+    alert('Falha ao gerar link Stripe.')
   }
 }
 </script>

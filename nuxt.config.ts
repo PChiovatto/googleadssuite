@@ -8,6 +8,12 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/main.css'
   ],
+  nitro: {
+    externals: {
+      inline: [],
+      trace: false
+    }
+  },
   runtimeConfig: {
     // Private keys available only on the server
     databaseUrl: process.env.DATABASE_URL || 'file:./dev.db',

@@ -4,23 +4,67 @@ import { prisma } from '~/server/utils/prisma'
 export default defineEventHandler(async (event) => {
   const method = event.node.req.method
 
-  // 1. Create a lead manually via POST
+  // 1. Create a lead manually or from Landing Page via POST
   if (method === 'POST') {
     try {
       const body = await readBody(event)
+      
+      // Auto-triage with Gemini Flash / simulation
+      const triage = simulateGeminiTriage({
+        name: body.name,
+        phone: body.phone,
+        serviceInterested: body.serviceInterested || body.serviceType,
+        serviceType: body.serviceType,
+        city: body.city || 'Boston',
+        state: body.state || 'MA',
+        keyword: body.keyword,
+        notes: body.notes
+      })
+
       const lead = await prisma.lead.create({
         data: {
-          source: body.source || 'ORGANIC',
-          name: body.name || 'Lead sem nome',
+          source: body.source || 'GOOGLE_ADS',
+          name: body.name || 'Homeowner Lead',
           email: body.email || null,
           phone: body.phone || null,
-          serviceInterested: body.serviceInterested || null,
+          address: body.address || null,
+          zipCode: body.zipCode || body.zip || null,
+          serviceInterested: body.serviceInterested || body.serviceType || 'Painting Services',
+          serviceType: body.serviceType || body.service || 'Residential Painting',
+          tags: JSON.stringify(body.tags || ['novo_lead', 'us_market']),
+          city: body.city || 'Boston',
+          state: body.state || 'MA',
+          keyword: body.keyword || null,
+          gclid: body.gclid || null,
+          device: body.device || 'm',
+          matchType: body.matchType || 'exact',
+          tcpaConsent: body.tcpaConsent !== undefined ? Boolean(body.tcpaConsent) : true,
           status: body.status || 'NOVO',
-          notes: body.notes || null,
+          aiScore: triage.score,
+          aiQualification: triage.intent,
+          whatsappScript: triage.suggestedScript,
+          notes: body.notes || `Received with keyword "${body.keyword || 'direct'}"`,
           rawData: JSON.stringify(body || {})
         }
       })
-      return { success: true, lead }
+
+      // Log in AuditLog
+      await prisma.auditLog.create({
+        data: {
+          action: 'LEAD_CAPTURED',
+          userId: 'SYSTEM_CAPTURE',
+          userName: 'Google Ads / Landing Page Webhook',
+          details: JSON.stringify({
+            leadId: lead.id,
+            source: lead.source,
+            city: lead.city,
+            tcpaConsent: lead.tcpaConsent,
+            aiScore: triage.score
+          })
+        }
+      })
+
+      return { success: true, lead, triage }
     } catch (err: any) {
       return { success: false, error: err?.message || 'Falha ao criar lead' }
     }

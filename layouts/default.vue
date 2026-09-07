@@ -59,6 +59,15 @@
             <span>Central VoIP & Áudios</span>
           </NuxtLink>
 
+          <NuxtLink
+            to="/dashboard/marketing"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
+            :class="$route.path === '/dashboard/marketing' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+          >
+            <Mail class="w-4 h-4" />
+            <span>E-mail Marketing & Base</span>
+          </NuxtLink>
+
           <!-- Restricted Manager Section -->
           <div class="pt-2">
             <span class="text-[9px] uppercase font-extrabold tracking-widest text-slate-500 px-3.5 block mb-1">
@@ -149,7 +158,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Home, LayoutDashboard, Users, PhoneCall, Award, Sliders, RefreshCw } from 'lucide-vue-next'
+import { Home, LayoutDashboard, Users, PhoneCall, Mail, Award, Sliders, RefreshCw } from 'lucide-vue-next'
 
 const syncing = ref(false)
 const toastMessage = ref('')

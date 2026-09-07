@@ -1,119 +1,225 @@
 <template>
   <div class="bg-white rounded-2xl border border-purple-200/80 shadow-sm p-6 flex flex-col h-full">
-    <!-- Header -->
-    <div class="flex items-center justify-between pb-4 border-b border-purple-100 mb-4">
+    <!-- Header with Model Selector -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
       <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-white shadow-sm">
-          <Sparkles class="w-5 h-5" />
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-amber-500 flex items-center justify-center text-white shadow-sm font-black text-xs">
+          AI
         </div>
         <div>
           <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
-            Consultor Gemini Ads
+            Omni-Agent Orchestrator
             <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">
-              AI Powered
+              Multi-Model
             </span>
           </h3>
-          <p class="text-xs text-slate-500">Otimização autônoma de campanhas, lances e copies</p>
+          <p class="text-xs text-slate-500">Google Gemini • Anthropic Claude • OpenAI GPT-4o</p>
         </div>
       </div>
 
-      <span
-        class="text-xs px-2.5 py-1 rounded-full font-medium"
-        :class="isLiveAi ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200'"
-      >
-        {{ isLiveAi ? '● Gemini 2.5 Conectado' : '● Modo Estratégico Local' }}
+      <!-- Agent Switcher Tabs -->
+      <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-semibold overflow-x-auto">
+        <button
+          v-for="agent in agentList"
+          :key="agent.id"
+          @click="selectAgent(agent.id)"
+          class="px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 whitespace-nowrap"
+          :class="currentAgent === agent.id ? 'bg-white text-slate-900 shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'"
+        >
+          <span>{{ agent.icon }}</span>
+          <span>{{ agent.name }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Agent Context Description -->
+    <div class="my-3 p-3 rounded-xl bg-slate-50 border border-slate-200/70 flex items-center justify-between text-xs">
+      <div>
+        <span class="font-bold text-slate-800">{{ activeAgentMeta.title }}:</span>
+        <span class="text-slate-600 ml-1.5">{{ activeAgentMeta.description }}</span>
+      </div>
+      <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-slate-200 text-slate-700 font-bold shrink-0">
+        {{ activeAgentMeta.modelTag }}
       </span>
     </div>
 
-    <!-- Quick Action Presets -->
-    <div class="grid grid-cols-2 gap-2 mb-4">
+    <!-- Action Buttons Based on Selected Agent -->
+    <!-- 1. CLAUDE 3.5 SONNET STRATEGY -->
+    <div v-if="currentAgent === 'CLAUDE'" class="grid grid-cols-2 gap-2 mb-4">
       <button
-        @click="runAnalysis('AUDIT')"
+        @click="runClaudeStrategy('AUDIT')"
         :disabled="loading"
-        class="text-xs font-semibold py-2 px-3 rounded-xl border transition-all text-left flex items-center gap-2"
-        :class="activePreset === 'AUDIT' ? 'bg-purple-50 border-purple-300 text-purple-800 font-bold' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-purple-50/50'"
+        class="text-xs font-semibold py-2 px-3 rounded-xl border transition-all text-left flex items-center gap-2 bg-purple-50/60 border-purple-200 text-purple-900 hover:bg-purple-100/70"
       >
-        <span>📊</span> Auditoria Completa
+        <span>📊</span> ROAS & Traffic Audit
       </button>
-
       <button
-        @click="runAnalysis('BID_OPTIMIZATION')"
+        @click="runClaudeStrategy('COPYWRITING')"
         :disabled="loading"
-        class="text-xs font-semibold py-2 px-3 rounded-xl border transition-all text-left flex items-center gap-2"
-        :class="activePreset === 'BID_OPTIMIZATION' ? 'bg-purple-50 border-purple-300 text-purple-800 font-bold' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-purple-50/50'"
+        class="text-xs font-semibold py-2 px-3 rounded-xl border transition-all text-left flex items-center gap-2 bg-purple-50/60 border-purple-200 text-purple-900 hover:bg-purple-100/70"
       >
-        <span>📈</span> Otimizar Lances & ROAS
-      </button>
-
-      <button
-        @click="runAnalysis('COPYWRITING')"
-        :disabled="loading"
-        class="text-xs font-semibold py-2 px-3 rounded-xl border transition-all text-left flex items-center gap-2"
-        :class="activePreset === 'COPYWRITING' ? 'bg-purple-50 border-purple-300 text-purple-800 font-bold' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-purple-50/50'"
-      >
-        <span>✍️</span> Gerar Copies & Headlines
-      </button>
-
-      <button
-        @click="runAnalysis('NEGATIVE_KEYWORDS')"
-        :disabled="loading"
-        class="text-xs font-semibold py-2 px-3 rounded-xl border transition-all text-left flex items-center gap-2"
-        :class="activePreset === 'NEGATIVE_KEYWORDS' ? 'bg-purple-50 border-purple-300 text-purple-800 font-bold' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-purple-50/50'"
-      >
-        <span>🛡️</span> Palavras Negativas
+        <span>✍️</span> Generate US Ad Copies
       </button>
     </div>
 
-    <!-- Custom Query Bar -->
-    <div class="flex items-center gap-2 mb-4">
+    <!-- 2. GEMINI 1.5 FLASH TRIAGE -->
+    <div v-else-if="currentAgent === 'GEMINI'" class="grid grid-cols-2 gap-2 mb-4">
+      <button
+        @click="runGeminiTriage()"
+        :disabled="loading"
+        class="text-xs font-semibold py-2 px-3 rounded-xl border transition-all text-left flex items-center gap-2 bg-amber-50/60 border-amber-200 text-amber-900 hover:bg-amber-100/70"
+      >
+        <span>⚡</span> Triage Latest Lead
+      </button>
+      <button
+        @click="runGeminiTriage({ keyword: 'urgent exterior painting', city: 'Cambridge', state: 'MA' })"
+        :disabled="loading"
+        class="text-xs font-semibold py-2 px-3 rounded-xl border transition-all text-left flex items-center gap-2 bg-amber-50/60 border-amber-200 text-amber-900 hover:bg-amber-100/70"
+      >
+        <span>🔥</span> Simulate Urgent Lead Triage
+      </button>
+    </div>
+
+    <!-- 3. GPT-4O SMS RE-ENGAGEMENT -->
+    <div v-else-if="currentAgent === 'GPT4O'" class="grid grid-cols-2 gap-2 mb-4">
+      <button
+        @click="runGPT4oFollowup(false)"
+        :disabled="loading"
+        class="text-xs font-semibold py-2 px-3 rounded-xl border transition-all text-left flex items-center gap-2 bg-emerald-50/60 border-emerald-200 text-emerald-900 hover:bg-emerald-100/70"
+      >
+        <span>💬</span> Draft TCPA Re-engagement
+      </button>
+      <button
+        @click="runGPT4oFollowup(true)"
+        :disabled="loading"
+        class="text-xs font-semibold py-2 px-3 rounded-xl border transition-all text-left flex items-center gap-2 bg-emerald-50/60 border-emerald-200 text-emerald-900 hover:bg-emerald-100/70"
+      >
+        <span>📲</span> Draft & Simulate Twilio SMS
+      </button>
+    </div>
+
+    <!-- 4. DALL-E 3 IMAGE GENERATOR -->
+    <div v-else-if="currentAgent === 'DALLE'" class="flex items-center gap-2 mb-4">
       <input
-        v-model="customQuery"
+        v-model="dallePrompt"
         type="text"
-        placeholder="Faça uma pergunta específica para a IA..."
-        @keyup.enter="runAnalysis('CUSTOM')"
-        class="flex-1 text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition-all"
+        placeholder="e.g. Modern painted kitchen cabinets in Newton MA..."
+        @keyup.enter="runDallERender"
+        class="flex-1 text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white"
       />
       <button
-        @click="runAnalysis('CUSTOM')"
+        @click="runDallERender"
         :disabled="loading"
-        class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-3 py-2 rounded-xl text-xs font-semibold transition-all disabled:opacity-50 flex items-center gap-1 shrink-0"
+        class="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white px-3 py-2 rounded-xl text-xs font-semibold transition-all shrink-0"
       >
-        <Send class="w-3.5 h-3.5" />
-        <span>Perguntar</span>
+        Generate Hero
+      </button>
+    </div>
+
+    <!-- 5. WHISPER + GEMINI PRO AUDIT -->
+    <div v-else-if="currentAgent === 'AUDIT'" class="grid grid-cols-2 gap-2 mb-4">
+      <button
+        @click="runCallAudit()"
+        :disabled="loading"
+        class="text-xs font-semibold py-2 px-3 rounded-xl border transition-all text-left flex items-center gap-2 bg-blue-50/60 border-blue-200 text-blue-900 hover:bg-blue-100/70"
+      >
+        <span>🎙️</span> Audit Sample Call
+      </button>
+      <button
+        @click="runVoiceAgentTest()"
+        :disabled="loading"
+        class="text-xs font-semibold py-2 px-3 rounded-xl border transition-all text-left flex items-center gap-2 bg-blue-50/60 border-blue-200 text-blue-900 hover:bg-blue-100/70"
+      >
+        <span>🤖</span> Test OpenAI Realtime Voice
       </button>
     </div>
 
     <!-- Output Container -->
-    <div class="flex-1 bg-slate-50 rounded-xl p-4 overflow-y-auto border border-slate-200/70 min-h-[350px] relative">
+    <div class="flex-1 bg-slate-50 rounded-xl p-4 overflow-y-auto border border-slate-200/70 min-h-[340px] relative">
       <!-- Loading State -->
       <div v-if="loading" class="h-full flex flex-col items-center justify-center text-center p-6">
         <div class="w-8 h-8 border-3 border-purple-600 border-t-transparent rounded-full animate-spin mb-3"></div>
-        <p class="text-xs font-semibold text-slate-700">O Gemini está analisando suas métricas...</p>
-        <p class="text-[11px] text-slate-400 mt-1">Calculando ROAS, gaps de conversão e elaborando recomendações</p>
+        <p class="text-xs font-semibold text-slate-700">Dispatching to {{ activeAgentMeta.name }}...</p>
+        <p class="text-[11px] text-slate-400 mt-1">Processing multi-agent reasoning and schema formatting</p>
       </div>
 
       <!-- Result View -->
-      <div v-else-if="recommendation" class="space-y-2">
-        <div class="flex justify-end mb-2">
+      <div v-else-if="outputData" class="space-y-3 text-xs">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+          <span class="font-mono text-[11px] text-purple-700 font-bold">
+            Model: {{ outputData.modelUsed || activeAgentMeta.modelTag }}
+          </span>
           <button
-            @click="copyToClipboard"
-            class="text-[11px] text-slate-500 hover:text-purple-600 bg-white border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-2xs transition-colors"
+            @click="copyOutput"
+            class="text-[11px] text-slate-600 hover:text-purple-600 bg-white border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-2xs font-medium"
           >
-            <Check v-if="copied" class="w-3 h-3 text-emerald-600" />
-            <Copy v-else class="w-3 h-3" />
-            <span>{{ copied ? 'Copiado!' : 'Copiar' }}</span>
+            <span>{{ copied ? 'Copiado!' : 'Copiar JSON/Texto' }}</span>
           </button>
         </div>
 
-        <div class="prose prose-xs max-w-none text-slate-800 leading-relaxed space-y-2" v-html="renderedMarkdown" />
+        <!-- Rendered Image if DALL-E -->
+        <div v-if="outputData.imageUrl" class="space-y-2">
+          <img :src="outputData.imageUrl" alt="Generated Visual" class="w-full rounded-lg shadow-md max-h-64 object-cover" />
+          <p class="text-[11px] text-slate-500 italic">{{ outputData.revisedPrompt || outputData.prompt }}</p>
+        </div>
+
+        <!-- Rendered Structured Triage -->
+        <div v-else-if="outputData.priority" class="space-y-2 bg-white p-3 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-900">Lead Urgency: {{ outputData.urgency }}</span>
+            <span
+              class="px-2 py-0.5 rounded-full font-black text-[11px]"
+              :class="outputData.priority === 'HOT' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'"
+            >
+              {{ outputData.priority }} (Score: {{ outputData.score }}/10)
+            </span>
+          </div>
+          <p class="text-slate-700">{{ outputData.intent }}</p>
+          <div class="p-2.5 rounded-lg bg-orange-50 border border-orange-200 text-orange-950">
+            <span class="font-bold block mb-1">Recommended Opening Hook:</span>
+            <p class="italic text-[11px]">"{{ outputData.suggestedScript }}"</p>
+          </div>
+        </div>
+
+        <!-- Rendered Structured Strategy -->
+        <div v-else-if="outputData.summary" class="space-y-2 bg-white p-3.5 rounded-xl border border-slate-200">
+          <h4 class="font-bold text-slate-900 text-sm">{{ outputData.summary }}</h4>
+          <ul v-if="outputData.findings" class="space-y-1.5 list-disc list-inside text-slate-700">
+            <li v-for="(finding, i) in outputData.findings" :key="i">{{ finding }}</li>
+          </ul>
+          
+          <div v-if="outputData.negativeKeywordsRecommended" class="pt-2">
+            <span class="font-bold text-red-600 block mb-1">Negative Keywords Recommended:</span>
+            <div class="flex flex-wrap gap-1">
+              <span v-for="neg in outputData.negativeKeywordsRecommended" :key="neg" class="bg-red-50 text-red-700 px-2 py-0.5 rounded text-[10px] font-mono border border-red-200">
+                -{{ neg }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rendered Follow-up SMS/Email -->
+        <div v-else-if="outputData.smsMessage" class="space-y-2 bg-white p-3.5 rounded-xl border border-slate-200">
+          <div class="p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-950">
+            <span class="font-bold block mb-1">📱 Generated SMS (TCPA Compliant):</span>
+            <p class="text-xs">{{ outputData.smsMessage }}</p>
+          </div>
+          <div v-if="outputData.emailSubject" class="p-3 rounded-lg bg-blue-50 border border-blue-200 text-blue-950">
+            <span class="font-bold block mb-1">✉️ Email Subject: {{ outputData.emailSubject }}</span>
+            <div class="text-[11px] mt-1" v-html="outputData.emailBodyHtml"></div>
+          </div>
+        </div>
+
+        <!-- Fallback Raw View -->
+        <pre v-else class="text-[11px] text-slate-800 whitespace-pre-wrap font-mono">{{ JSON.stringify(outputData, null, 2) }}</pre>
       </div>
 
       <!-- Empty State -->
       <div v-else class="h-full flex flex-col items-center justify-center text-center p-6 text-slate-400">
-        <Bot class="w-10 h-10 mb-2 stroke-[1.5] text-slate-300" />
-        <p class="text-xs font-medium text-slate-600">Selecione uma ação acima para consultar a IA</p>
+        <Sparkles class="w-10 h-10 mb-2 stroke-[1.5] text-purple-300" />
+        <p class="text-xs font-semibold text-slate-700">Select an action to invoke {{ activeAgentMeta.name }}</p>
         <p class="text-[11px] text-slate-400 max-w-xs mt-1">
-          A IA analisa as métricas de custo, cliques e conversões das suas campanhas para sugerir melhorias práticas imediatas.
+          The Omni-Agent layer dynamically routes to the highest-performing model for strategy, triage, and follow-ups.
         </p>
       </div>
     </div>
@@ -121,9 +227,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { Sparkles, Send, Bot, Copy, Check } from 'lucide-vue-next'
-import { marked } from 'marked'
+import { ref, computed } from 'vue'
+import { Sparkles } from 'lucide-vue-next'
 
 const props = defineProps({
   campaigns: {
@@ -132,61 +237,169 @@ const props = defineProps({
   }
 })
 
+const currentAgent = ref('CLAUDE')
 const loading = ref(false)
-const recommendation = ref('')
-const isLiveAi = ref(false)
-const activePreset = ref('AUDIT')
-const customQuery = ref('')
+const outputData = ref(null)
 const copied = ref(false)
+const dallePrompt = ref('Historic colonial house in Boston MA, newly painted exterior, sunny morning')
 
-const renderedMarkdown = computed(() => {
-  if (!recommendation.value) return ''
-  return marked.parse(recommendation.value)
+const agentList = [
+  { id: 'CLAUDE', name: 'Claude 3.5 Sonnet', icon: '🧠' },
+  { id: 'GEMINI', name: 'Gemini Flash', icon: '⚡' },
+  { id: 'GPT4O', name: 'GPT-4o SMS', icon: '💬' },
+  { id: 'AUDIT', name: 'Whisper + Pro', icon: '🎙️' },
+  { id: 'DALLE', name: 'DALL-E 3', icon: '🎨' }
+]
+
+const activeAgentMeta = computed(() => {
+  switch (currentAgent.value) {
+    case 'CLAUDE':
+      return {
+        name: 'Anthropic Claude 3.5 Sonnet',
+        title: 'Ads Strategy & Copy',
+        description: 'ROAS optimization, traffic analytics, and high-converting ad copy.',
+        modelTag: 'claude-3-5-sonnet'
+      }
+    case 'GEMINI':
+      return {
+        name: 'Google Gemini 1.5 Flash',
+        title: 'Lead Triage & Urgency',
+        description: 'Sub-second classification, urgency scoring, and smart routing.',
+        modelTag: 'gemini-1.5-flash'
+      }
+    case 'GPT4O':
+      return {
+        name: 'OpenAI GPT-4o',
+        title: 'Cold Lead Re-engagement',
+        description: 'Hyper-personalized SMS follow-ups and email nurture sequences.',
+        modelTag: 'gpt-4o'
+      }
+    case 'AUDIT':
+      return {
+        name: 'Whisper + Gemini 1.5 Pro',
+        title: 'Call Quality Auditor',
+        description: 'Speech-to-text, objection detection, and TCPA compliance audits.',
+        modelTag: 'whisper-1 + gemini-1.5-pro'
+      }
+    case 'DALLE':
+      return {
+        name: 'OpenAI DALL-E 3',
+        title: 'Dynamic Hero Graphics',
+        description: 'Search intent matching visuals for dynamic landing pages.',
+        modelTag: 'dall-e-3'
+      }
+    default:
+      return { name: 'AI Engine', title: 'Consultant', description: '', modelTag: 'multi-agent' }
+  }
 })
 
-async function runAnalysis(type = 'AUDIT') {
-  activePreset.value = type
+function selectAgent(id) {
+  currentAgent.value = id
+  outputData.value = null
+}
+
+async function runClaudeStrategy(type = 'AUDIT') {
   loading.value = true
-
   try {
-    const payload = {
-      metrics: props.campaigns,
-      promptType: type === 'CUSTOM' ? 'AUDIT' : type,
-      customQuestion: type === 'CUSTOM' ? customQuery.value : undefined
-    }
-
-    const res = await $fetch('/api/ai/analyze', {
+    const res = await $fetch('/api/ai/strategy', {
       method: 'POST',
-      body: payload
+      body: { campaigns: props.campaigns, type }
     })
-
-    if (res.success) {
-      recommendation.value = res.recommendation
-      isLiveAi.value = res.isLiveAi
-    }
-  } catch (error) {
-    recommendation.value = 'Erro ao consultar a IA. Por favor verifique sua conexão.'
+    outputData.value = res.strategy
+  } catch (err) {
+    console.error('Error in Claude strategy:', err)
   } finally {
     loading.value = false
   }
 }
 
-async function copyToClipboard() {
+async function runGeminiTriage(sampleLead = null) {
+  loading.value = true
   try {
-    await navigator.clipboard.writeText(recommendation.value)
-    copied.value = true
-    setTimeout(() => {
-      copied.value = false
-    }, 2000)
+    const res = await $fetch('/api/ai/triage', {
+      method: 'POST',
+      body: sampleLead ? { lead: sampleLead } : {}
+    })
+    outputData.value = res.triage
   } catch (err) {
-    console.error('Falha ao copiar:', err)
+    console.error('Error in Gemini triage:', err)
+  } finally {
+    loading.value = false
   }
 }
 
-// Auto-run initial audit when mounted if campaigns exist
-onMounted(() => {
-  if (props.campaigns && props.campaigns.length > 0) {
-    runAnalysis('AUDIT')
+async function runGPT4oFollowup(dispatch = false) {
+  loading.value = true
+  try {
+    const res = await $fetch('/api/ai/followup', {
+      method: 'POST',
+      body: { dispatchTwilio: dispatch }
+    })
+    outputData.value = res.followup
+  } catch (err) {
+    console.error('Error in GPT-4o followup:', err)
+  } finally {
+    loading.value = false
   }
-})
+}
+
+async function runDallERender() {
+  loading.value = true
+  try {
+    const res = await $fetch('/api/ai/render', {
+      method: 'POST',
+      body: { prompt: dallePrompt.value }
+    })
+    outputData.value = res.render
+  } catch (err) {
+    console.error('Error in DALL-E render:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
+async function runCallAudit() {
+  loading.value = true
+  try {
+    const res = await $fetch('/api/ai/audit', {
+      method: 'POST',
+      body: {}
+    })
+    outputData.value = res.audit
+  } catch (err) {
+    console.error('Error in call audit:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
+async function runVoiceAgentTest() {
+  loading.value = true
+  try {
+    const res = await $fetch('/api/ai/voice-agent', {
+      method: 'POST',
+      body: { callerPhone: '+16175550198' }
+    })
+    outputData.value = {
+      modelUsed: 'openai-realtime-voice',
+      summary: `Voice AI Assistant Call Completed (Status: ${res.status})`,
+      findings: [
+        `Greeting: "${res.script.greeting}"`,
+        `Qualifying questions asked: ${res.script.qualifyingQuestions.join(' | ')}`,
+        `Outcome: ${res.script.closing}`
+      ]
+    }
+  } catch (err) {
+    console.error('Error in voice agent:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
+async function copyOutput() {
+  if (!outputData.value) return
+  await navigator.clipboard.writeText(JSON.stringify(outputData.value, null, 2))
+  copied.value = true
+  setTimeout(() => { copied.value = false }, 2000)
+}
 </script>

@@ -94,8 +94,14 @@ model Lead {
   name              String
   email             String?
   phone             String?
+  address           String?
+  zipCode           String?
   tcpaConsent       Boolean   @default(true) // Telephone Consumer Protection Act opt-in
   serviceInterested String?   // e.g. "Pintura Externa", "Armários de Cozinha", "Pintura Comercial"
+  serviceType       String?   // US service category
+  tags              String?   @default("[]") // JSON string of tags: ["lead_convertido", "orcamento_enviado"]
+  stripeCheckoutUrl String?   // Dynamic Stripe payment checkout link
+  stripePaymentStatus String? @default("UNPAID") // UNPAID, PENDING, PAID
   
   // Pipeline, Ownership & Speed-to-Lead Gamification
   status            String    @default("NOVO") // NOVO, EM_ATENDIMENTO, PROPOSTA, CONVERTIDO, PERDIDO
