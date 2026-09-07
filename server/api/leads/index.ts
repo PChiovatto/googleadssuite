@@ -173,6 +173,8 @@ export default defineEventHandler(async (event) => {
       organic: leads.filter(l => l.source === 'ORGANIC').length,
       converted: leads.filter(l => l.status === 'CONVERTIDO').length,
       inProgress: leads.filter(l => l.status === 'EM_ATENDIMENTO').length,
+      proposals: leads.filter(l => l.status === 'PROPOSTA').length,
+      lost: leads.filter(l => l.status === 'PERDIDO').length,
       newLeads: leads.filter(l => l.status === 'NOVO').length
     }
 

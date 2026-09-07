@@ -33,32 +33,38 @@
       </div>
     </div>
 
-    <!-- KPI Cards for Leads -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm">
-        <span class="text-xs font-semibold uppercase text-slate-500">Total de Leads</span>
-        <div class="text-2xl font-extrabold text-slate-900 mt-1">{{ stats.total || 0 }}</div>
-        <span class="text-[11px] text-slate-400">Contatos no funil</span>
+    <!-- KPI Cards for Funnel & Leads -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
+      <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm">
+        <span class="text-[11px] font-semibold uppercase text-slate-500">Total no Funil</span>
+        <div class="text-2xl font-black text-slate-900 mt-1">{{ stats.total || 0 }}</div>
+        <span class="text-[10px] text-slate-400">Leads capturados</span>
       </div>
 
-      <div class="bg-white rounded-2xl p-5 border border-blue-100 shadow-sm bg-blue-50/20">
-        <span class="text-xs font-semibold uppercase text-blue-600">Google Ads (Webhooks)</span>
-        <div class="text-2xl font-extrabold text-blue-700 mt-1">{{ stats.ads || 0 }}</div>
-        <span class="text-[11px] text-blue-500">Campanhas pagas</span>
+      <div class="bg-white rounded-2xl p-4 border border-emerald-100 shadow-sm bg-emerald-50/20">
+        <span class="text-[11px] font-semibold uppercase text-emerald-600">1. Novos (Roleta)</span>
+        <div class="text-2xl font-black text-emerald-700 mt-1">{{ stats.newLeads || 0 }}</div>
+        <span class="text-[10px] text-emerald-500">Aguardando atendimento</span>
       </div>
 
-      <div class="bg-white rounded-2xl p-5 border border-emerald-100 shadow-sm bg-emerald-50/20">
-        <span class="text-xs font-semibold uppercase text-emerald-600">Google Meu Negócio</span>
-        <div class="text-2xl font-extrabold text-emerald-700 mt-1">{{ stats.gbp || 0 }}</div>
-        <span class="text-[11px] text-emerald-500">Perfil & Google Maps</span>
+      <div class="bg-white rounded-2xl p-4 border border-amber-100 shadow-sm bg-amber-50/20">
+        <span class="text-[11px] font-semibold uppercase text-amber-600">2. Em Atendimento</span>
+        <div class="text-2xl font-black text-amber-700 mt-1">{{ stats.inProgress || 0 }}</div>
+        <span class="text-[10px] text-amber-500">Em contato / negociação</span>
       </div>
 
-      <div class="bg-white rounded-2xl p-5 border border-purple-100 shadow-sm bg-purple-50/20">
-        <span class="text-xs font-semibold uppercase text-purple-600">Convertidos</span>
-        <div class="text-2xl font-extrabold text-purple-700 mt-1">
-          {{ stats.total ? Math.round((stats.converted / stats.total) * 100) : 0 }}%
+      <div class="bg-white rounded-2xl p-4 border border-blue-100 shadow-sm bg-blue-50/20">
+        <span class="text-[11px] font-semibold uppercase text-blue-600">3. Propostas</span>
+        <div class="text-2xl font-black text-blue-700 mt-1">{{ stats.proposals || 0 }}</div>
+        <span class="text-[10px] text-blue-500">Orçamentos enviados</span>
+      </div>
+
+      <div class="bg-white rounded-2xl p-4 border border-purple-100 shadow-sm bg-purple-50/20 col-span-2 sm:col-span-1">
+        <span class="text-[11px] font-semibold uppercase text-purple-600">4. Fechados / Ganho</span>
+        <div class="text-2xl font-black text-purple-700 mt-1">
+          {{ stats.converted || 0 }} <span class="text-xs font-bold text-purple-500">({{ stats.total ? Math.round((stats.converted / stats.total) * 100) : 0 }}%)</span>
         </div>
-        <span class="text-[11px] text-purple-500">{{ stats.converted || 0 }} clientes fechados</span>
+        <span class="text-[10px] text-purple-500">Contratos convertidos</span>
       </div>
     </div>
 
@@ -88,6 +94,7 @@
       v-if="currentView === 'kanban'"
       :leads="leads"
       @refresh="fetchLeads"
+      @open-lead-details="openModal"
     />
 
     <!-- Leads Table Component -->

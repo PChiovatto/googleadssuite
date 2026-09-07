@@ -38,6 +38,7 @@
           <option value="ALL">Todos os Status</option>
           <option value="NOVO">Novo</option>
           <option value="EM_ATENDIMENTO">Em Atendimento</option>
+          <option value="PROPOSTA">Proposta Enviada</option>
           <option value="CONVERTIDO">Convertido</option>
           <option value="PERDIDO">Perdido</option>
         </select>
@@ -115,11 +116,13 @@
                   'bg-emerald-50 text-emerald-700 border-emerald-200': lead.status === 'CONVERTIDO',
                   'bg-blue-50 text-blue-700 border-blue-200': lead.status === 'NOVO',
                   'bg-amber-50 text-amber-700 border-amber-200': lead.status === 'EM_ATENDIMENTO',
+                  'bg-indigo-50 text-indigo-700 border-indigo-200': lead.status === 'PROPOSTA',
                   'bg-rose-50 text-rose-700 border-rose-200': lead.status === 'PERDIDO'
                 }"
               >
                 <option value="NOVO">● Novo</option>
                 <option value="EM_ATENDIMENTO">● Em Atendimento</option>
+                <option value="PROPOSTA">📝 Proposta Enviada</option>
                 <option value="CONVERTIDO">✔ Convertido</option>
                 <option value="PERDIDO">✖ Perdido</option>
               </select>
