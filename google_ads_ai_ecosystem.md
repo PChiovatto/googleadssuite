@@ -146,9 +146,40 @@ model AiConsultation {
   contextData      String   // Snapshot em JSON dos dados analisados
   aiRecommendation String   // Relatório completo e estruturado emitido pelo Gemini
 }
+
+model Lead {
+  id                String   @id @default(cuid())
+  source            String   // GOOGLE_ADS, GOOGLE_BUSINESS, ORGANIC
+  campaignId        String?
+  campaignName      String?
+  name              String
+  email             String?
+  phone             String?
+  serviceInterested String?
+  status            String   @default("NOVO") // NOVO, EM_ATENDIMENTO, CONVERTIDO, PERDIDO
+  notes             String?
+  aiScore           Int?     // 1 a 10
+  aiQualification   String?  // Diagnóstico do perfil do lead pelo Gemini
+  whatsappScript    String?  // Roteiro pronto para WhatsApp
+  rawData           String   // Payload bruto
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
 ```
 
 ---
+
+## 4.1 Integração de Leads (Webhooks & Google Meu Negócio)
+
+* **Google Ads Lead Forms Webhook:** Endpoint `POST /api/webhooks/google-leads`.
+  - No painel do Google Ads, ao criar uma *Extensão de Formulário de Lead*, insira a URL pública deste webhook (ex: via túnel local ou domínio de produção) e a chave secreta.
+* **Google Meu Negócio (GBP):** Endpoint `/api/gbp/sync`.
+  - Puxa mensagens e agendamentos diretos do perfil local da empresa e unifica no mesmo pipeline do CRM.
+* **Qualificação de Leads com Gemini AI:** Endpoint `POST /api/leads/qualify`.
+  - Analisa a urgência e fit do lead, atribuindo score de 1 a 10 e gerando automaticamente a mensagem ideal de primeiro contato para WhatsApp.
+
+---
+
 
 ## 5. Métricas do Google Ads Suportadas no Painel
 

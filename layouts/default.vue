@@ -30,10 +30,24 @@
           <NuxtLink
             to="/dashboard"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
-            :class="$route.path.startsWith('/dashboard') ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+            :class="$route.path === '/dashboard' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <LayoutDashboard class="w-4 h-4" />
             <span>Painel de Anúncios</span>
+          </NuxtLink>
+
+          <NuxtLink
+            to="/dashboard/leads"
+            class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
+            :class="$route.path === '/dashboard/leads' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+          >
+            <div class="flex items-center gap-3">
+              <Users class="w-4 h-4" />
+              <span>Leads & CRM (GBP/Ads)</span>
+            </div>
+            <span class="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300">
+              Novo
+            </span>
           </NuxtLink>
 
           <NuxtLink
@@ -106,7 +120,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Home, LayoutDashboard, Sliders, RefreshCw } from 'lucide-vue-next'
+import { Home, LayoutDashboard, Users, Sliders, RefreshCw } from 'lucide-vue-next'
 
 const syncing = ref(false)
 const toastMessage = ref('')
