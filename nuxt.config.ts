@@ -1,0 +1,45 @@
+// https://nuxt.com/docs/api/configuration/nuxt-config
+export default defineNuxtConfig({
+  compatibilityDate: '2024-11-01',
+  devtools: { enabled: true },
+  modules: [
+    '@nuxtjs/tailwindcss'
+  ],
+  css: [
+    '~/assets/css/main.css'
+  ],
+  runtimeConfig: {
+    // Private keys available only on the server
+    databaseUrl: process.env.DATABASE_URL || 'file:./dev.db',
+    geminiApiKey: process.env.GEMINI_API_KEY || '',
+    googleAdsClientId: process.env.GOOGLE_ADS_CLIENT_ID || '',
+    googleAdsClientSecret: process.env.GOOGLE_ADS_CLIENT_SECRET || '',
+    googleAdsDeveloperToken: process.env.GOOGLE_ADS_DEVELOPER_TOKEN || '',
+    googleAdsRefreshToken: process.env.GOOGLE_ADS_REFRESH_TOKEN || '',
+    googleAdsLoginCustomerId: process.env.GOOGLE_ADS_LOGIN_CUSTOMER_ID || '',
+    googleAdsCustomerId: process.env.GOOGLE_ADS_CUSTOMER_ID || '',
+    authSecret: process.env.AUTH_SECRET || 'dev_secret_key',
+
+    // Public keys exposed to the client
+    public: {
+      appName: 'Google Ads & AI Intelligence Suite',
+      apiVersion: 'v1.0'
+    }
+  },
+  app: {
+    head: {
+      title: 'Google Ads & AI Intelligence Suite',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: 'Painel inteligente de monitoramento, auditoria e otimização do Google Ads com IA Gemini.' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap' }
+      ]
+    }
+  }
+})

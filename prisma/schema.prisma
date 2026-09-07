@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+}
+
+model CampaignMetrics {
+  id                    String   @id @default(cuid())
+  date                  DateTime
+  campaignId            String
+  campaignName          String
+  status                String   @default("ENABLED") // ENABLED, PAUSED, REMOVED
+  advertisingChannel    String   @default("SEARCH") // SEARCH, DISPLAY, PERFORMANCE_MAX, VIDEO
+  impressions           Int
+  clicks                Int
+  cost                  Float    // Total spend
+  conversions           Float
+  conversionValue       Float    // Conversion value / revenue
+  ctr                   Float    // Click-through rate (%)
+  averageCpc            Float    // Average Cost Per Click
+  costPerConversion     Float    // Cost Per Acquisition (CPA)
+  roas                  Float    // Return on Ad Spend (value / cost)
+  searchImpressionShare Float    @default(0) // Impression share percentage
+  createdAt             DateTime @default(now())
+
+  @@index([campaignId])
+  @@index([date])
+}
+
+model KeywordMetrics {
+  id           String   @id @default(cuid())
+  campaignId   String
+  keyword      String
+  matchType    String   // EXACT, PHRASE, BROAD
+  impressions  Int
+  clicks       Int
+  cost         Float
+  conversions  Float
+  cpc          Float
+  qualityScore Int?
+  createdAt    DateTime @default(now())
+
+  @@index([campaignId])
+}
+
+model AiConsultation {
+  id               String   @id @default(cuid())
+  date             DateTime @default(now())
+  promptType       String   @default("AUDIT") // AUDIT, BID_OPTIMIZATION, COPYWRITING, NEGATIVE_KEYWORDS
+  contextData      String   // JSON string of campaign/keyword data analyzed
+  aiRecommendation String   // Markdown recommendation from Gemini
+  createdAt        DateTime @default(now())
+}
+
+model AccountSetting {
+  id           String    @id @default(cuid())
+  customerId   String    @unique
+  accountName  String
+  currency     String    @default("USD")
+  timeZone     String    @default("America/New_York")
+  isDemo       Boolean   @default(true)
+  lastSyncedAt DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}

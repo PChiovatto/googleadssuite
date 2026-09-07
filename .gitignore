@@ -1,0 +1,11 @@
+node_modules/
+.nuxt/
+.output/
+dist/
+.env
+*.local
+*.log
+prisma/dev.db
+prisma/dev.db-journal
+.DS_Store
+Thumbs.db
