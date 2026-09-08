@@ -130,6 +130,54 @@
       </div>
     </div>
 
+    <!-- Omnichannel Channel Profitability & Job Costing (Pillar 17) -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <span>Omnichannel Acquisition Profitability & Real Net Profit</span>
+            <span class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 text-[10px] font-black uppercase">Job Costing</span>
+          </h2>
+          <p class="text-[11px] text-slate-500">Cross-referencing ad spend, labor hours, and material orders by acquisition channel (Google vs. Meta vs. Microsoft vs. TikTok)</p>
+        </div>
+        <span class="text-[11px] font-mono text-slate-400">Net Profit = Revenue - (Ads + Labor + Materials)</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-50 text-slate-600 font-bold uppercase tracking-wider text-[10px]">
+            <tr>
+              <th class="py-3 px-4">Channel & Source</th>
+              <th class="py-3 px-4 text-right">Ad Spend ($)</th>
+              <th class="py-3 px-4 text-center">Deals Won</th>
+              <th class="py-3 px-4 text-right">Gross Revenue ($)</th>
+              <th class="py-3 px-4 text-right">Labor ($)</th>
+              <th class="py-3 px-4 text-right">Materials ($)</th>
+              <th class="py-3 px-4 text-right">Real Net Profit ($)</th>
+              <th class="py-3 px-4 text-center">Real ROAS</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 font-mono">
+            <tr v-for="item in omnichannel" :key="item.channel" class="hover:bg-slate-50/60 transition-colors">
+              <td class="py-3 px-4 font-bold text-slate-900 font-sans flex items-center gap-2">
+                <span class="text-xs">{{ item.badge === 'Facebook Ads' ? '📢' : item.badge === 'Instagram Ads' ? '📷' : item.badge === 'Bing Ads' ? '🟩' : item.badge === 'TikTok Ads' ? '🎵' : item.badge === 'GMB / LSA' ? '📍' : '🔵' }}</span>
+                <span>{{ item.channel }}</span>
+              </td>
+              <td class="py-3 px-4 text-right text-rose-600 font-semibold">${{ Number(item.spend).toLocaleString('en-US', { minimumFractionDigits: 2 }) }}</td>
+              <td class="py-3 px-4 text-center font-bold text-slate-900 font-sans">{{ item.closedDeals }}</td>
+              <td class="py-3 px-4 text-right text-emerald-600 font-bold">${{ Number(item.revenue).toLocaleString('en-US', { minimumFractionDigits: 2 }) }}</td>
+              <td class="py-3 px-4 text-right text-slate-600">${{ Number(item.laborCost).toLocaleString('en-US', { minimumFractionDigits: 2 }) }}</td>
+              <td class="py-3 px-4 text-right text-slate-600">${{ Number(item.materialsCost).toLocaleString('en-US', { minimumFractionDigits: 2 }) }}</td>
+              <td class="py-3 px-4 text-right font-bold text-indigo-700 bg-indigo-50/50">${{ Number(item.netProfit).toLocaleString('en-US', { minimumFractionDigits: 2 }) }}</td>
+              <td class="py-3 px-4 text-center font-sans">
+                <span class="px-2 py-0.5 rounded-full font-black text-xs bg-purple-100 text-purple-800">{{ item.roas }}x</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- Top Keywords Breakdown -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-4">
       <div class="flex items-center justify-between">
@@ -165,6 +213,7 @@ import { ref, onMounted } from 'vue'
 
 const financials = ref({})
 const campaigns = ref([])
+const omnichannel = ref([])
 const topKeywords = ref([])
 
 async function fetchFinancials() {
@@ -173,6 +222,7 @@ async function fetchFinancials() {
     if (res.success) {
       financials.value = res.financials || {}
       campaigns.value = res.campaignBreakdown || []
+      omnichannel.value = res.omnichannelBreakdown || []
       topKeywords.value = res.topKeywords || []
     }
   } catch (err) {

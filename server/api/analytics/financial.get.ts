@@ -87,6 +87,82 @@ export default defineEventHandler(async () => {
       { keyword: 'residential painters near me', spend: 580.00, revenue: 9800.00, roas: 16.89, deals: 2 }
     ]
 
+    // Omnichannel Job Costing & Profitability Segmentation (Pillar 17)
+    const omnichannelBreakdown = [
+      {
+        channel: 'Google Search & PMax',
+        sourceKey: 'GOOGLE',
+        spend: 3450.00,
+        closedDeals: 11,
+        revenue: 41800.00,
+        laborCost: 14200.00,
+        materialsCost: 6800.00,
+        netProfit: 17350.00,
+        roas: 12.11,
+        badge: 'Google Ads'
+      },
+      {
+        channel: 'Meta Facebook Ads (Megaphone)',
+        sourceKey: 'META_FACEBOOK',
+        spend: 1850.00,
+        closedDeals: 6,
+        revenue: 24600.00,
+        laborCost: 8200.00,
+        materialsCost: 3900.00,
+        netProfit: 10650.00,
+        roas: 13.30,
+        badge: 'Facebook Ads'
+      },
+      {
+        channel: 'Meta Instagram Ads (Stories / Reels)',
+        sourceKey: 'META_INSTAGRAM',
+        spend: 1240.00,
+        closedDeals: 4,
+        revenue: 16800.00,
+        laborCost: 5600.00,
+        materialsCost: 2800.00,
+        netProfit: 7160.00,
+        roas: 13.55,
+        badge: 'Instagram Ads'
+      },
+      {
+        channel: 'Microsoft Advertising (Bing Search)',
+        sourceKey: 'MICROSOFT_BING',
+        spend: 920.00,
+        closedDeals: 3,
+        revenue: 14200.00,
+        laborCost: 4600.00,
+        materialsCost: 2100.00,
+        netProfit: 6580.00,
+        roas: 15.43,
+        badge: 'Bing Ads'
+      },
+      {
+        channel: 'TikTok Video Ads (Lead Gen)',
+        sourceKey: 'TIKTOK',
+        spend: 640.00,
+        closedDeals: 2,
+        revenue: 8400.00,
+        laborCost: 2900.00,
+        materialsCost: 1300.00,
+        netProfit: 3560.00,
+        roas: 13.12,
+        badge: 'TikTok Ads'
+      },
+      {
+        channel: 'Google Business Profile (LSA Maps)',
+        sourceKey: 'GOOGLE_LOCAL',
+        spend: 480.00,
+        closedDeals: 4,
+        revenue: 12800.00,
+        laborCost: 4200.00,
+        materialsCost: 1900.00,
+        netProfit: 6220.00,
+        roas: 26.67,
+        badge: 'GMB / LSA'
+      }
+    ]
+
     return {
       success: true,
       financials: {
@@ -102,6 +178,7 @@ export default defineEventHandler(async () => {
         totalAdImpressions
       },
       campaignBreakdown,
+      omnichannelBreakdown,
       topKeywords
     }
   } catch (error: any) {

@@ -10,6 +10,23 @@
       </div>
 
       <div class="flex flex-wrap items-center gap-2">
+        <!-- Omnichannel Inbound Simulator Dropdown -->
+        <div class="relative">
+          <select
+            @change="simulateOmnichannel($event.target.value); $event.target.value = ''"
+            :disabled="simulating"
+            class="bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="" disabled selected>⚡ Ingest Omnichannel Lead...</option>
+            <option value="FACEBOOK_ADS">📢 Facebook Ads (Megaphone Lead Gen)</option>
+            <option value="INSTAGRAM_ADS">📷 Instagram Ads (Stories & Reels)</option>
+            <option value="MICROSOFT_ADS">🟩 Microsoft Ads (Bing Search 'b')</option>
+            <option value="TIKTOK_ADS">🎵 TikTok Ads (Lead Form)</option>
+            <option value="GOOGLE_ADS">🎯 Google Ads (Search / PMax)</option>
+            <option value="GOOGLE_BUSINESS">📍 Google Business Profile / LSA</option>
+          </select>
+        </div>
+
         <!-- Simulate Google Ads Webhook Button -->
         <button
           @click="simulateWebhookLead"
@@ -289,6 +306,104 @@ async function simulateWebhookLead() {
     await fetchLeads()
   } catch (err) {
     console.error('Failed to simulate webhook:', err)
+  } finally {
+    simulating.value = false
+  }
+}
+
+async function simulateOmnichannel(channel) {
+  if (!channel) return
+  simulating.value = true
+  try {
+    const demos = {
+      FACEBOOK_ADS: {
+        source: 'FACEBOOK_ADS',
+        utmSource: 'META_FACEBOOK',
+        utmMedium: 'lead_ad',
+        utmCampaign: 'Wakefield Exterior Siding & Trim Promo',
+        name: 'Jessica Reynolds',
+        phone: '+1 (781) 555-4029',
+        email: 'jess.reynolds@gmail.com',
+        city: 'Wakefield',
+        state: 'MA',
+        serviceInterested: 'Exterior Siding Painting & Deck Staining',
+        dealValue: 4800.00
+      },
+      INSTAGRAM_ADS: {
+        source: 'INSTAGRAM_ADS',
+        utmSource: 'META_INSTAGRAM',
+        utmMedium: 'lead_ad',
+        utmCampaign: 'Modern Kitchen Cabinet Refinishing Reel',
+        name: 'Liam Harrington',
+        phone: '+1 (617) 555-9182',
+        email: 'liam.harrington.design@gmail.com',
+        city: 'Brookline',
+        state: 'MA',
+        serviceInterested: 'Kitchen Cabinet Spray Painting & Hardware',
+        dealValue: 3950.00
+      },
+      MICROSOFT_ADS: {
+        source: 'MICROSOFT_ADS',
+        utmSource: 'MICROSOFT_BING',
+        utmMedium: 'cpc',
+        utmCampaign: 'Bing Commercial Painting Newton MA',
+        name: 'David Goldberg (CPA Office)',
+        phone: '+1 (617) 555-7310',
+        email: 'david@goldbergassociates.com',
+        city: 'Newton',
+        state: 'MA',
+        serviceInterested: 'Commercial Interior Office Repaint',
+        dealValue: 7200.00
+      },
+      TIKTOK_ADS: {
+        source: 'TIKTOK_ADS',
+        utmSource: 'TIKTOK',
+        utmMedium: 'lead_ad',
+        utmCampaign: 'Satisfying Painting Before & After Viral Ad',
+        name: 'Tyler Vance',
+        phone: '+1 (978) 555-2244',
+        email: 'tyler.vance99@gmail.com',
+        city: 'Salem',
+        state: 'MA',
+        serviceInterested: 'Full Interior Living Room & Trim Package',
+        dealValue: 3200.00
+      },
+      GOOGLE_ADS: {
+        source: 'GOOGLE_ADS',
+        utmSource: 'GOOGLE',
+        utmMedium: 'cpc',
+        utmCampaign: 'Search - Exterior Painting Massachusetts',
+        name: 'Robert Sullivan',
+        phone: '+1 (617) 555-3819',
+        email: 'robert.sullivan@verizon.net',
+        city: 'Melrose',
+        state: 'MA',
+        serviceInterested: 'Two-Story Colonial House Exterior Painting',
+        dealValue: 6400.00
+      },
+      GOOGLE_BUSINESS: {
+        source: 'GOOGLE_BUSINESS',
+        utmSource: 'GOOGLE_LOCAL',
+        utmMedium: 'local_pack',
+        utmCampaign: 'GBP Local Pack Top 3 Placement',
+        name: 'Amanda Chen',
+        phone: '+1 (781) 555-6677',
+        email: 'amanda.chen.ma@yahoo.com',
+        city: 'Malden',
+        state: 'MA',
+        serviceInterested: 'Interior Drywall Patching & Accent Wall',
+        dealValue: 2400.00
+      }
+    }
+
+    const payload = demos[channel] || demos.FACEBOOK_ADS
+    await $fetch('/api/webhooks/omnikanal', {
+      method: 'POST',
+      body: payload
+    })
+    await fetchLeads()
+  } catch (err) {
+    console.error('Failed to simulate omnichannel lead:', err)
   } finally {
     simulating.value = false
   }

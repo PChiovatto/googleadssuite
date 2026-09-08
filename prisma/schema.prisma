@@ -87,9 +87,13 @@ model Lead {
   campaignId        String?
   campaignName      String?
   
-  // ValueTrack & Granular Tracking DNA
+  // ValueTrack, UTM Attribution & Omnichannel Tracking
   keyword           String?   // Exact search term from Google
   gclid             String?   // Google Click ID for Offline Conversion tracking
+  fbclid            String?   // Facebook Click ID
+  utmSource         String?   // GOOGLE, META_FACEBOOK, META_INSTAGRAM, MICROSOFT_BING, TIKTOK, ORGANIC
+  utmMedium         String?   // cpc, lead_ad, social, organic
+  utmCampaign       String?   // Campaign name or ID
   matchType         String?   // Exact (e), Phrase (p), Broad (b)
   device            String?   // Mobile (m), Desktop (c), Tablet (t)
   city              String?

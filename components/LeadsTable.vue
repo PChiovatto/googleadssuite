@@ -66,17 +66,61 @@
           >
             <!-- Source -->
             <td class="py-3.5 px-4">
+              <!-- Omnichannel Source Badge -->
               <span
-                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase"
-                :class="{
-                  'bg-blue-50 text-blue-700 border border-blue-200': lead.source === 'GOOGLE_ADS',
-                  'bg-emerald-50 text-emerald-700 border border-emerald-200': lead.source === 'GOOGLE_BUSINESS',
-                  'bg-slate-100 text-slate-700 border border-slate-200': lead.source === 'ORGANIC'
-                }"
+                v-if="lead.source === 'FACEBOOK_ADS' || lead.utmSource === 'META_FACEBOOK'"
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide bg-blue-50 text-[#1877F2] border border-blue-200"
               >
-                <span v-if="lead.source === 'GOOGLE_ADS'">🎯 Ads Form</span>
-                <span v-else-if="lead.source === 'GOOGLE_BUSINESS'">📍 Business Profile</span>
-                <span v-else>🌐 Organic</span>
+                <span>📢</span>
+                <svg class="w-2.5 h-2.5 fill-[#1877F2]" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                <span>facebook Ads</span>
+              </span>
+              <span
+                v-else-if="lead.source === 'INSTAGRAM_ADS' || lead.utmSource === 'META_INSTAGRAM'"
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide bg-gradient-to-r from-amber-50 via-rose-50 to-purple-50 text-rose-700 border border-rose-200"
+              >
+                <span>📷</span>
+                <span>Instagram Ads</span>
+              </span>
+              <span
+                v-else-if="lead.source === 'MICROSOFT_ADS' || lead.utmSource === 'MICROSOFT_BING'"
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide bg-emerald-50 text-[#008373] border border-emerald-200"
+              >
+                <span class="w-2.5 h-2.5 rounded-xs bg-[#008373] text-white flex items-center justify-center font-black text-[8px] leading-none">b</span>
+                <span>Bing Ads</span>
+              </span>
+              <span
+                v-else-if="lead.source === 'TIKTOK_ADS' || lead.utmSource === 'TIKTOK'"
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide bg-slate-900 text-white border border-slate-700"
+              >
+                <span>🎵</span>
+                <span>TikTok Ads</span>
+              </span>
+              <span
+                v-else-if="lead.source === 'GOOGLE_LSA' || lead.source === 'GOOGLE_BUSINESS'"
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide bg-amber-50 text-amber-800 border border-amber-200"
+              >
+                <span>📍</span>
+                <span>GMB / LSA</span>
+              </span>
+              <span
+                v-else-if="lead.source === 'GOOGLE_ADS'"
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide bg-blue-50 text-blue-700 border border-blue-200"
+              >
+                <svg class="w-2.5 h-2.5 shrink-0" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
+                  <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.15C3.27 21.36 7.35 24 12 24Z"/>
+                  <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.26C.46 8.16 0 9.94 0 12s.46 3.84 1.26 5.42l4.02-3.15Z"/>
+                  <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.27 2.64 1.26 6.58l4.02 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"/>
+                </svg>
+                <span>Google Ads</span>
+              </span>
+              <span
+                v-else
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide bg-slate-100 text-slate-700 border border-slate-200"
+              >
+                <span>🌐</span>
+                <span>{{ lead.source || 'Organic' }}</span>
               </span>
               <div v-if="lead.campaignName" class="text-[10px] text-slate-400 mt-1 truncate max-w-[140px]" :title="lead.campaignName">
                 {{ lead.campaignName }}

@@ -134,17 +134,83 @@
                 </div>
               </div>
 
-              <!-- Source Badge -->
-              <span
-                class="px-2 py-0.5 rounded-md text-[9px] font-extrabold uppercase tracking-wider shrink-0"
-                :class="{
-                  'bg-blue-50 text-blue-700 border border-blue-200': lead.source === 'GOOGLE_ADS',
-                  'bg-emerald-50 text-emerald-700 border border-emerald-200': lead.source === 'GOOGLE_LSA' || lead.source === 'GOOGLE_BUSINESS',
-                  'bg-slate-100 text-slate-600': lead.source === 'ORGANIC'
-                }"
-              >
-                {{ lead.source === 'GOOGLE_LSA' ? 'Google LSA' : lead.source === 'GOOGLE_ADS' ? 'Google Ads' : lead.source === 'GOOGLE_BUSINESS' ? 'GBP Maps' : 'Organic' }}
-              </span>
+              <!-- Omnichannel Source Badge (Brand Icons) -->
+              <div class="shrink-0">
+                <!-- Facebook Ads (Classic Megaphone) -->
+                <span
+                  v-if="lead.source === 'FACEBOOK_ADS' || lead.utmSource === 'META_FACEBOOK'"
+                  class="px-2 py-0.5 rounded-md text-[9px] font-extrabold tracking-wider bg-blue-50 text-[#1877F2] border border-blue-200 flex items-center gap-1 shadow-2xs"
+                  title="Captured via Meta Facebook Ads Lead Gen"
+                >
+                  <span class="text-[10px]">📢</span>
+                  <svg class="w-2.5 h-2.5 fill-[#1877F2]" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  <span>facebook Ads</span>
+                </span>
+
+                <!-- Instagram Ads (Gradient + Ads) -->
+                <span
+                  v-else-if="lead.source === 'INSTAGRAM_ADS' || lead.utmSource === 'META_INSTAGRAM'"
+                  class="px-2 py-0.5 rounded-md text-[9px] font-extrabold tracking-wider bg-gradient-to-r from-amber-50 via-rose-50 to-purple-50 text-rose-700 border border-rose-200 flex items-center gap-1 shadow-2xs"
+                  title="Captured via Instagram Ads"
+                >
+                  <span class="w-2.5 h-2.5 rounded-[3px] bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-[7px] text-white">📷</span>
+                  <span class="font-bold">Instagram Ads</span>
+                </span>
+
+                <!-- Microsoft Ads (Bing 'b') -->
+                <span
+                  v-else-if="lead.source === 'MICROSOFT_ADS' || lead.utmSource === 'MICROSOFT_BING'"
+                  class="px-2 py-0.5 rounded-md text-[9px] font-extrabold tracking-wider bg-emerald-50 text-[#008373] border border-emerald-200 flex items-center gap-1 shadow-2xs"
+                  title="Captured via Microsoft Advertising (Bing Search)"
+                >
+                  <span class="w-2.5 h-2.5 rounded-xs bg-[#008373] text-white flex items-center justify-center font-black text-[8px] leading-none">b</span>
+                  <span>Bing Ads</span>
+                </span>
+
+                <!-- TikTok Ads (3D Musical Note) -->
+                <span
+                  v-else-if="lead.source === 'TIKTOK_ADS' || lead.utmSource === 'TIKTOK'"
+                  class="px-2 py-0.5 rounded-md text-[9px] font-extrabold tracking-wider bg-slate-900 text-white border border-slate-700 flex items-center gap-1 shadow-2xs"
+                  title="Captured via TikTok Lead Generation Ads"
+                >
+                  <span class="text-[10px]">🎵</span>
+                  <span class="text-cyan-400 font-bold">Tik<span class="text-pink-400">Tok</span> Ads</span>
+                </span>
+
+                <!-- Google My Business (LSA / Map Pin) -->
+                <span
+                  v-else-if="lead.source === 'GOOGLE_LSA' || lead.source === 'GOOGLE_BUSINESS'"
+                  class="px-2 py-0.5 rounded-md text-[9px] font-extrabold tracking-wider bg-amber-50 text-amber-800 border border-amber-200 flex items-center gap-1 shadow-2xs"
+                  title="Captured via Google My Business & Local Services Ads (LSA)"
+                >
+                  <span class="text-[10px]">📍</span>
+                  <span>GMB / LSA</span>
+                </span>
+
+                <!-- Google Ads / Search (Official Google G) -->
+                <span
+                  v-else-if="lead.source === 'GOOGLE_ADS'"
+                  class="px-2 py-0.5 rounded-md text-[9px] font-extrabold tracking-wider bg-blue-50 text-blue-800 border border-blue-200 flex items-center gap-1 shadow-2xs"
+                  title="Captured via Google Ads Search / Performance Max"
+                >
+                  <svg class="w-2.5 h-2.5 shrink-0" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
+                    <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.15C3.27 21.36 7.35 24 12 24Z"/>
+                    <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.26C.46 8.16 0 9.94 0 12s.46 3.84 1.26 5.42l4.02-3.15Z"/>
+                    <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.27 2.64 1.26 6.58l4.02 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"/>
+                  </svg>
+                  <span>Google Ads</span>
+                </span>
+
+                <!-- Default / Organic -->
+                <span
+                  v-else
+                  class="px-2 py-0.5 rounded-md text-[9px] font-extrabold tracking-wider bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1"
+                >
+                  <span>🌐</span>
+                  <span>{{ lead.source || 'Direct' }}</span>
+                </span>
+              </div>
             </div>
 
             <!-- Service & Location -->
