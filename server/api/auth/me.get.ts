@@ -24,9 +24,15 @@ export default defineEventHandler(async (event) => {
     }
 
     if (!user) {
-      // Default to Manager or first user
+      // Default to CEO, Manager, Master, or first user
       user = await prisma.user.findFirst({
-        where: { role: 'MANAGER' },
+        where: {
+          OR: [
+            { role: 'CEO' },
+            { role: 'MANAGER' },
+            { role: 'MASTER' }
+          ]
+        },
         select: {
           id: true,
           name: true,

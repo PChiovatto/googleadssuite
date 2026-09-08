@@ -81,6 +81,7 @@
         </NuxtLink>
 
         <NuxtLink
+          v-if="canAccessSettings"
           to="/settings"
           class="p-2 hover:bg-slate-100 text-slate-600 rounded-lg transition-colors"
           title="Email & SES Settings"
@@ -107,8 +108,8 @@
               </div>
               <h4 class="font-bold text-sm text-slate-900">{{ currentUser?.name || 'Tony Silva' }}</h4>
               <p class="text-xs text-slate-500 font-mono">{{ currentUser?.email || 'tony@tonyspainting.com' }}</p>
-              <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider" :class="isManager ? 'bg-red-50 text-[#D7070D] border border-red-200' : 'bg-slate-100 text-slate-700'">
-                {{ isManager ? '👑 GENERAL MANAGER (OWNER)' : '👤 SALES ESTIMATOR' }}
+              <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider" :class="roleBadgeHeader">
+                {{ roleIcon }} {{ roleTitle }}
               </span>
             </div>
 
@@ -130,8 +131,8 @@
             </div>
 
             <div class="pt-2 border-t border-slate-100 flex gap-2">
-              <NuxtLink to="/dashboard" class="flex-1 text-center bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs py-2 rounded-xl font-bold transition-colors">
-                CRM Dashboard
+              <NuxtLink :to="isSales ? '/dashboard/leads' : '/'" class="flex-1 text-center bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs py-2 rounded-xl font-bold transition-colors">
+                {{ isSales ? 'Leads Pipeline' : 'Overview' }}
               </NuxtLink>
               <button @click="showProfileMenu = false" class="flex-1 text-center bg-slate-900 hover:bg-black text-white text-xs py-2 rounded-xl font-bold transition-colors">
                 Close
@@ -1044,7 +1045,39 @@ definePageMeta({
   layout: false
 })
 
-const { currentUser, isManager, teamUsers, fetchAuth, switchUser } = useWorkspaceAuth()
+const {
+  currentUser,
+  isMaster,
+  isCeo,
+  isManager,
+  isSales,
+  isFieldWorker,
+  canAccessSettings,
+  teamUsers,
+  fetchAuth,
+  switchUser
+} = useWorkspaceAuth()
+
+const roleTitle = computed(() => {
+  if (isMaster.value) return 'MASTER ADMINISTRATOR'
+  if (isCeo.value) return 'CEO & GENERAL MANAGER'
+  if (isFieldWorker.value) return 'FIELD CREW'
+  return 'SALES ESTIMATOR'
+})
+
+const roleIcon = computed(() => {
+  if (isMaster.value) return '🛡️'
+  if (isCeo.value) return '👑'
+  if (isFieldWorker.value) return '👷'
+  return '👤'
+})
+
+const roleBadgeHeader = computed(() => {
+  if (isMaster.value) return 'bg-amber-50 text-amber-800 border border-amber-200'
+  if (isCeo.value) return 'bg-purple-50 text-purple-800 border border-purple-200'
+  if (isFieldWorker.value) return 'bg-blue-50 text-blue-700 border border-blue-200'
+  return 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+})
 
 const sidebarCollapsed = ref(false)
 const showProfileMenu = ref(false)

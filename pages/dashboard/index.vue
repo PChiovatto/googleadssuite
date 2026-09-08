@@ -26,7 +26,7 @@
       <div class="space-y-0.5">
         <p class="font-bold">Dashboard is operating with industry-benchmarked data for local painting & remodeling.</p>
         <p class="text-amber-800/90">
-          To synchronize live Google Ads data, configure your API credentials in your <code class="bg-amber-100 px-1 py-0.5 rounded font-mono">.env</code> file or visit the <NuxtLink to="/settings" class="underline font-bold">Settings</NuxtLink> page.
+          To synchronize live Google Ads data, configure your API credentials in your <code class="bg-amber-100 px-1 py-0.5 rounded font-mono">.env</code> file<span v-if="isMaster"> or visit the <NuxtLink to="/settings" class="underline font-bold">Settings</NuxtLink> page</span>.
         </p>
       </div>
     </div>
@@ -164,6 +164,9 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useWorkspaceAuth } from '~/composables/useWorkspaceAuth'
+
+const { isMaster } = useWorkspaceAuth()
 
 const totals = ref({
   cost: 13590.80,

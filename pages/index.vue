@@ -392,6 +392,7 @@
               <span class="font-bold">Broadcasts</span>
             </NuxtLink>
             <NuxtLink
+              v-if="isMaster"
               to="/settings"
               class="p-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 transition-colors flex items-center gap-2"
             >
@@ -421,6 +422,9 @@ import {
   Sparkles,
   ShieldCheck
 } from 'lucide-vue-next'
+import { useWorkspaceAuth } from '~/composables/useWorkspaceAuth'
+
+const { isMaster } = useWorkspaceAuth()
 
 const stats = ref({
   closedRevenue: 58400.00,

@@ -101,3 +101,16 @@
     </div>
   </div>
 </template>
+
+<script setup>
+import { onMounted } from 'vue'
+import { useWorkspaceAuth } from '~/composables/useWorkspaceAuth'
+
+const { isMaster, getDefaultRoute } = useWorkspaceAuth()
+
+onMounted(() => {
+  if (!isMaster.value) {
+    navigateTo(getDefaultRoute())
+  }
+})
+</script>

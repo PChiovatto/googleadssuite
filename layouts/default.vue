@@ -25,8 +25,9 @@
 
         <!-- Navigation Links (Dynamic RBAC) -->
         <nav class="p-3.5 space-y-1.5">
-          <!-- Common: Overview -->
+          <!-- Common / Executive: Overview -->
           <NuxtLink
+            v-if="canAccessOverview"
             to="/"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
             :class="$route.path === '/' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
@@ -35,9 +36,9 @@
             <span>Overview & KPIs</span>
           </NuxtLink>
 
-          <!-- Manager Only: Google Ads Dashboard -->
+          <!-- Master & CEO: Google Ads Dashboard -->
           <NuxtLink
-            v-if="isManager"
+            v-if="canAccessAds"
             to="/dashboard"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
             :class="$route.path === '/dashboard' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
@@ -46,8 +47,9 @@
             <span>Google Ads Analytics</span>
           </NuxtLink>
 
-          <!-- Common: Leads & CRM Funnel -->
+          <!-- Master, CEO & Sales: Leads & CRM Funnel -->
           <NuxtLink
+            v-if="canAccessLeads"
             to="/dashboard/leads"
             class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
             :class="$route.path === '/dashboard/leads' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
@@ -61,8 +63,9 @@
             </span>
           </NuxtLink>
 
-          <!-- Common: In-App Webmail (Gmail Style) -->
+          <!-- Master, CEO & Sales: In-App Webmail -->
           <NuxtLink
+            v-if="canAccessMail"
             to="/mail"
             class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
             :class="$route.path === '/mail' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
@@ -76,8 +79,9 @@
             </span>
           </NuxtLink>
 
-          <!-- Common: Calendar & In-Home Estimates -->
+          <!-- Master, CEO & Sales: Calendar & In-Home Estimates -->
           <NuxtLink
+            v-if="canAccessCalendar"
             to="/dashboard/calendar"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
             :class="$route.path === '/dashboard/calendar' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
@@ -86,9 +90,9 @@
             <span>Estimates & Dispatch</span>
           </NuxtLink>
 
-          <!-- Manager Only: Financial & Real ROAS -->
+          <!-- Master & CEO: Financial & Real ROAS -->
           <NuxtLink
-            v-if="isManager"
+            v-if="canAccessFinancials"
             to="/dashboard/financial"
             class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
             :class="$route.path === '/dashboard/financial' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
@@ -100,8 +104,9 @@
             <span class="text-[9px] font-bold px-1.5 rounded bg-emerald-500/20 text-emerald-300">Stripe</span>
           </NuxtLink>
 
-          <!-- Common: VoIP Dial & Recordings -->
+          <!-- Master, CEO & Sales: VoIP Dial & Recordings -->
           <NuxtLink
+            v-if="canAccessCalls"
             to="/dashboard/calls"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
             :class="$route.path === '/dashboard/calls' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
@@ -110,8 +115,9 @@
             <span>VoIP Phone & Recordings</span>
           </NuxtLink>
 
-          <!-- Common: Email Marketing Base & Broadcasts -->
+          <!-- Master & CEO: Email Marketing Base & Broadcasts -->
           <NuxtLink
+            v-if="canAccessMarketing"
             to="/dashboard/marketing"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
             :class="$route.path === '/dashboard/marketing' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
@@ -120,8 +126,9 @@
             <span>Campaigns & Email Mkt</span>
           </NuxtLink>
 
-          <!-- Field Operations & GPS Geofencing (PWA) -->
+          <!-- Master, CEO & Field: Field Operations & GPS Geofencing (PWA) -->
           <NuxtLink
+            v-if="canAccessField"
             to="/field"
             class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
             :class="$route.path === '/field' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
@@ -137,6 +144,7 @@
 
           <!-- Customer Progress Tracker Portal Demo -->
           <NuxtLink
+            v-if="canAccessField || canAccessOverview"
             to="/portal/tony-demo"
             target="_blank"
             class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-white hover:bg-slate-800/60"
@@ -150,12 +158,13 @@
             </span>
           </NuxtLink>
 
-          <!-- Restricted Manager Section -->
-          <div v-if="isManager" class="pt-2">
+          <!-- Executive Management Section -->
+          <div v-if="canAccessPerformance || canAccessSettings" class="pt-2">
             <span class="text-[9px] uppercase font-black tracking-widest text-slate-500 px-3.5 block mb-1">
               Executive Management
             </span>
             <NuxtLink
+              v-if="canAccessPerformance"
               to="/admin/performance"
               class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
               :class="$route.path === '/admin/performance' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-red-300 hover:text-white hover:bg-slate-800/60'"
@@ -169,7 +178,9 @@
               </span>
             </NuxtLink>
 
+            <!-- Master ONLY: Integrations & API Credentials -->
             <NuxtLink
+              v-if="canAccessSettings"
               to="/settings"
               class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all mt-1"
               :class="$route.path === '/settings' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
@@ -191,13 +202,13 @@
           />
           <div class="overflow-hidden flex-1">
             <span class="text-xs font-bold text-slate-200 block truncate leading-tight">
-              {{ currentUser?.name || 'Tony Silva (Owner & GM)' }}
+              {{ currentUser?.name || 'Master Admin' }}
             </span>
             <span
               class="text-[9px] font-black uppercase tracking-wider block"
-              :class="isManager ? 'text-purple-400' : currentUser?.role === 'FIELD_WORKER' ? 'text-blue-400' : 'text-emerald-400'"
+              :class="roleBadgeSidebar"
             >
-              {{ isManager ? '👑 GENERAL MANAGER' : currentUser?.role === 'FIELD_WORKER' ? '👷 FIELD CREW' : '👤 SALES ESTIMATOR' }}
+              {{ roleIcon }} {{ roleTitle }}
             </span>
           </div>
         </div>
@@ -215,11 +226,11 @@
             <span class="text-xs font-bold uppercase tracking-wider text-slate-400 hidden sm:inline">Active Role:</span>
             <span
               class="text-xs font-bold px-2.5 py-1 rounded-lg border flex items-center gap-1.5"
-              :class="isManager ? 'bg-red-50 text-[#D7070D] border-red-200' : currentUser?.role === 'FIELD_WORKER' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-slate-100 text-slate-800 border-slate-200'"
+              :class="roleBadgeHeader"
             >
-              <span>{{ isManager ? '👑' : currentUser?.role === 'FIELD_WORKER' ? '👷' : '👤' }}</span>
-              <span>{{ currentUser?.name || 'Tony Silva (Owner & GM)' }}</span>
-              <span class="text-[10px] font-mono opacity-70">({{ currentUser?.role || 'MANAGER' }})</span>
+              <span>{{ roleIcon }}</span>
+              <span>{{ currentUser?.name || 'Master Admin' }}</span>
+              <span class="text-[10px] font-mono opacity-70">({{ currentUser?.role || 'MASTER' }})</span>
             </span>
           </div>
         </div>
@@ -235,14 +246,14 @@
               class="text-xs font-bold py-1.5 px-2.5 rounded-xl border border-slate-300 bg-slate-50 hover:bg-white text-slate-800 cursor-pointer focus:ring-2 focus:ring-blue-500 shadow-2xs transition-colors"
             >
               <option v-for="u in teamUsers" :key="u.id" :value="u.id">
-                {{ u.role === 'MANAGER' ? '👑 Manager: ' : u.role === 'FIELD_WORKER' ? '👷 Crew: ' : '👤 Estimator: ' }} {{ u.name }}
+                {{ u.role === 'MASTER' ? '🛡️ Master: ' : (u.role === 'CEO' || u.role === 'MANAGER') ? '👑 CEO: ' : u.role === 'FIELD_WORKER' ? '👷 Field: ' : '👤 Sales: ' }} {{ u.name }}
               </option>
             </select>
           </div>
 
-          <!-- Sync Button (Manager Only) -->
+          <!-- Sync Button (Master & CEO Only) -->
           <button
-            v-if="isManager"
+            v-if="canAccessAds"
             @click="syncMetrics"
             :disabled="syncing"
             class="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow-2xs transition-all disabled:opacity-50"
@@ -271,7 +282,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import {
   Home,
   LayoutDashboard,
@@ -289,7 +300,56 @@ import {
 } from 'lucide-vue-next'
 import { useWorkspaceAuth } from '~/composables/useWorkspaceAuth'
 
-const { currentUser, isManager, isConsultant, teamUsers, fetchAuth, switchUser } = useWorkspaceAuth()
+const {
+  currentUser,
+  isMaster,
+  isCeo,
+  isManager,
+  isSales,
+  isFieldWorker,
+  canAccessSettings,
+  canAccessOverview,
+  canAccessAds,
+  canAccessFinancials,
+  canAccessMarketing,
+  canAccessPerformance,
+  canAccessLeads,
+  canAccessMail,
+  canAccessCalls,
+  canAccessCalendar,
+  canAccessField,
+  teamUsers,
+  fetchAuth,
+  switchUser
+} = useWorkspaceAuth()
+
+const roleTitle = computed(() => {
+  if (isMaster.value) return 'MASTER ADMINISTRATOR'
+  if (isCeo.value) return 'CEO & GENERAL MANAGER'
+  if (isFieldWorker.value) return 'FIELD CREW'
+  return 'SALES ESTIMATOR'
+})
+
+const roleIcon = computed(() => {
+  if (isMaster.value) return '🛡️'
+  if (isCeo.value) return '👑'
+  if (isFieldWorker.value) return '👷'
+  return '👤'
+})
+
+const roleBadgeSidebar = computed(() => {
+  if (isMaster.value) return 'text-amber-400'
+  if (isCeo.value) return 'text-purple-400'
+  if (isFieldWorker.value) return 'text-blue-400'
+  return 'text-emerald-400'
+})
+
+const roleBadgeHeader = computed(() => {
+  if (isMaster.value) return 'bg-amber-50 text-amber-800 border-amber-200'
+  if (isCeo.value) return 'bg-purple-50 text-purple-800 border-purple-200'
+  if (isFieldWorker.value) return 'bg-blue-50 text-blue-700 border-blue-200'
+  return 'bg-emerald-50 text-emerald-800 border-emerald-200'
+})
 
 const syncing = ref(false)
 const toastMessage = ref('')

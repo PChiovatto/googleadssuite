@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     const { userId } = body
 
     if (!userId) {
-      return { success: false, message: 'userId é obrigatório.' }
+      return { success: false, message: 'User ID is required.' }
     }
 
     const user = await prisma.user.findUnique({
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
     })
 
     if (!user) {
-      return { success: false, message: 'Usuário não encontrado.' }
+      return { success: false, message: 'User not found.' }
     }
 
     // Set cookie for 30 days
@@ -33,10 +33,21 @@ export default defineEventHandler(async (event) => {
       httpOnly: false
     })
 
+    const roleMap: Record<string, string> = {
+      MASTER: 'Master Administrator',
+      CEO: 'CEO & General Manager',
+      MANAGER: 'CEO & General Manager',
+      SALES: 'Sales Estimator',
+      CONSULTANT: 'Sales Estimator',
+      FIELD_WORKER: 'Field Technician'
+    }
+
+    const roleTitle = roleMap[user.role] || user.role
+
     return {
       success: true,
       user,
-      message: `Sessão alterada para ${user.name} (${user.role === 'MANAGER' ? 'Gestor' : 'Consultor'})`
+      message: `Active session switched to ${user.name} (${roleTitle})`
     }
   } catch (error: any) {
     return { success: false, error: error.message }
