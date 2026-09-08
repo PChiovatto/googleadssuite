@@ -1,11 +1,37 @@
 <template>
   <div class="min-h-screen bg-slate-900 text-white font-sans pb-24">
+    <!-- Top Notice Banner when in Field Worker Mode -->
+    <div
+      v-if="isFieldWorker"
+      class="bg-blue-950/95 border-b border-blue-500/40 px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-2 text-blue-200 sticky top-0 z-40 shadow-md backdrop-blur-md"
+    >
+      <div class="flex items-center gap-2">
+        <span class="text-sm">👷</span>
+        <span>
+          Currently testing as <strong>Carlos Santos (Field Crew)</strong>. Scoped to Field Operations PWA.
+        </span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button
+          @click="exitFieldMode"
+          class="text-xs font-black text-white bg-blue-600 hover:bg-blue-500 active:scale-95 px-3 py-1 rounded-lg transition-all shadow-sm flex items-center gap-1.5 cursor-pointer"
+        >
+          <span>🛡️ Exit to Master Admin →</span>
+        </button>
+      </div>
+    </div>
+
     <!-- Top Header: Tony's Field Operations PWA -->
-    <header class="bg-slate-950 border-b border-slate-800 px-4 py-3 sticky top-0 z-30 flex items-center justify-between shadow-md">
+    <header class="bg-slate-950 border-b border-slate-800 px-4 py-3 sticky z-30 flex items-center justify-between shadow-md" :class="isFieldWorker ? 'top-[37px]' : 'top-0'">
       <div class="flex items-center gap-3">
-        <NuxtLink to="/dashboard" class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 transition-colors">
+        <button
+          @click="exitFieldMode"
+          class="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer"
+          title="Exit Field & Return to CRM Dashboard"
+        >
           <ArrowLeft class="w-4 h-4" />
-        </NuxtLink>
+          <span class="text-xs font-bold hidden sm:inline">CRM</span>
+        </button>
         <div class="flex items-center gap-2">
           <img src="/tonys_favicon.png" alt="Tony's" class="w-7 h-7 rounded-full object-contain bg-white p-0.5 border border-red-600/30" />
           <div>
@@ -15,12 +41,41 @@
         </div>
       </div>
 
-      <!-- Worker Indicator & Status -->
-      <div class="flex items-center gap-2 text-xs">
-        <span class="w-2.5 h-2.5 rounded-full" :class="activeShift ? 'bg-emerald-500 animate-pulse' : 'bg-slate-500'"></span>
-        <span class="font-bold hidden sm:inline" :class="activeShift ? 'text-emerald-400' : 'text-slate-400'">
-          {{ activeShift ? 'ON DUTY' : 'OFF DUTY' }}
-        </span>
+      <!-- Right Header Actions: Role Switcher & Exit to Master Button -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Worker Indicator & Status -->
+        <div class="hidden lg:flex items-center gap-2 text-xs bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-xl">
+          <span class="w-2.5 h-2.5 rounded-full" :class="activeShift ? 'bg-emerald-500 animate-pulse' : 'bg-slate-500'"></span>
+          <span class="font-bold text-[11px]" :class="activeShift ? 'text-emerald-400' : 'text-slate-400'">
+            {{ activeShift ? 'ON DUTY' : 'OFF DUTY' }}
+          </span>
+        </div>
+
+        <!-- RBAC Role Switcher Dropdown (Allows switching to Master, CEO, Sales, or Field) -->
+        <div class="flex items-center gap-1.5">
+          <span class="text-[11px] font-bold text-slate-400 hidden xl:inline">Switch User:</span>
+          <select
+            :value="currentUser?.id"
+            @change="onSwitchUser($event.target.value)"
+            class="text-xs font-bold py-1.5 px-2.5 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-white cursor-pointer focus:ring-2 focus:ring-red-500 shadow-sm transition-colors max-w-[135px] sm:max-w-none truncate"
+            title="Switch User Role for Testing"
+          >
+            <option v-for="u in teamUsers" :key="u.id" :value="u.id" class="bg-slate-900 text-white">
+              {{ u.role === 'MASTER' ? '🛡️ Master: ' : (u.role === 'CEO' || u.role === 'MANAGER') ? '👑 CEO: ' : u.role === 'FIELD_WORKER' ? '👷 Field: ' : '👤 Sales: ' }} {{ u.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Return to Admin / Master Button -->
+        <button
+          @click="exitFieldMode"
+          class="flex items-center gap-1.5 bg-gradient-to-r from-red-700 to-[#D7070D] hover:from-red-600 hover:to-red-700 text-white text-xs font-black px-3 py-1.5 rounded-xl transition-all shadow-md active:scale-95 cursor-pointer border border-red-500/40"
+          title="Return to Master Admin Dashboard"
+        >
+          <span class="text-sm">🛡️</span>
+          <span class="hidden sm:inline">Exit to Admin</span>
+          <span class="sm:hidden">Exit</span>
+        </button>
       </div>
     </header>
 
@@ -531,6 +586,18 @@
         </div>
       </div>
     </div>
+
+    <!-- Quick Role Switcher Floating Footer (Emergency testing fallback) -->
+    <div class="fixed bottom-4 right-4 z-50 flex items-center gap-2">
+      <button
+        @click="exitFieldMode"
+        class="bg-slate-950/95 hover:bg-black text-white text-xs font-black px-4 py-2.5 rounded-2xl border border-slate-700 shadow-2xl flex items-center gap-2 backdrop-blur-md transition-all active:scale-95 cursor-pointer hover:border-red-500"
+        title="Quick Switch to Master Admin & Return to CRM"
+      >
+        <span class="text-base">🛡️</span>
+        <span>Exit Field Mode</span>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -551,10 +618,41 @@ import {
   ChevronRight,
   CheckCircle
 } from 'lucide-vue-next'
+import { useWorkspaceAuth } from '~/composables/useWorkspaceAuth'
 
 definePageMeta({
   layout: false
 })
+
+const {
+  currentUser,
+  teamUsers,
+  isMaster,
+  isCeo,
+  isSales,
+  isFieldWorker,
+  canAccessOverview,
+  canAccessAds,
+  switchUser,
+  fetchAuth
+} = useWorkspaceAuth()
+
+async function onSwitchUser(userId) {
+  if (!userId) return
+  await switchUser(userId)
+}
+
+async function exitFieldMode() {
+  if (isMaster.value || isCeo.value) {
+    return navigateTo('/')
+  }
+  const master = teamUsers.value.find(u => u.role === 'MASTER') || teamUsers.value.find(u => u.role === 'CEO')
+  if (master) {
+    await switchUser(master.id)
+  } else {
+    window.location.href = '/api/auth/reset'
+  }
+}
 
 const activeTab = ref('OPERATIONS')
 const activeJobs = ref([])
@@ -588,6 +686,7 @@ const materialForm = ref({
 const requestingMaterial = ref(false)
 
 onMounted(async () => {
+  await fetchAuth()
   obtainGpsLocation()
   await fetchFieldData()
   await fetchPayroll()
