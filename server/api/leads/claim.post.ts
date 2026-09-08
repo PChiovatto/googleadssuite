@@ -22,8 +22,8 @@ export default defineEventHandler(async (event) => {
       if (!user) {
         user = await prisma.user.create({
           data: {
-            email: 'consultant1@firstbostonpainters.com',
-            name: userName || 'John Miller (Senior Consultant)',
+            email: 'john@tonyspainting.com',
+            name: userName || 'John Miller (Senior Estimator)',
             role: 'CONSULTANT'
           }
         })

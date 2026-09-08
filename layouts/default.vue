@@ -10,9 +10,9 @@
               ⚡
             </div>
             <div>
-              <span class="font-black text-sm tracking-tight text-white block leading-tight">ADS + AI SUITE</span>
-              <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
-                {{ isManager ? 'Workspace Gestor' : 'Workspace Consultor' }}
+              <span class="font-black text-sm tracking-tight text-white block leading-tight">TONY'S PAINTING</span>
+              <span class="text-[10px] uppercase tracking-wider text-orange-400 font-bold block">
+                & Remodeling • {{ isManager ? 'Gestor' : 'Consultor' }}
               </span>
             </div>
           </div>
@@ -156,7 +156,7 @@
           />
           <div class="overflow-hidden flex-1">
             <span class="text-xs font-bold text-slate-200 block truncate leading-tight">
-              {{ currentUser?.name || 'Marcos Silva' }}
+              {{ currentUser?.name || 'Tony Silva (Owner & GM)' }}
             </span>
             <span
               class="text-[9px] font-black uppercase tracking-wider block"
@@ -182,7 +182,7 @@
               :class="isManager ? 'bg-purple-50 text-purple-800 border-purple-200' : 'bg-emerald-50 text-emerald-800 border-emerald-200'"
             >
               <span>{{ isManager ? '👑' : '👤' }}</span>
-              <span>{{ currentUser?.name || 'Marcos Silva' }}</span>
+              <span>{{ currentUser?.name || 'Tony Silva (Owner & GM)' }}</span>
               <span class="text-[10px] font-mono text-slate-400">({{ currentUser?.role || 'MANAGER' }})</span>
             </span>
           </div>

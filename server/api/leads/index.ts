@@ -90,7 +90,7 @@ export default defineEventHandler(async (event) => {
           status: 'NOVO',
           aiScore: 9,
           aiQualification: 'Alta intenção de compra. Imóvel recém-adquirido necessitando de pintura imediata antes da mudança.',
-          whatsappScript: 'Olá Robert! Aqui é da First Boston Painters. Vimos seu pedido de orçamento para a pintura interior em South Boston. Podemos agendar uma visita gratuita amanhã às 10h para avaliar o espaço e passar o orçamento na hora?',
+          whatsappScript: 'Olá Robert! Aqui é da equipe Tony\'s Painting and Remodeling. Vimos seu pedido de orçamento para a pintura interior em South Boston. Podemos agendar uma visita gratuita amanhã às 10h para avaliar o espaço e passar o orçamento na hora?',
           notes: 'Preencheu formulário de extensão de anúncio no Google Search.',
           rawData: JSON.stringify({ source: 'google_lead_extension', form_id: 'form_interior_boston_01' })
         },

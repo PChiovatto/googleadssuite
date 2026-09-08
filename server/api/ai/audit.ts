@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
         }
 
         if (!transcriptText) {
-          transcriptText = `Consultor: Thank you for calling First Boston Painters. This call may be recorded for quality and TCPA compliance. How can I help you today?
+          transcriptText = `Consultor: Thank you for calling Tony's Painting and Remodeling. This call may be recorded for quality and TCPA compliance. How can I help you today?
 Customer: Hi, I need an estimate for painting the exterior of our house in Cambridge, MA. About 2,500 sq ft, two stories.
 Consultor: Absolutely, we have licensed teams in Cambridge weekly. When would be a great time for an on-site consultation?
 Customer: How about tomorrow at 3 PM?
@@ -38,7 +38,7 @@ Consultor: Perfect, 3 PM is booked. We will inspect the siding, prep work needed
         }
 
         const model = gemini.getGenerativeModel({ model: 'gemini-1.5-pro' })
-        const prompt = `You are a Senior US Sales Operations Quality Auditor for First Boston Painters & Services.
+        const prompt = `You are a Senior US Sales Operations Quality Auditor for Tony's Painting and Remodeling in Massachusetts.
 Analyze the following phone sales call transcript:
 """
 ${transcriptText}
@@ -84,7 +84,7 @@ Return ONLY raw valid JSON (no markdown formatting):
         data: {
           leadId: body.leadId,
           agentId: body.agentId || 'CONSULTANT_CURRENT',
-          agentName: body.agentName || 'Marcos Silva',
+          agentName: body.agentName || 'Tony Silva (Owner & GM)',
           durationSeconds: body.durationSeconds || 142,
           recordingUrl: 'https://api.twilio.com/mock-recordings/call_demo_01.mp3',
           aiTranscript: auditResult.summary,

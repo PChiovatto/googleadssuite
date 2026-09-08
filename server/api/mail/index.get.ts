@@ -62,8 +62,8 @@ export default defineEventHandler(async (event) => {
           folder: 'SENT',
           from: user.email,
           to: lead3?.email || 'jsmith.realty@outlook.com',
-          subject: 'First Boston Painters: Formal Scope of Work & 1/3 Deposit Receipt',
-          body: `<p>Hi Jennifer,</p><p>Thank you for choosing First Boston Painters. Attached is your Massachusetts Home Improvement Agreement with full prep specifications and our 50-year elastomeric caulking guarantee. Work begins next Monday!</p><p>Warmly,<br>${user.name}<br>First Boston Painters & Services Corp.</p>`,
+          subject: "Tony's Painting and Remodeling: Formal Scope of Work & 1/3 Deposit Receipt",
+          body: `<p>Hi Jennifer,</p><p>Thank you for choosing Tony's Painting and Remodeling. Attached is your Massachusetts Home Improvement Agreement with full prep specifications and our 50-year elastomeric caulking guarantee. Work begins next Monday!</p><p>Warmly,<br>${user.name}<br>Tony's Painting and Remodeling Corp.</p>`,
           read: true,
           starred: false,
           messageId: 'ses-outbound-msg-003'

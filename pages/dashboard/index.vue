@@ -6,7 +6,7 @@
         <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Painel Executivo Google Ads + IA</h1>
         <p class="text-xs text-slate-500">
           Última sincronização: {{ formattedLastSync }} •
-          <span class="font-medium text-slate-700">Conta: Boston Painters & Services Corp</span>
+          <span class="font-medium text-slate-700">Conta: Tony's Painting and Remodeling Inc.</span>
         </p>
       </div>
 

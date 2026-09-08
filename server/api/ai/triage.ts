@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
     if (gemini) {
       try {
         const model = gemini.getGenerativeModel({ model: 'gemini-1.5-flash' })
-        const prompt = `You are an ultra-fast US Lead Triage Specialist for First Boston Painters & Services.
+        const prompt = `You are an ultra-fast US Lead Triage Specialist for Tony's Painting and Remodeling in Massachusetts.
 Analyze the following lead data:
 Name: ${lead.name || 'Unknown'}
 Phone: ${lead.phone || 'N/A'}

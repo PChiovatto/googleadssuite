@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
 
     const stripe = getStripeClient()
     const dealAmount = amount || lead.dealValue || 1500 // USD
-    const serviceName = description || lead.serviceInterested || lead.serviceType || 'First Boston Painters Service Deposit'
+    const serviceName = description || lead.serviceInterested || lead.serviceType || "Tony's Painting and Remodeling Service Deposit"
     
     let checkoutUrl = ''
     let sessionId = 'cs_test_' + Date.now().toString(36)
@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
               price_data: {
                 currency: 'usd',
                 product_data: {
-                  name: `First Boston Painters - ${serviceName}`,
+                  name: `Tony's Painting and Remodeling - ${serviceName}`,
                   description: `Contract deposit for ${lead.name} (${lead.city || 'MA'})`
                 },
                 unit_amount: Math.round(dealAmount * 100) // cents

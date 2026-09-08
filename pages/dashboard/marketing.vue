@@ -280,7 +280,7 @@ async function loadContacts() {
 }
 
 function openBroadcastModal() {
-  broadcastForm.value.subject = 'Boston Painters & Services: Free Home Estimate This Week'
+  broadcastForm.value.subject = "Tony's Painting and Remodeling: Free In-Home Estimate This Week"
   broadcastForm.value.bodyHtml = `<div style="font-family: Arial, sans-serif; color: #222; line-height: 1.6;">
   <h2 style="color: #ff7902;">Tony's Painting and Remodeling</h2>
   <p>Hello homeowner,</p>

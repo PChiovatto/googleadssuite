@@ -11,10 +11,10 @@ export default defineEventHandler(async () => {
     if (consultantCount === 0) {
       await prisma.user.createMany({
         data: [
-          { name: 'John Miller', email: 'john.miller@firstbostonpainters.com', role: 'CONSULTANT' },
-          { name: 'Sarah Jenkins', email: 'sarah.jenkins@firstbostonpainters.com', role: 'CONSULTANT' },
-          { name: 'David Costa', email: 'david.costa@firstbostonpainters.com', role: 'CONSULTANT' },
-          { name: 'Alex Rivera', email: 'alex.rivera@firstbostonpainters.com', role: 'MANAGER' }
+          { name: 'John Miller', email: 'john@tonyspainting.com', role: 'CONSULTANT' },
+          { name: 'Sarah Jenkins', email: 'sarah@tonyspainting.com', role: 'CONSULTANT' },
+          { name: 'David Costa', email: 'david@tonyspainting.com', role: 'CONSULTANT' },
+          { name: 'Tony Silva', email: 'tony@tonyspainting.com', role: 'MANAGER' }
         ]
       })
     }

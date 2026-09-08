@@ -54,7 +54,7 @@
                 ☎️
               </div>
               <div>
-                <span class="font-bold text-slate-900 text-sm block">Consultor: {{ call.agentName || 'Marcos Silva' }}</span>
+                <span class="font-bold text-slate-900 text-sm block">Consultor: {{ call.agentName || 'Tony Silva (Owner & GM)' }}</span>
                 <span class="text-[10px] text-slate-400">Duração: {{ Math.floor(call.durationSeconds / 60) }}m {{ call.durationSeconds % 60 }}s • {{ new Date(call.createdAt).toLocaleString('pt-BR') }}</span>
               </div>
             </div>
@@ -187,7 +187,7 @@ async function simulateCall() {
     await $fetch('/api/twilio/voice', {
       method: 'POST',
       body: {
-        agentName: 'Marcos Silva',
+        agentName: 'Tony Silva (Owner & GM)',
         durationSeconds: 210,
         aiTranscript: 'Cliente confirmou interesse na restauração de deck e pintura externa de casa de 2 andares em Newton, MA. Muito satisfeito com a rapidez do primeiro contato (menos de 2 minutos). Visita de medição agendada.',
         sentiment: 'POSITIVE'

@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
         const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
 
         const prompt = `
-Você é o Diretor Comercial e Estrategista de Vendas da "First Boston Painters & Services" (Boston e Massachusetts).
+Você é o Diretor Comercial e Estrategista de Vendas da "Tony's Painting and Remodeling" (Boston e Massachusetts).
 Analise as informações do seguinte lead:
 - Nome: ${lead.name}
 - Origem: ${lead.source} (ex: GOOGLE_ADS ou GOOGLE_BUSINESS)
@@ -101,6 +101,6 @@ function generateLeadQualificationFallback(lead: any) {
   return {
     aiScore: isGbp ? 9 : 8,
     aiQualification: `Lead de alta qualidade originado via ${sourceName}. Demonstra interesse específico em "${service}". Probabilidade alta de fechamento com resposta rápida em menos de 15 minutos.`,
-    whatsappScript: `Olá ${lead.name}, tudo bem? Aqui é da equipe First Boston Painters & Services! Recebemos sua mensagem através do ${sourceName} sobre ${service}. Gostaríamos de oferecer um orçamento gratuito no seu local (Free Estimate). Que dia desta semana seria mais conveniente para uma visita rápida da nossa equipe?`
+    whatsappScript: `Olá ${lead.name}, tudo bem? Aqui é da equipe Tony's Painting and Remodeling! Recebemos sua mensagem através do ${sourceName} sobre ${service}. Gostaríamos de oferecer um orçamento gratuito no seu local (Free Estimate). Que dia desta semana seria mais conveniente para uma visita rápida da nossa equipe?`
   }
 }

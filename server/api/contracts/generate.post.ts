@@ -36,9 +36,9 @@ export default defineEventHandler(async (event) => {
     const depositAmount = body.depositAmount ? Math.min(Number(body.depositAmount), maxDeposit) : maxDeposit
 
     const year = new Date().getFullYear()
-    const contractNumber = `FBP-MA-${year}-${Math.floor(1000 + Math.random() * 9000)}`
+    const contractNumber = `TPR-MA-${year}-${Math.floor(1000 + Math.random() * 9000)}`
 
-    const contractTitle = title || `Residential Painting Agreement - ${lead.serviceInterested || 'Exterior Painting'}`
+    const contractTitle = title || `Residential Painting & Remodeling Agreement - ${lead.serviceInterested || 'Exterior Painting'}`
     const defaultScope = scopeOfWork || `
 1. PREP WORK PERFECTION:
    - High-pressure power washing of all surfaces to remove dirt, mildew, and chalking.
@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
                 currency: 'usd',
                 product_data: {
                   name: `Contract Deposit (1/3) - ${contractNumber}`,
-                  description: `First Boston Painters & Services - Massachusetts HIC Agreement for ${lead.name}`
+                  description: `Tony's Painting and Remodeling Inc. - Massachusetts HIC Agreement for ${lead.name}`
                 },
                 unit_amount: Math.round(depositAmount * 100) // cents
               },
@@ -79,8 +79,8 @@ export default defineEventHandler(async (event) => {
             }
           ],
           mode: 'payment',
-          success_url: `https://bostonpaintersandservices.com/contracts/${contractNumber}?status=paid`,
-          cancel_url: `https://bostonpaintersandservices.com/contracts/${contractNumber}?status=cancelled`
+          success_url: `https://tonyspainting.com/contracts/${contractNumber}?status=paid`,
+          cancel_url: `https://tonyspainting.com/contracts/${contractNumber}?status=cancelled`
         })
         stripeSessionId = session.id
         stripePaymentUrl = session.url || ''

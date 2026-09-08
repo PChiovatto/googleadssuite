@@ -22,7 +22,7 @@ export async function sendSesEmail(payload: SesEmailPayload): Promise<SesSendRes
   const accessKey = process.env.AWS_ACCESS_KEY_ID
   const secretKey = process.env.AWS_SECRET_ACCESS_KEY
   const region = process.env.AWS_REGION || 'us-east-1'
-  const defaultFrom = process.env.AWS_SES_FROM_EMAIL || 'First Boston Painters <contact@bostonpaintersandservices.com>'
+  const defaultFrom = process.env.AWS_SES_FROM_EMAIL || "Tony's Painting and Remodeling <contact@tonyspainting.com>"
   const from = payload.from || defaultFrom
 
   const recipients = Array.isArray(payload.to) ? payload.to : [payload.to]

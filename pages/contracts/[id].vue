@@ -10,7 +10,7 @@
       <!-- Error State -->
       <div v-else-if="error || !contract" class="bg-rose-900/40 border border-rose-700 rounded-2xl p-8 text-center">
         <h2 class="text-xl font-bold text-rose-300">Contrato Não Encontrado</h2>
-        <p class="text-slate-300 mt-2 text-sm">Verifique o número do contrato ou entre em contato com seu consultor da First Boston Painters.</p>
+        <p class="text-slate-300 mt-2 text-sm">Verifique o número do contrato ou entre em contato com seu consultor da Tony's Painting and Remodeling.</p>
       </div>
 
       <!-- Contract Document Card -->
@@ -23,10 +23,10 @@
                 MASSACHUSETTS HIC COMPLIANT AGREEMENT
               </span>
               <h1 class="text-2xl sm:text-3xl font-black tracking-tight mt-2 text-white">
-                FIRST BOSTON PAINTERS & SERVICES CORP.
+                TONY'S PAINTING AND REMODELING INC.
               </h1>
               <p class="text-xs text-slate-400 mt-1 font-mono">
-                MA Home Improvement Contractor Registration #198421 • Licensed & Insured
+                MA Home Improvement Contractor Registration #204891 • Fully Licensed & Insured • EPA Lead-Safe
               </p>
             </div>
             <div class="text-right sm:text-right">
@@ -43,8 +43,8 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
             <div>
               <span class="text-[10px] font-black uppercase tracking-wider text-slate-500 block">CONTRATADA (CONTRACTOR):</span>
-              <p class="font-bold text-slate-900 mt-1">First Boston Painters and Services Corp.</p>
-              <p class="text-slate-600 text-xs">100 State Street, Suite 400<br>Boston, MA 02109<br>Tel: (617) 555-0199</p>
+              <p class="font-bold text-slate-900 mt-1">Tony's Painting and Remodeling Inc.</p>
+              <p class="text-slate-600 text-xs">Boston & Greater Massachusetts Area<br>Tel: (617) 555-0199 • contact@tonyspainting.com</p>
             </div>
             <div>
               <span class="text-[10px] font-black uppercase tracking-wider text-slate-500 block">CONTRATANTE (HOMEOWNER):</span>
@@ -186,7 +186,7 @@
 
         <!-- Footer Notice -->
         <div class="bg-slate-100 p-4 text-center text-[10px] text-slate-500 border-t border-slate-200">
-          First Boston Painters and Services Corp. • Massachusetts Home Improvement Contractor Registry #198421 • Documento emitido eletronicamente com validade jurídica.
+          Tony's Painting and Remodeling Inc. • Massachusetts Home Improvement Contractor Registry #204891 • Documento emitido eletronicamente com validade jurídica.
         </div>
       </div>
     </div>

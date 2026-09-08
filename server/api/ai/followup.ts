@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
           messages: [
             {
               role: 'system',
-              content: `You are a high-converting US Sales Follow-up AI Specialist for First Boston Painters & Services.
+              content: `You are a high-converting US Sales Follow-up AI Specialist for Tony's Painting and Remodeling in Massachusetts.
 Create a hyper-personalized SMS re-engagement and an email nurture message for a homeowner lead who hasn't completed their booking.
 Ensure 100% compliance with TCPA: include opt-out language ("Reply STOP to opt out") in the SMS.
 Return ONLY raw JSON:

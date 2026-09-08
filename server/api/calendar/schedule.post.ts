@@ -64,7 +64,7 @@ export default defineEventHandler(async (event) => {
 
     // Twilio SMS confirmation dispatch
     let smsStatus = 'SKIPPED'
-    const smsText = `Hi ${lead.name}! Your free in-home estimate with First Boston Painters has been scheduled for ${formattedDate} at ${formattedTime}. Location: ${location}. Reply C to confirm or call (617) 555-0199 to reschedule. Msg&data rates may apply. Reply STOP to cancel.`
+    const smsText = `Hi ${lead.name}! Your free in-home estimate with Tony's Painting and Remodeling has been scheduled for ${formattedDate} at ${formattedTime}. Location: ${location}. Reply C to confirm or call (617) 555-0199 to reschedule. Msg&data rates may apply. Reply STOP to cancel.`
 
     if (sendSms && lead.phone) {
       const twilio = getTwilioClient()

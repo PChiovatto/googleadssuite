@@ -15,9 +15,9 @@ export default defineEventHandler(async (event) => {
     const twiml = `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
     <Say voice="Polly.Matthew-Neural" language="en-US">
-        Hello! Thank you for calling First Boston Painters and Services. 
+        Hello! Thank you for calling Tony's Painting and Remodeling. 
         This call may be recorded for quality assurance.
-        Are you calling to schedule a free estimate for interior or exterior painting?
+        Are you calling to schedule a free estimate for interior, exterior painting, or remodeling?
     </Say>
     <Gather input="speech" action="/api/ai/voice-agent?step=qualify" method="POST" timeout="4" speechTimeout="auto">
         <Say voice="Polly.Matthew-Neural">Please speak after the tone.</Say>
@@ -66,7 +66,7 @@ export default defineEventHandler(async (event) => {
     agent: 'OpenAI Realtime Voice Assistant',
     status: 'ACTIVE_CALL_ROUTED',
     script: {
-      greeting: "Hello! Thank you for calling First Boston Painters. Are you looking for interior or exterior painting?",
+      greeting: "Hello! Thank you for calling Tony's Painting and Remodeling. Are you looking for interior, exterior painting, or remodeling?",
       qualifyingQuestions: [
         "What is the approximate square footage of the project?",
         "What is your ZIP code in Greater Boston?",

@@ -57,7 +57,7 @@
           <iframe
             class="absolute top-0 left-0 w-full h-full"
             src="https://www.youtube.com/embed/qbE2DSRX1c0"
-            title="First Boston Painters Services"
+            title="Tony's Painting and Remodeling Services"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen
           ></iframe>
@@ -244,7 +244,7 @@
                   class="mt-0.5 rounded text-[#fc0000] focus:ring-[#fc0000] border-gray-300"
                 />
                 <span>
-                  I agree to receive calls, SMS messages, and emails from <strong>Boston Painters and Services</strong> regarding my quote request at the number provided above. Consent is not a condition of purchase. Message and data rates may apply.
+                  I agree to receive calls, SMS messages, and emails from <strong>Tony's Painting and Remodeling</strong> regarding my quote request at the number provided above. Consent is not a condition of purchase. Message and data rates may apply.
                 </span>
               </label>
             </div>
@@ -263,22 +263,22 @@
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 my-8">
           <img
             src="https://doorbridgefix.com/wp-content/uploads/2026/03/505F0276-1ACF-4761-9945-443A1BB52EB3_1_105_c.jpg"
-            alt="First Boston Painters Project 1"
+            alt="Tony's Painting Project 1"
             class="w-full rounded-lg shadow aspect-square object-cover"
           />
           <img
             src="https://doorbridgefix.com/wp-content/uploads/2026/03/0D45D45D-DD53-42C8-A4A6-63516BE0D830_1_105_c.jpg"
-            alt="First Boston Painters Project 2"
+            alt="Tony's Painting Project 2"
             class="w-full rounded-lg shadow aspect-square object-cover"
           />
           <img
             src="https://doorbridgefix.com/wp-content/uploads/2026/03/8E11114B-2E53-44E5-A254-7C0208125302_1_105_c.jpg"
-            alt="First Boston Painters Project 3"
+            alt="Tony's Painting Project 3"
             class="w-full rounded-lg shadow aspect-square object-cover"
           />
           <img
             src="https://doorbridgefix.com/wp-content/uploads/2026/03/76DAFAD3-0069-43D6-9BBA-633E92FAE7BD_1_105_c.jpg"
-            alt="First Boston Painters Project 4"
+            alt="Tony's Painting Project 4"
             class="w-full rounded-lg shadow aspect-square object-cover"
           />
         </div>
@@ -296,7 +296,7 @@
 
         <div class="bg-[#222222] p-6 rounded-r-lg border-l-4 border-[#ff7902] italic shadow-xl my-6">
           <p class="text-sm sm:text-base leading-relaxed">
-            "FBP painted my home and two-stall detached garage exterior. In addition to the fabulous quality and attention to detail, the guys were respectful and fun to work with. My property was left immaculate each night and at job completion. They responded to every request or concern respectfully and in a timely manner. Aside from rainy days, everything was done on time and they worked continuously until completion. I have received many compliments on the 'old girl’s' new look. Thank you FBP!"
+            "Tony's Painting painted my home and two-stall detached garage exterior. In addition to the fabulous quality and attention to detail, the guys were respectful and fun to work with. My property was left immaculate each night and at job completion. They responded to every request or concern respectfully and in a timely manner. Aside from rainy days, everything was done on time and they worked continuously until completion. I have received many compliments on the 'old girl’s' new look. Thank you Tony and crew!"
           </p>
           <p class="not-italic font-bold text-[#ff7902] mt-3 text-base">
             Kimberly Hayes-Hackett<br>
@@ -331,15 +331,15 @@
         <!-- Testimonial Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="bg-[#222222] p-5 rounded-r-lg border-l-4 border-[#ff7902] italic shadow">
-            <p class="text-xs sm:text-sm">"First Boston Painter did a great job on the exterior and interior of our home. Highly recommend!"</p>
+            <p class="text-xs sm:text-sm">"Tony's Painting and Remodeling did a great job on the exterior and interior of our home. Highly recommend!"</p>
             <p class="not-italic font-bold text-[#ff7902] mt-2 text-xs">Petra Dawson</p>
           </div>
           <div class="bg-[#222222] p-5 rounded-r-lg border-l-4 border-[#ff7902] italic shadow">
-            <p class="text-xs sm:text-sm">"I loved working with First Boston Painters. Their professionalism was beyond anything I’ve ever worked with. Work was done with quality and in a timely manner. I recommend this company to anyone looking for a painter."</p>
+            <p class="text-xs sm:text-sm">"I loved working with Tony's Painting and Remodeling. Their professionalism was beyond anything I’ve ever worked with. Work was done with quality and in a timely manner. I recommend this company to anyone looking for a painter or remodeling contractor."</p>
             <p class="not-italic font-bold text-[#ff7902] mt-2 text-xs">Daniel Frank Fernandes</p>
           </div>
           <div class="bg-[#222222] p-5 rounded-r-lg border-l-4 border-[#ff7902] italic shadow">
-            <p class="text-xs sm:text-sm">"I highly recommend First Boston Painters. They did an amazing exterior job at my house last summer and they just finished an interior job in our home. They are professional, clean and always on time."</p>
+            <p class="text-xs sm:text-sm">"I highly recommend Tony's Painting and Remodeling. They did an amazing exterior job at my house last summer and they just finished an interior and cabinet job in our home. They are professional, clean and always on time."</p>
             <p class="not-italic font-bold text-[#ff7902] mt-2 text-xs">Jussara Fagundes</p>
           </div>
           <div class="bg-[#222222] p-5 rounded-r-lg border-l-4 border-[#ff7902] italic shadow">
@@ -364,10 +364,10 @@
         </div>
 
         <div class="text-xs sm:text-sm leading-relaxed max-w-2xl mx-auto space-y-3 font-semibold text-gray-700">
-          <p><strong>BOSTON PAINTERS AND SERVICES PROVIDES UNMATCHED SERVICES TO CLIENTS THROUGHOUT BOSTON AND THE SURROUNDING AREAS OF MASSACHUSETTS SINCE 2015.</strong></p>
-          <p><strong>WE HAVE THE EXPERIENCE AND KNOWLEDGE TO HANDLE YOUR PAINTING PROJECT NEEDS.</strong></p>
+          <p><strong>TONY'S PAINTING AND REMODELING PROVIDES UNMATCHED SERVICES TO CLIENTS THROUGHOUT BOSTON AND THE SURROUNDING AREAS OF MASSACHUSETTS SINCE 2015.</strong></p>
+          <p><strong>WE HAVE THE EXPERIENCE AND KNOWLEDGE TO HANDLE YOUR PAINTING AND REMODELING PROJECT NEEDS.</strong></p>
           <p><strong>WE ARE COMMITTED TO PROVIDING BEAUTIFUL AND SUSTAINABLE PAINTING SOLUTIONS TO OUR CLIENTS, AND STRIVE TO EXCEED THEIR EXPECTATIONS.</strong></p>
-          <p><strong>BOSTON PAINTERS IS AN INDUSTRY-LEADING PAINTING CONTRACTOR THAT OFFERS A WIDE ARRAY OF PAINTING OPTIONS. WE DO ALL TYPES OF PAINTING AS WELL AS INTERIOR, EXTERIOR, KITCHEN CABINETS, SPRAY AND MUCH MORE.</strong></p>
+          <p><strong>TONY'S PAINTING AND REMODELING IS AN INDUSTRY-LEADING CONTRACTOR THAT OFFERS A WIDE ARRAY OF PAINTING & REMODELING OPTIONS: INTERIOR, EXTERIOR, KITCHEN CABINETS, SPRAY, DRYWALL REPAIR, DECKS AND MUCH MORE.</strong></p>
         </div>
 
         <h2 class="text-[#fc0000] text-2xl sm:text-4xl font-black underline uppercase my-6">
@@ -442,7 +442,7 @@ const stateParam = (query.state || 'MA').toString()
 const gclidParam = (query.gclid || '').toString()
 const deviceParam = (query.device || 'm').toString()
 const matchTypeParam = (query.matchtype || 'exact').toString()
-const slug = (route.params.slug || 'boston-painters-and-services').toString()
+const slug = (route.params.slug || 'tonys-painting-and-remodeling').toString()
 
 const dynamicCity = ref(cityParam)
 const dynamicState = ref(stateParam)

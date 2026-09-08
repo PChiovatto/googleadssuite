@@ -107,7 +107,7 @@ export default defineEventHandler(async () => {
       campaigns,
       keywords,
       account: account || {
-        accountName: 'Boston Painters & Services',
+        accountName: "Tony's Painting and Remodeling Inc.",
         isDemo: true,
         lastSyncedAt: new Date()
       }

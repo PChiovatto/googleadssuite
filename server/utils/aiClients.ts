@@ -95,7 +95,7 @@ export function simulateGeminiTriage(lead: any) {
     budgetEstimate: isEmergency ? '$4,500 - $8,000' : '$2,800 - $5,500',
     autoAssignedReason: `Lead categorizado como ${priority} devido a busca direta por "${lead.keyword || 'local painters'}" com consentimento TCPA ativo.`,
     recommendedAction: 'Disparar ligação imediata em até 3 minutos ou SMS de confirmação de visita para orçamento gratuito.',
-    suggestedScript: `Hi ${lead.name || 'there'}! This is First Boston Painters & Services. We received your request for ${service} in ${city}. Are you available for a free in-home estimate tomorrow at 10 AM?`
+    suggestedScript: `Hi ${lead.name || 'there'}! This is Tony's Painting and Remodeling. We received your request for ${service} in ${city}. Are you available for a free in-home estimate tomorrow at 10 AM?`
   }
 }
 
@@ -103,8 +103,8 @@ export function simulateGeminiAudit(callData: any) {
   return {
     isSimulation: true,
     modelUsed: 'whisper-1 + gemini-1.5-pro (Simulated Engine)',
-    transcription: callData.transcription || `Consultor: Hello, thank you for calling First Boston Painters! My name is Marcos. Am I speaking with the homeowner?
-Cliente: Yes, hi Marcos. I need an exterior paint job for a 3-bedroom colonial in Newton, Massachusetts. Some wood on the front porch might be rotting.
+    transcription: callData.transcription || `Consultor: Hello, thank you for calling Tony's Painting and Remodeling! My name is Tony Silva. Am I speaking with the homeowner?
+Cliente: Yes, hi Tony. I need an exterior paint job for a 3-bedroom colonial in Newton, Massachusetts. Some wood on the front porch might be rotting.
 Consultor: Perfect, we specialize in exterior carpentry and rotted wood replacement before priming with high-grade oil primer. Are you looking to have this completed within the next 2 weeks?
 Cliente: Yes, exactly before the winter sets in. Can someone come over for a free estimate?
 Consultor: Absolutely! I have our senior estimator available this Thursday at 2:00 PM. I will send you a text confirmation right now.
@@ -138,8 +138,8 @@ export function simulateClaudeStrategy(metrics: any) {
     ],
     adCopyVariations: [
       {
-        headline: 'First Boston Painters | Licensed & Insured Since 2015',
-        subheadline: 'Free On-Site Estimates in Greater Boston & North Shore. 100% Prep Work Perfection.',
+        headline: "Tony's Painting & Remodeling | Licensed & Insured Since 2015",
+        subheadline: 'Free On-Site Estimates in Greater Boston & Massachusetts. 100% Prep Work Perfection.',
         callToAction: 'Schedule Free Quote Now'
       },
       {

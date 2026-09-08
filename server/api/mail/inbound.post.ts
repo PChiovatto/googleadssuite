@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     
     // Support direct testing or raw Amazon SES / SNS webhook envelope
     let from = body.from || body.sender || 'homeowner@example.com'
-    let to = body.to || body.recipient || 'john@bostonpaintersandservices.com'
+    let to = body.to || body.recipient || 'john@tonyspainting.com'
     let subject = body.subject || 'Nova resposta de cliente'
     let content = body.body || body.html || body.text || '<p>Mensagem recebida via Amazon SES Inbound.</p>'
     let messageId = body.messageId || `ses-inbound-${Date.now().toString(36)}`

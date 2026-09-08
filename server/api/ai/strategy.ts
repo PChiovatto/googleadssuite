@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
 
     if (anthropic) {
       try {
-        const prompt = `You are the Principal Ads Strategist & Conversion Copywriter (Claude 3.5 Sonnet) for First Boston Painters & Services in Massachusetts.
+        const prompt = `You are the Principal Ads Strategist & Conversion Copywriter (Claude 3.5 Sonnet) for Tony's Painting and Remodeling in Massachusetts.
 Analyze these campaign metrics:
 ${JSON.stringify(campaigns, null, 2)}
 

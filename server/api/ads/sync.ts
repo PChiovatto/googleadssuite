@@ -80,7 +80,7 @@ export default defineEventHandler(async (event) => {
       },
       create: {
         customerId: 'primary-account',
-        accountName: isDemo ? 'Boston Painters & Services (Demo Account)' : 'Live Google Ads Account',
+        accountName: isDemo ? "Tony's Painting and Remodeling Inc. (Demo Account)" : "Tony's Painting and Remodeling (Live Google Ads)",
         isDemo,
         lastSyncedAt: new Date()
       }
