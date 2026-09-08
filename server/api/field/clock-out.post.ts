@@ -29,16 +29,30 @@ export default defineEventHandler(async (event) => {
 
     const checkOut = new Date()
     const checkIn = new Date(timeLog.checkIn)
-    const durationHours = Math.max(0.25, (checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60))
+    const rawHours = Math.max(0.1, (checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60))
+
+    // Automatically deduct 30 minutes (0.5 hour) for lunch if shift is >= 30 mins
+    const lunchDeducted = rawHours >= 0.5
+    const totalHours = Number((lunchDeducted ? Math.max(0.1, rawHours - 0.5) : rawHours).toFixed(2))
+
+    // Retrieve user's configured hourly rate (standard $35.00/h default)
+    const userRecord = await prisma.user.findUnique({ where: { id: timeLog.userId } })
+    const hourlyRate = userRecord?.hourlyRate || 35.0
+    const earnedPay = Number((totalHours * hourlyRate).toFixed(2))
 
     const updatedLog = await prisma.timeLog.update({
       where: { id: timeLog.id },
       data: {
         checkOut,
-        notes: notes ? `${timeLog.notes || ''} • Saída: ${notes}` : timeLog.notes
+        lunchDeducted,
+        totalHours,
+        earnedPay,
+        notes: notes
+          ? `${timeLog.notes || ''} • Saída: ${notes} • Almoço 30m descontado`
+          : `${timeLog.notes || ''} • Almoço 30m descontado`
       },
       include: {
-        user: { select: { name: true, role: true } },
+        user: { select: { id: true, name: true, role: true, hourlyRate: true } },
         lead: true
       }
     })
@@ -50,9 +64,7 @@ export default defineEventHandler(async (event) => {
 
     let totalLaborHours = 0
     for (const log of allLeadLogs) {
-      if (log.checkOut && log.checkIn) {
-        totalLaborHours += (new Date(log.checkOut).getTime() - new Date(log.checkIn).getTime()) / (1000 * 60 * 60)
-      }
+      totalLaborHours += log.totalHours || (log.checkOut && log.checkIn ? (new Date(log.checkOut).getTime() - new Date(log.checkIn).getTime()) / (1000 * 60 * 60) : 0)
     }
 
     const totalLaborCost = totalLaborHours * HOURLY_LABOR_RATE_USD
@@ -80,8 +92,12 @@ export default defineEventHandler(async (event) => {
         details: JSON.stringify({
           leadId: timeLog.leadId,
           client: updatedLog.lead.name,
-          hoursWorked: durationHours.toFixed(2),
-          totalLaborHours: totalLaborHours.toFixed(2),
+          rawHours: Number(rawHours.toFixed(2)),
+          lunchDeducted,
+          totalHours,
+          hourlyRate,
+          earnedPay,
+          totalLaborHours: Number(totalLaborHours.toFixed(2)),
           totalLaborCost,
           totalMaterialsCost,
           netProfit
@@ -92,14 +108,18 @@ export default defineEventHandler(async (event) => {
     return {
       success: true,
       timeLog: updatedLog,
-      hoursWorked: Number(durationHours.toFixed(2)),
+      hoursWorked: totalHours,
+      rawHours: Number(rawHours.toFixed(2)),
+      lunchDeducted,
+      hourlyRate,
+      earnedPay,
       jobCosting: {
         dealValue,
         totalLaborCost: Number(totalLaborCost.toFixed(2)),
         totalMaterialsCost: Number(totalMaterialsCost.toFixed(2)),
         netProfit
       },
-      message: `Ponto de saída registrado com sucesso! (${durationHours.toFixed(2)} horas computadas)`
+      message: `Ponto de saída registrado! ${totalHours}h trabalhadas (30m almoço deduzido). Ganho: $${earnedPay.toFixed(2)}`
     }
   } catch (error: any) {
     console.error('Erro ao registrar ponto de saída:', error)

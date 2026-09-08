@@ -611,17 +611,57 @@
 
         <!-- ================= MODE 2: EMAIL ROWS TABLE ================= -->
         <div v-else class="flex-1 flex flex-col bg-white overflow-hidden">
-          <!-- Action Toolbar Above Emails -->
+          <!-- Action Toolbar Above Emails (Normal or Bulk Actions Mode) -->
           <div class="h-12 px-4 border-b border-slate-200 flex items-center justify-between shrink-0 bg-slate-50/50">
-            <!-- Left Controls: Checkbox, Refresh, Filter Chips -->
-            <div class="flex items-center gap-2">
+            <!-- Mode A: Bulk Actions Bar (Shown when 1 or more emails are checked) -->
+            <div v-if="selectedEmailIds.length > 0" class="flex items-center gap-3">
               <button
-                @click="selectAll = !selectAll"
-                class="p-2 hover:bg-slate-200 rounded-lg text-slate-600 transition-colors flex items-center gap-1"
-                title="Selecionar todos"
+                @click="toggleSelectAll"
+                class="p-2 hover:bg-slate-200 rounded-lg text-slate-700 transition-colors flex items-center gap-1.5"
+                title="Desmarcar todos"
               >
-                <Square v-if="!selectAll" class="w-4 h-4 text-slate-500" />
-                <CheckSquare v-else class="w-4 h-4 text-[#D7070D]" />
+                <CheckSquare class="w-4 h-4 text-[#D7070D]" />
+                <span class="text-xs font-black text-slate-900">{{ selectedEmailIds.length }} selecionado(s)</span>
+              </button>
+
+              <div class="h-5 w-px bg-slate-300 mx-0.5"></div>
+
+              <!-- GLOBAL TRASH BUTTON (LIXEIRA EM MASSA) -->
+              <button
+                @click="bulkDeleteSelected"
+                class="flex items-center gap-1.5 px-3 py-1.5 bg-[#D7070D] hover:bg-[#B0050A] text-white rounded-xl text-xs font-black transition-all shadow-sm active:scale-95 cursor-pointer"
+                title="Excluir todas as mensagens selecionadas de uma vez só"
+              >
+                <Trash2 class="w-4 h-4 text-white" />
+                <span>Excluir Selecionados</span>
+              </button>
+
+              <!-- Bulk Mark As Read -->
+              <button
+                @click="bulkMarkRead(true)"
+                class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl text-xs font-bold transition-colors"
+                title="Marcar todos os selecionados como lidos"
+              >
+                <Mail class="w-3.5 h-3.5 text-slate-600" />
+                <span class="hidden sm:inline">Marcar como Lido</span>
+              </button>
+
+              <button
+                @click="selectedEmailIds = []"
+                class="text-xs text-slate-500 hover:text-slate-800 font-bold px-2 py-1 transition-colors"
+              >
+                Desmarcar
+              </button>
+            </div>
+
+            <!-- Mode B: Normal Toolbar Controls (No emails checked) -->
+            <div v-else class="flex items-center gap-2">
+              <button
+                @click="toggleSelectAll"
+                class="p-2 hover:bg-slate-200 rounded-lg text-slate-600 transition-colors flex items-center gap-1"
+                title="Selecionar todos os e-mails"
+              >
+                <Square class="w-4 h-4 text-slate-500" />
               </button>
 
               <button
@@ -683,6 +723,7 @@
               class="group relative h-11 px-4 flex items-center gap-3 cursor-pointer transition-colors text-sm"
               :class="[
                 !mail.read ? 'bg-white text-slate-900 font-bold' : 'bg-slate-50/60 text-slate-600 font-normal hover:bg-slate-100/80',
+                selectedEmailIds.includes(mail.id) ? 'bg-red-50/70 border-l-4 border-[#D7070D]' : '',
                 selectedEmail?.id === mail.id ? 'bg-red-50/50' : ''
               ]"
             >
@@ -690,7 +731,9 @@
               <div class="shrink-0" @click.stop>
                 <input
                   type="checkbox"
-                  class="w-4 h-4 rounded border-slate-300 text-[#D7070D] focus:ring-0 cursor-pointer"
+                  :checked="selectedEmailIds.includes(mail.id)"
+                  @change="toggleSelectEmail(mail.id)"
+                  class="w-4 h-4 rounded border-slate-300 text-[#D7070D] focus:ring-0 cursor-pointer accent-[#D7070D]"
                 />
               </div>
 
@@ -1006,6 +1049,7 @@ const { currentUser, isManager, teamUsers, fetchAuth, switchUser } = useWorkspac
 const sidebarCollapsed = ref(false)
 const showProfileMenu = ref(false)
 const selectAll = ref(false)
+const selectedEmailIds = ref([])
 const activeFilterChip = ref('ALL')
 
 const emails = ref([])
@@ -1147,8 +1191,92 @@ async function toggleRead(mail, forceRead = null) {
   }
 }
 
+function toggleSelectAll() {
+  if (selectedEmailIds.value.length === emails.value.length && emails.value.length > 0) {
+    selectedEmailIds.value = []
+  } else {
+    selectedEmailIds.value = emails.value.map(e => e.id)
+  }
+}
+
+function toggleSelectEmail(id) {
+  if (selectedEmailIds.value.includes(id)) {
+    selectedEmailIds.value = selectedEmailIds.value.filter(x => x !== id)
+  } else {
+    selectedEmailIds.value.push(id)
+  }
+}
+
+async function bulkDeleteSelected() {
+  if (selectedEmailIds.value.length === 0) return
+
+  const count = selectedEmailIds.value.length
+  const confirmMsg = `Deseja realmente excluir as ${count} mensagem(ns) selecionada(s)?`
+  if (typeof window !== 'undefined' && !window.confirm(confirmMsg)) {
+    return
+  }
+
+  const idsToDelete = [...selectedEmailIds.value]
+  try {
+    const res = await $fetch('/api/mail/bulk-delete', {
+      method: 'POST',
+      body: {
+        emailIds: idsToDelete,
+        folder: activeFolder.value
+      }
+    })
+
+    if (res?.success) {
+      emails.value = emails.value.filter(e => !idsToDelete.includes(e.id))
+      if (selectedEmail.value && idsToDelete.includes(selectedEmail.value.id)) {
+        selectedEmail.value = null
+      }
+      selectedEmailIds.value = []
+      alert(res.message || `${count} mensagem(ns) excluída(s) com sucesso!`)
+      await fetchEmails()
+    }
+  } catch (err) {
+    console.error('Erro ao excluir e-mails em massa:', err)
+    alert('Erro ao excluir as mensagens selecionadas.')
+  }
+}
+
+async function bulkMarkRead(read = true) {
+  if (selectedEmailIds.value.length === 0) return
+
+  for (const id of selectedEmailIds.value) {
+    const mail = emails.value.find(e => e.id === id)
+    if (mail) {
+      mail.read = read
+      try {
+        await $fetch('/api/mail/mark-read', {
+          method: 'POST',
+          body: { emailId: id, read }
+        })
+      } catch (err) {
+        console.error(`Erro ao marcar leitura do email ${id}:`, err)
+      }
+    }
+  }
+  selectedEmailIds.value = []
+  await fetchEmails()
+}
+
 async function deleteEmail(emailId) {
+  try {
+    await $fetch('/api/mail/bulk-delete', {
+      method: 'POST',
+      body: {
+        emailIds: [emailId],
+        folder: activeFolder.value
+      }
+    })
+  } catch (err) {
+    console.error('Erro ao excluir mensagem no servidor:', err)
+  }
+
   emails.value = emails.value.filter(e => e.id !== emailId)
+  selectedEmailIds.value = selectedEmailIds.value.filter(x => x !== emailId)
   if (selectedEmail.value?.id === emailId) {
     selectedEmail.value = null
   }
