@@ -3,8 +3,8 @@
     <!-- Header Controls -->
     <div class="p-5 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h3 class="text-lg font-bold text-slate-900">Desempenho por Campanha</h3>
-        <p class="text-xs text-slate-500">Métricas consolidadas dos últimos 30 dias via Google Ads API</p>
+        <h3 class="text-lg font-bold text-slate-900">Campaign Performance</h3>
+        <p class="text-xs text-slate-500">Consolidated 30-day metrics synced via Google Ads API</p>
       </div>
 
       <div class="flex flex-wrap items-center gap-3">
@@ -13,7 +13,7 @@
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Buscar campanha..."
+            placeholder="Search campaigns..."
             class="pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all w-48 sm:w-56"
           />
           <Search class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
@@ -24,9 +24,9 @@
           v-model="channelFilter"
           class="text-xs bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 cursor-pointer"
         >
-          <option value="ALL">Todos os Canais</option>
-          <option value="SEARCH">Search (Rede de Pesquisa)</option>
-          <option value="DISPLAY">Display</option>
+          <option value="ALL">All Channels</option>
+          <option value="SEARCH">Search Network</option>
+          <option value="DISPLAY">Display Network</option>
           <option value="PERFORMANCE_MAX">Performance Max</option>
         </select>
       </div>
@@ -38,21 +38,21 @@
         <thead>
           <tr class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-semibold uppercase tracking-wider">
             <th class="py-3.5 px-4 cursor-pointer hover:text-blue-600" @click="sortBy('campaignName')">
-              Campanha <span v-if="sortKey === 'campaignName'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+              Campaign <span v-if="sortKey === 'campaignName'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
             </th>
-            <th class="py-3.5 px-3">Canal</th>
+            <th class="py-3.5 px-3">Channel</th>
             <th class="py-3.5 px-3">Status</th>
             <th class="py-3.5 px-3 text-right cursor-pointer hover:text-blue-600" @click="sortBy('impressions')">
-              Impressões <span v-if="sortKey === 'impressions'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+              Impressions <span v-if="sortKey === 'impressions'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
             </th>
             <th class="py-3.5 px-3 text-right cursor-pointer hover:text-blue-600" @click="sortBy('clicks')">
-              Cliques <span v-if="sortKey === 'clicks'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+              Clicks <span v-if="sortKey === 'clicks'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
             </th>
             <th class="py-3.5 px-3 text-right cursor-pointer hover:text-blue-600" @click="sortBy('ctr')">
               CTR <span v-if="sortKey === 'ctr'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
             </th>
             <th class="py-3.5 px-3 text-right cursor-pointer hover:text-blue-600" @click="sortBy('cost')">
-              Custo <span v-if="sortKey === 'cost'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+              Cost <span v-if="sortKey === 'cost'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
             </th>
             <th class="py-3.5 px-3 text-right cursor-pointer hover:text-blue-600" @click="sortBy('conversions')">
               Conv. <span v-if="sortKey === 'conversions'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
@@ -63,7 +63,7 @@
             <th class="py-3.5 px-3 text-right cursor-pointer hover:text-blue-600" @click="sortBy('roas')">
               ROAS <span v-if="sortKey === 'roas'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
             </th>
-            <th class="py-3.5 px-4 text-center">Quota Impr.</th>
+            <th class="py-3.5 px-4 text-center">Impr. Share</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100">
@@ -106,18 +106,18 @@
                   class="w-1.5 h-1.5 rounded-full"
                   :class="campaign.status === 'ENABLED' ? 'bg-emerald-500' : 'bg-slate-400'"
                 />
-                {{ campaign.status === 'ENABLED' ? 'Ativa' : 'Pausada' }}
+                {{ campaign.status === 'ENABLED' ? 'Active' : 'Paused' }}
               </span>
             </td>
 
             <!-- Impressions -->
             <td class="py-3.5 px-3 text-right text-slate-700 font-mono">
-              {{ campaign.impressions.toLocaleString('pt-BR') }}
+              {{ campaign.impressions.toLocaleString('en-US') }}
             </td>
 
             <!-- Clicks -->
             <td class="py-3.5 px-3 text-right text-slate-700 font-mono">
-              {{ campaign.clicks.toLocaleString('pt-BR') }}
+              {{ campaign.clicks.toLocaleString('en-US') }}
             </td>
 
             <!-- CTR -->
@@ -127,7 +127,7 @@
 
             <!-- Cost -->
             <td class="py-3.5 px-3 text-right font-mono font-semibold text-slate-900">
-              ${{ campaign.cost.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
+              ${{ campaign.cost.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
             </td>
 
             <!-- Conversions -->
@@ -163,7 +163,7 @@
 
           <tr v-if="filteredCampaigns.length === 0">
             <td colspan="11" class="py-8 text-center text-slate-400">
-              Nenhuma campanha encontrada para os filtros selecionados.
+              No campaigns found matching selected filters.
             </td>
           </tr>
         </tbody>

@@ -4,7 +4,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
         <h1 class="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-          <span>✉️ Base de E-mail Marketing & Audiências</span>
+          <span>✉️ Email Marketing & Audience Hub</span>
           <span class="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold uppercase tracking-wider">
             TCPA / US Compliant
           </span>
@@ -13,7 +13,7 @@
           </span>
         </h1>
         <p class="text-xs text-slate-500 mt-1">
-          Nutrição automatizada de leads capturados no Google Ads via Amazon SES e exportação para Google Customer Match
+          Automated lead nurturing for Google Ads prospects via Amazon SES and direct export to Google Customer Match.
         </p>
       </div>
 
@@ -23,14 +23,14 @@
           class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-md flex items-center gap-2 transition-all"
         >
           <span>🚀</span>
-          <span>Nova Campanha de E-mail</span>
+          <span>New Email Campaign</span>
         </button>
         <button
           @click="exportCsv"
           class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-3.5 py-2.5 rounded-xl text-xs font-semibold shadow-2xs flex items-center gap-1.5 transition-all"
         >
           <span>📥</span>
-          <span>Exportar CSV</span>
+          <span>Export CSV</span>
         </button>
       </div>
     </div>
@@ -38,7 +38,7 @@
     <!-- Metrics Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs">
-        <span class="text-xs font-semibold text-slate-500 block mb-1">Total de Inscritos</span>
+        <span class="text-xs font-semibold text-slate-500 block mb-1">Total Subscribers</span>
         <div class="flex items-baseline justify-between">
           <span class="text-2xl font-black text-slate-900">{{ metrics.totalSubscribers }}</span>
           <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">100% Opt-in</span>
@@ -46,26 +46,26 @@
       </div>
 
       <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs">
-        <span class="text-xs font-semibold text-slate-500 block mb-1">Clientes Convertidos</span>
+        <span class="text-xs font-semibold text-slate-500 block mb-1">Converted Customers</span>
         <div class="flex items-baseline justify-between">
           <span class="text-2xl font-black text-emerald-600">{{ metrics.convertedSubscribers }}</span>
-          <span class="text-[10px] text-slate-400 font-medium">Prontos para pós-venda</span>
+          <span class="text-[10px] text-slate-400 font-medium">Ready for retention</span>
         </div>
       </div>
 
       <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs">
-        <span class="text-xs font-semibold text-slate-500 block mb-1">Taxa Média de Abertura</span>
+        <span class="text-xs font-semibold text-slate-500 block mb-1">Avg. Open Rate</span>
         <div class="flex items-baseline justify-between">
           <span class="text-2xl font-black text-indigo-600">{{ metrics.averageOpenRate }}</span>
-          <span class="text-[10px] text-indigo-600 font-bold bg-indigo-50 px-2 py-0.5 rounded-full">Alto Engajamento</span>
+          <span class="text-[10px] text-indigo-600 font-bold bg-indigo-50 px-2 py-0.5 rounded-full">High Engagement</span>
         </div>
       </div>
 
       <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs">
-        <span class="text-xs font-semibold text-slate-500 block mb-1">Taxa de Clique (CTR)</span>
+        <span class="text-xs font-semibold text-slate-500 block mb-1">Click-Through Rate (CTR)</span>
         <div class="flex items-baseline justify-between">
           <span class="text-2xl font-black text-purple-600">{{ metrics.averageClickRate }}</span>
-          <span class="text-[10px] text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">Estimativas</span>
+          <span class="text-[10px] text-purple-600 font-bold bg-purple-50 px-2 py-0.5 rounded-full">Estimates</span>
         </div>
       </div>
     </div>
@@ -77,7 +77,7 @@
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Buscar por nome, e-mail ou cidade..."
+            placeholder="Search by name, email, or city..."
             class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"
             @input="loadContacts"
           />
@@ -86,16 +86,16 @@
             @change="loadContacts"
             class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 cursor-pointer"
           >
-            <option value="ALL">Todos os Segmentos</option>
-            <option value="NOVO">Novos Leads</option>
-            <option value="EM_ATENDIMENTO">Em Atendimento</option>
-            <option value="PROPOSTA">Proposta Enviada</option>
-            <option value="CONVERTIDO">Convertidos</option>
+            <option value="ALL">All Segments</option>
+            <option value="NOVO">New Leads</option>
+            <option value="EM_ATENDIMENTO">In Contact / Discovery</option>
+            <option value="PROPOSTA">Proposal Sent</option>
+            <option value="CONVERTIDO">Closed Won</option>
           </select>
         </div>
 
         <span class="text-xs text-slate-500 font-medium">
-          Exibindo {{ contacts.length }} contatos verificados
+          Showing {{ contacts.length }} verified contacts
         </span>
       </div>
 
@@ -103,13 +103,13 @@
         <table class="w-full text-left text-xs">
           <thead class="bg-slate-50 text-slate-500 font-bold border-b border-slate-100">
             <tr>
-              <th class="py-3 px-4">Nome & E-mail</th>
-              <th class="py-3 px-4">Telefone</th>
-              <th class="py-3 px-4">Localização (US)</th>
-              <th class="py-3 px-4">Serviço de Interesse</th>
-              <th class="py-3 px-4">Tags & Segmentos</th>
-              <th class="py-3 px-4">Status</th>
-              <th class="py-3 px-4 text-right">Ação</th>
+              <th class="py-3 px-4">Contact Name & Email</th>
+              <th class="py-3 px-4">Phone</th>
+              <th class="py-3 px-4">Location (MA)</th>
+              <th class="py-3 px-4">Service of Interest</th>
+              <th class="py-3 px-4">Tags & Segments</th>
+              <th class="py-3 px-4">Pipeline Status</th>
+              <th class="py-3 px-4 text-right">Action</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
@@ -126,7 +126,7 @@
                 <span v-if="contact.zipCode" class="text-[10px] text-slate-400 block">ZIP: {{ contact.zipCode }}</span>
               </td>
               <td class="py-3 px-4 text-slate-600">
-                {{ contact.serviceInterested || contact.serviceType || 'Pintura Residencial' }}
+                {{ contact.serviceInterested || contact.serviceType || 'Residential Painting' }}
               </td>
               <td class="py-3 px-4">
                 <div class="flex flex-wrap gap-1">
@@ -173,32 +173,32 @@
     >
       <div class="bg-white rounded-2xl max-w-xl w-full p-6 space-y-4 shadow-2xl border border-slate-200 animate-scale-in">
         <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h3 class="text-base font-black text-slate-900">Disparar Campanha de E-mail</h3>
+          <h3 class="text-base font-black text-slate-900">Launch Email Broadcast Campaign</h3>
           <button @click="showModal = false" class="text-slate-400 hover:text-slate-600 text-lg font-bold">✕</button>
         </div>
 
         <div class="space-y-3 text-xs">
           <div>
-            <label class="block font-bold text-slate-700 mb-1">Segmento Alvo</label>
+            <label class="block font-bold text-slate-700 mb-1">Target Audience Segment</label>
             <select
               v-model="broadcastForm.segment"
               class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
             >
-              <option value="ALL">Todos os Inscritos (Total Reach)</option>
-              <option value="NOVO">Apenas Novos Leads (Sem Resposta)</option>
-              <option value="PROPOSTA">Leads com Proposta Pendente</option>
-              <option value="CONVERTIDO">Clientes Convertidos (Pós-Venda & Retenção)</option>
+              <option value="ALL">All Subscribers (Total Reach)</option>
+              <option value="NOVO">New Inbound Leads (Unresponsive)</option>
+              <option value="PROPOSTA">Leads with Pending Proposals</option>
+              <option value="CONVERTIDO">Closed Clients (Retention & Reviews)</option>
             </select>
           </div>
 
           <div>
             <div class="flex items-center justify-between mb-1">
-              <label class="block font-bold text-slate-700">Assunto do E-mail *</label>
+              <label class="block font-bold text-slate-700">Email Subject Line *</label>
               <button
                 @click="generateAIEmailContent"
                 class="text-purple-600 hover:text-purple-700 text-[11px] font-bold flex items-center gap-1"
               >
-                <span>✨ Gerar com GPT-4o</span>
+                <span>✨ Generate with GPT-4o</span>
               </button>
             </div>
             <input
@@ -210,7 +210,7 @@
           </div>
 
           <div>
-            <label class="block font-bold text-slate-700 mb-1">Conteúdo do E-mail (HTML) *</label>
+            <label class="block font-bold text-slate-700 mb-1">Email Body (HTML) *</label>
             <textarea
               v-model="broadcastForm.bodyHtml"
               rows="6"
@@ -225,14 +225,14 @@
             @click="showModal = false"
             class="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50"
           >
-            Cancelar
+            Cancel
           </button>
           <button
             @click="dispatchBroadcast"
             :disabled="broadcasting"
             class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-xs font-bold transition-all disabled:opacity-50"
           >
-            {{ broadcasting ? 'Enviando...' : 'Confirmar e Enviar Campanha' }}
+            {{ broadcasting ? 'Sending Broadcast...' : 'Confirm & Launch Campaign' }}
           </button>
         </div>
       </div>
@@ -322,18 +322,18 @@ async function dispatchBroadcast() {
       }
     })
     if (res.success) {
-      alert(`Campanha disparada com sucesso via Amazon SES para ${res.recipientsCount} contatos!`)
+      alert(`Campaign successfully dispatched via Amazon SES to ${res.recipientsCount} contacts!`)
       showModal.value = false
     }
   } catch (err) {
-    alert('Erro ao enviar campanha de e-mail.')
+    alert('Failed to send email broadcast campaign.')
   } finally {
     broadcasting.value = false
   }
 }
 
 function sendIndividualFollowup(contact) {
-  alert(`Disparando follow-up individual para ${contact.name} (${contact.email})...`)
+  alert(`Dispatching personalized follow-up to ${contact.name} (${contact.email})...`)
 }
 
 function exportCsv() {

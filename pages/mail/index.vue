@@ -7,7 +7,7 @@
         <button
           @click="sidebarCollapsed = !sidebarCollapsed"
           class="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors"
-          title="Recolher / Expandir Menu Lateral"
+          title="Toggle Sidebar"
         >
           <Menu class="w-5 h-5" />
         </button>
@@ -22,7 +22,7 @@
           <div class="flex flex-col">
             <span class="text-base font-black tracking-tight text-slate-900 leading-none">Tony's Mail</span>
             <span class="text-[9px] font-bold text-[#D7070D] uppercase tracking-wider leading-none mt-0.5">
-              Central Corporativa & CRM
+              Corporate Webmail & CRM
             </span>
           </div>
         </div>
@@ -31,7 +31,7 @@
         <NuxtLink
           to="/dashboard"
           class="ml-2 text-xs font-bold text-slate-600 hover:text-[#D7070D] bg-slate-100 hover:bg-red-50 border border-slate-200 hover:border-red-200 px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-all shadow-2xs"
-          title="Voltar ao Painel Geral de Leads e Vendas"
+          title="Return to CRM Pipeline"
         >
           <span>← CRM</span>
         </NuxtLink>
@@ -45,14 +45,14 @@
             v-model="searchQuery"
             @input="fetchEmails"
             type="text"
-            placeholder="Pesquisar por remetente, assunto, lead, orçamento ou contrato..."
+            placeholder="Search by sender, subject, lead, estimate, or contract..."
             class="w-full bg-transparent pl-3 pr-8 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none"
           />
           <button
             v-if="searchQuery"
             @click="searchQuery = ''; fetchEmails()"
             class="absolute right-3 p-1 text-slate-400 hover:text-slate-600 rounded-full transition-colors"
-            title="Limpar pesquisa"
+            title="Clear search"
           >
             <X class="w-3.5 h-3.5" />
           </button>
@@ -65,7 +65,7 @@
         <NuxtLink
           to="/dashboard/leads"
           class="p-2 hover:bg-slate-100 text-slate-600 hover:text-[#D7070D] rounded-lg transition-colors flex items-center gap-1 text-xs font-bold"
-          title="Abrir Funil de Leads"
+          title="Open Leads Pipeline"
         >
           <Users class="w-4 h-4" />
           <span class="hidden md:inline">Leads</span>
@@ -74,16 +74,16 @@
         <NuxtLink
           to="/dashboard/calendar"
           class="p-2 hover:bg-slate-100 text-slate-600 hover:text-[#D7070D] rounded-lg transition-colors flex items-center gap-1 text-xs font-bold"
-          title="Abrir Agenda de Vistorias"
+          title="Open Walkthrough Schedule"
         >
           <Calendar class="w-4 h-4" />
-          <span class="hidden md:inline">Agenda</span>
+          <span class="hidden md:inline">Calendar</span>
         </NuxtLink>
 
         <NuxtLink
           to="/settings"
           class="p-2 hover:bg-slate-100 text-slate-600 rounded-lg transition-colors"
-          title="Configurações de E-mail & SES"
+          title="Email & SES Settings"
         >
           <Settings class="w-4 h-4" />
         </NuxtLink>
@@ -108,13 +108,13 @@
               <h4 class="font-bold text-sm text-slate-900">{{ currentUser?.name || 'Tony Silva' }}</h4>
               <p class="text-xs text-slate-500 font-mono">{{ currentUser?.email || 'tony@tonyspainting.com' }}</p>
               <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider" :class="isManager ? 'bg-red-50 text-[#D7070D] border border-red-200' : 'bg-slate-100 text-slate-700'">
-                {{ isManager ? '👑 GESTOR GERAL (OWNER)' : '👤 CONSULTOR DE VENDAS' }}
+                {{ isManager ? '👑 GENERAL MANAGER (OWNER)' : '👤 SALES ESTIMATOR' }}
               </span>
             </div>
 
             <!-- Team RBAC Switcher -->
             <div class="space-y-1">
-              <span class="text-[11px] font-bold text-slate-500 uppercase">Alternar Usuário Ativo:</span>
+              <span class="text-[11px] font-bold text-slate-500 uppercase">Switch Active User:</span>
               <div class="space-y-1 max-h-40 overflow-y-auto">
                 <button
                   v-for="u in teamUsers"
@@ -131,10 +131,10 @@
 
             <div class="pt-2 border-t border-slate-100 flex gap-2">
               <NuxtLink to="/dashboard" class="flex-1 text-center bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs py-2 rounded-xl font-bold transition-colors">
-                Painel CRM
+                CRM Dashboard
               </NuxtLink>
               <button @click="showProfileMenu = false" class="flex-1 text-center bg-slate-900 hover:bg-black text-white text-xs py-2 rounded-xl font-bold transition-colors">
-                Fechar
+                Close
               </button>
             </div>
           </div>
@@ -155,28 +155,28 @@
             @click="openComposeModal"
             class="flex items-center gap-3 bg-[#D7070D] hover:bg-[#B0050A] text-white font-bold text-sm py-3.5 rounded-2xl transition-all shadow-md shadow-red-950/20 active:scale-95"
             :class="sidebarCollapsed ? 'px-3 justify-center' : 'px-5 w-full'"
-            title="Escrever Novo E-mail"
+            title="Compose New Email"
           >
             <PenSquare class="w-5 h-5 shrink-0 text-white" />
-            <span v-if="!sidebarCollapsed" class="tracking-wide">Nova Mensagem</span>
+            <span v-if="!sidebarCollapsed" class="tracking-wide">Compose</span>
           </button>
 
           <!-- Core Mailbox Folders -->
           <nav class="space-y-0.5 text-xs font-semibold text-slate-700">
             <span v-if="!sidebarCollapsed" class="block px-3 py-1 text-[10px] font-black uppercase tracking-wider text-slate-400">
-              Mensagens
+              Messages
             </span>
 
-            <!-- Caixa de Entrada -->
+            <!-- Inbox -->
             <button
               @click="setFolder('INBOX')"
               class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all text-left"
               :class="activeFolder === 'INBOX' ? 'bg-[#D7070D] text-white font-bold shadow-xs' : 'hover:bg-slate-200/70 text-slate-700'"
-              title="Caixa de Entrada Principal"
+              title="Inbox"
             >
               <div class="flex items-center gap-3">
                 <Inbox class="w-4 h-4 shrink-0" :class="activeFolder === 'INBOX' ? 'text-white' : 'text-slate-500'" />
-                <span v-if="!sidebarCollapsed">Caixa de Entrada</span>
+                <span v-if="!sidebarCollapsed">Inbox</span>
               </div>
               <span
                 v-if="!sidebarCollapsed && stats.inboxUnread > 0"
@@ -187,71 +187,71 @@
               </span>
             </button>
 
-            <!-- Com Estrela (Prioritários) -->
+            <!-- Starred Messages -->
             <button
               @click="setFolder('STARRED')"
               class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl transition-all text-left"
               :class="activeFolder === 'STARRED' ? 'bg-[#D7070D] text-white font-bold shadow-xs' : 'hover:bg-slate-200/70 text-slate-700'"
-              title="Mensagens com Estrela"
+              title="Starred Messages"
             >
               <div class="flex items-center gap-3">
                 <Star class="w-4 h-4 shrink-0" :class="activeFolder === 'STARRED' ? 'text-white' : 'text-amber-500'" />
-                <span v-if="!sidebarCollapsed">Com Estrela</span>
+                <span v-if="!sidebarCollapsed">Starred</span>
               </div>
               <span v-if="!sidebarCollapsed && stats.starredTotal" class="text-[10px] opacity-80 font-mono">
                 {{ stats.starredTotal }}
               </span>
             </button>
 
-            <!-- Enviados -->
+            <!-- Sent Messages -->
             <button
               @click="setFolder('SENT')"
               class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl transition-all text-left"
               :class="activeFolder === 'SENT' ? 'bg-[#D7070D] text-white font-bold shadow-xs' : 'hover:bg-slate-200/70 text-slate-700'"
-              title="Mensagens Enviadas"
+              title="Sent Messages"
             >
               <div class="flex items-center gap-3">
                 <Send class="w-4 h-4 shrink-0" :class="activeFolder === 'SENT' ? 'text-white' : 'text-slate-500'" />
-                <span v-if="!sidebarCollapsed">Enviados</span>
+                <span v-if="!sidebarCollapsed">Sent</span>
               </div>
               <span v-if="!sidebarCollapsed && stats.sentTotal" class="text-[10px] opacity-80 font-mono">
                 {{ stats.sentTotal }}
               </span>
             </button>
 
-            <!-- Rascunhos -->
+            <!-- Saved Drafts -->
             <button
               @click="setFolder('DRAFTS')"
               class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl transition-all text-left"
               :class="activeFolder === 'DRAFTS' ? 'bg-[#D7070D] text-white font-bold shadow-xs' : 'hover:bg-slate-200/70 text-slate-700'"
-              title="Rascunhos Salvos"
+              title="Saved Drafts"
             >
               <div class="flex items-center gap-3">
                 <FileText class="w-4 h-4 shrink-0" :class="activeFolder === 'DRAFTS' ? 'text-white' : 'text-slate-500'" />
-                <span v-if="!sidebarCollapsed">Rascunhos</span>
+                <span v-if="!sidebarCollapsed">Drafts</span>
               </div>
               <span v-if="!sidebarCollapsed && stats.draftsTotal" class="text-[10px] opacity-80 font-mono">
                 {{ stats.draftsTotal }}
               </span>
             </button>
 
-            <!-- Lixeira -->
+            <!-- Trash -->
             <button
               @click="setFolder('TRASH')"
               class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl transition-all text-left"
               :class="activeFolder === 'TRASH' ? 'bg-[#D7070D] text-white font-bold shadow-xs' : 'hover:bg-slate-200/70 text-slate-700'"
-              title="Lixeira"
+              title="Trash"
             >
               <div class="flex items-center gap-3">
                 <Trash2 class="w-4 h-4 shrink-0" :class="activeFolder === 'TRASH' ? 'text-white' : 'text-slate-500'" />
-                <span v-if="!sidebarCollapsed">Lixeira</span>
+                <span v-if="!sidebarCollapsed">Trash</span>
               </div>
             </button>
 
-            <!-- ---------------- SEÇÃO CRM TONY'S (INTEGRADA E FUNCIONAL) ---------------- -->
+            <!-- ---------------- TONY'S CRM PIPELINE FOLDERS ---------------- -->
             <div class="pt-3">
               <span v-if="!sidebarCollapsed" class="block px-3 py-1 text-[10px] font-black uppercase tracking-wider text-slate-400">
-                Central de Leads & Vendas
+                CRM Leads & Pipeline Folders
               </span>
 
               <!-- Leads Ativos -->
@@ -259,11 +259,11 @@
                 @click="setFolder('CRM_LEADS')"
                 class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl transition-all text-left"
                 :class="activeFolder === 'CRM_LEADS' ? 'bg-[#D7070D] text-white font-bold shadow-xs' : 'hover:bg-slate-200/70 text-slate-700'"
-                title="E-mails associados a Leads do CRM"
+                title="Emails linked to CRM Leads"
               >
                 <div class="flex items-center gap-3">
                   <Users class="w-4 h-4 shrink-0" :class="activeFolder === 'CRM_LEADS' ? 'text-white' : 'text-blue-600'" />
-                  <span v-if="!sidebarCollapsed">Leads Vinculados</span>
+                  <span v-if="!sidebarCollapsed">Linked Leads</span>
                 </div>
                 <span
                   v-if="!sidebarCollapsed"
@@ -274,16 +274,16 @@
                 </span>
               </button>
 
-              <!-- Orçamentos & Vistorias -->
+              <!-- Estimates & Walkthroughs -->
               <button
                 @click="setFolder('CRM_ESTIMATES')"
                 class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl transition-all text-left"
                 :class="activeFolder === 'CRM_ESTIMATES' ? 'bg-[#D7070D] text-white font-bold shadow-xs' : 'hover:bg-slate-200/70 text-slate-700'"
-                title="E-mails sobre Orçamentos e Vistorias"
+                title="Estimates & Walkthroughs"
               >
                 <div class="flex items-center gap-3">
                   <ClipboardCheck class="w-4 h-4 shrink-0" :class="activeFolder === 'CRM_ESTIMATES' ? 'text-white' : 'text-emerald-600'" />
-                  <span v-if="!sidebarCollapsed">Orçamentos & Vistorias</span>
+                  <span v-if="!sidebarCollapsed">Estimates & Walkthroughs</span>
                 </div>
                 <span
                   v-if="!sidebarCollapsed && stats.crmEstimatesTotal"
@@ -299,11 +299,11 @@
                 @click="setFolder('CRM_CONTRACTS')"
                 class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl transition-all text-left"
                 :class="activeFolder === 'CRM_CONTRACTS' ? 'bg-[#D7070D] text-white font-bold shadow-xs' : 'hover:bg-slate-200/70 text-slate-700'"
-                title="Contratos e Assinaturas Legais"
+                title="HIC Contracts & Legal Signatures"
               >
                 <div class="flex items-center gap-3">
                   <Building2 class="w-4 h-4 shrink-0" :class="activeFolder === 'CRM_CONTRACTS' ? 'text-white' : 'text-amber-600'" />
-                  <span v-if="!sidebarCollapsed">Contratos HIC</span>
+                  <span v-if="!sidebarCollapsed">HIC Contracts</span>
                 </div>
                 <span
                   v-if="!sidebarCollapsed && stats.crmContractsTotal"
@@ -319,11 +319,11 @@
                 @click="setFolder('CRM_PAYMENTS')"
                 class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl transition-all text-left"
                 :class="activeFolder === 'CRM_PAYMENTS' ? 'bg-[#D7070D] text-white font-bold shadow-xs' : 'hover:bg-slate-200/70 text-slate-700'"
-                title="Depósitos e Pagamentos Stripe"
+                title="Stripe Deposits"
               >
                 <div class="flex items-center gap-3">
                   <DollarSign class="w-4 h-4 shrink-0" :class="activeFolder === 'CRM_PAYMENTS' ? 'text-white' : 'text-teal-600'" />
-                  <span v-if="!sidebarCollapsed">Depósitos Stripe</span>
+                  <span v-if="!sidebarCollapsed">Stripe Deposits</span>
                 </div>
                 <span
                   v-if="!sidebarCollapsed && stats.crmPaymentsTotal"
@@ -338,7 +338,7 @@
             <!-- ---------------- ATALHOS EXTERNOS DO SISTEMA ---------------- -->
             <div v-if="!sidebarCollapsed" class="pt-3 border-t border-slate-200">
               <span class="block px-3 py-1 text-[10px] font-black uppercase tracking-wider text-slate-400">
-                Atalhos do Sistema
+                Quick Shortcuts
               </span>
 
               <NuxtLink
@@ -346,7 +346,7 @@
                 class="w-full flex items-center gap-3 px-3.5 py-1.5 rounded-xl hover:bg-slate-200/70 text-slate-600 hover:text-slate-900 transition-colors text-xs"
               >
                 <span>🎯</span>
-                <span>Kanban de Leads</span>
+                <span>Leads Kanban</span>
               </NuxtLink>
 
               <NuxtLink
@@ -354,7 +354,7 @@
                 class="w-full flex items-center gap-3 px-3.5 py-1.5 rounded-xl hover:bg-slate-200/70 text-slate-600 hover:text-slate-900 transition-colors text-xs"
               >
                 <span>📅</span>
-                <span>Agenda de Vistorias</span>
+                <span>Walkthrough Calendar</span>
               </NuxtLink>
 
               <NuxtLink
@@ -362,7 +362,7 @@
                 class="w-full flex items-center gap-3 px-3.5 py-1.5 rounded-xl hover:bg-slate-200/70 text-slate-600 hover:text-slate-900 transition-colors text-xs"
               >
                 <span>📊</span>
-                <span>Métricas de Tráfego & Ads</span>
+                <span>Ads & Analytics</span>
               </NuxtLink>
             </div>
           </nav>
@@ -373,12 +373,12 @@
           <div class="flex items-center justify-between font-bold text-slate-800">
             <span class="flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Amazon SES Corporativo</span>
+              <span>Corporate Amazon SES</span>
             </span>
-            <span class="text-emerald-700 font-bold text-[10px]">Ativo</span>
+            <span class="text-emerald-700 font-bold text-[10px]">Active</span>
           </div>
           <p class="text-slate-500 text-[10px] leading-tight">
-            Servidor oficial conectado para <strong>@tonyspainting.com</strong>.
+            Official mail server active for <strong>@tonyspainting.com</strong>.
           </p>
         </div>
       </aside>
@@ -393,23 +393,23 @@
               <button
                 @click="selectedEmail = null"
                 class="p-2 hover:bg-slate-200 rounded-lg text-slate-700 transition-colors flex items-center gap-1.5 text-xs font-bold"
-                title="Voltar para a lista"
+                title="Back to list"
               >
                 <ArrowLeft class="w-4 h-4" />
-                <span>Voltar</span>
+                <span>Back</span>
               </button>
 
               <div class="h-5 w-px bg-slate-300 mx-1"></div>
 
-              <button @click="toggleStar(selectedEmail)" class="p-2 hover:bg-slate-200 rounded-lg text-slate-700 transition-colors" :title="selectedEmail.starred ? 'Remover estrela' : 'Marcar com estrela'">
+              <button @click="toggleStar(selectedEmail)" class="p-2 hover:bg-slate-200 rounded-lg text-slate-700 transition-colors" :title="selectedEmail.starred ? 'Unstar' : 'Star'">
                 <Star class="w-4 h-4" :class="selectedEmail.starred ? 'text-amber-500 fill-amber-500' : 'text-slate-400'" />
               </button>
 
-              <button @click="toggleRead(selectedEmail)" class="p-2 hover:bg-slate-200 rounded-lg text-slate-700 transition-colors" :title="selectedEmail.read ? 'Marcar como não lido' : 'Marcar como lido'">
+              <button @click="toggleRead(selectedEmail)" class="p-2 hover:bg-slate-200 rounded-lg text-slate-700 transition-colors" :title="selectedEmail.read ? 'Mark as unread' : 'Mark as read'">
                 <Mail class="w-4 h-4" />
               </button>
 
-              <button @click="deleteEmail(selectedEmail.id)" class="p-2 hover:bg-red-50 text-slate-700 hover:text-red-600 rounded-lg transition-colors" title="Excluir mensagem">
+              <button @click="deleteEmail(selectedEmail.id)" class="p-2 hover:bg-red-50 text-slate-700 hover:text-red-600 rounded-lg transition-colors" title="Delete message">
                 <Trash2 class="w-4 h-4" />
               </button>
             </div>
@@ -423,7 +423,7 @@
                 class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors shadow-2xs"
               >
                 <UserPlus class="w-3.5 h-3.5" />
-                <span>{{ convertingLead ? 'Convertendo...' : 'Converter em Lead no CRM' }}</span>
+                <span>{{ convertingLead ? 'Converting...' : 'Convert to CRM Lead' }}</span>
               </button>
               <span class="text-xs text-slate-400 font-mono">
                 {{ new Date(selectedEmail.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
@@ -441,10 +441,10 @@
                 </h1>
                 <div class="flex flex-wrap items-center gap-2 pt-1">
                   <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
-                    Pasta: {{ selectedEmail.folder || 'Caixa de Entrada' }}
+                    Folder: {{ selectedEmail.folder || 'Inbox' }}
                   </span>
                   <span v-if="selectedEmail.lead" class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
-                    <span>🎯 Lead Vinculado:</span>
+                    <span>🎯 Linked Lead:</span>
                     <strong>{{ selectedEmail.lead.name }}</strong> ({{ selectedEmail.lead.city || 'MA' }})
                   </span>
                 </div>
@@ -459,16 +459,16 @@
             >
               <div class="space-y-1.5">
                 <div class="flex items-center gap-2.5">
-                  <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Cliente CRM:</span>
+                  <span class="text-xs font-bold uppercase tracking-wider text-slate-400">CRM Client:</span>
                   <span class="font-black text-base text-white">{{ selectedEmail.lead.name }}</span>
                   <span class="text-[10px] bg-red-600 text-white px-2.5 py-0.5 rounded-full font-bold uppercase">
                     {{ selectedEmail.lead.status }}
                   </span>
                 </div>
                 <p class="text-xs text-slate-300">
-                  <strong>Serviço:</strong> {{ selectedEmail.lead.serviceInterested || 'Pintura Residencial' }} •
-                  <strong>Local:</strong> {{ selectedEmail.lead.city || 'Greater Boston' }} •
-                  <strong>Valor Estimado:</strong> ${{ selectedEmail.lead.dealValue ? selectedEmail.lead.dealValue.toLocaleString('en-US') : '8,500' }}
+                  <strong>Service / Scope:</strong> {{ selectedEmail.lead.serviceInterested || 'Residential Painting' }} •
+                  <strong>Location:</strong> {{ selectedEmail.lead.city || 'Greater Boston' }} •
+                  <strong>Estimated Value:</strong> ${{ selectedEmail.lead.dealValue ? selectedEmail.lead.dealValue.toLocaleString('en-US') : '8,500' }}
                 </p>
                 <p v-if="selectedEmail.lead.phone" class="text-xs text-slate-400 font-mono">
                   📞 {{ selectedEmail.lead.phone }}
@@ -480,14 +480,14 @@
                   to="/dashboard/leads"
                   class="bg-white hover:bg-slate-100 text-slate-900 px-3.5 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-sm"
                 >
-                  <span>Abrir no Funil</span>
+                  <span>View in Pipeline</span>
                   <ExternalLink class="w-3.5 h-3.5" />
                 </NuxtLink>
                 <NuxtLink
                   to="/dashboard/calendar"
                   class="bg-[#D7070D] hover:bg-[#B0050A] text-white px-3.5 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-sm"
                 >
-                  <span>Agendar Vistoria</span>
+                  <span>Schedule Walkthrough</span>
                   <Calendar class="w-3.5 h-3.5" />
                 </NuxtLink>
               </div>
@@ -499,9 +499,9 @@
               class="p-4 bg-amber-50 rounded-2xl border border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-amber-900 text-xs"
             >
               <div class="space-y-0.5">
-                <span class="font-bold block text-sm">Este remetente ainda não é um lead cadastrado no CRM.</span>
+                <span class="font-bold block text-sm">This sender is not yet registered as a CRM lead.</span>
                 <p class="text-amber-800">
-                  Transforme esta mensagem em uma oportunidade no funil de vendas com 1 clique para acompanhar propostas e vistorias.
+                  Convert this message into a pipeline opportunity with 1 click to track walkthroughs and estimates.
                 </p>
               </div>
               <button
@@ -510,7 +510,7 @@
                 class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 shrink-0 transition-all shadow-xs"
               >
                 <UserPlus class="w-4 h-4" />
-                <span>{{ convertingLead ? 'Cadastrando Lead...' : '➕ Converter em Lead no CRM' }}</span>
+                <span>{{ convertingLead ? 'Registering Lead...' : '➕ Convert to CRM Lead' }}</span>
               </button>
             </div>
 
@@ -525,7 +525,7 @@
                     <span class="font-bold text-sm text-slate-900">{{ selectedEmail.from }}</span>
                   </div>
                   <div class="text-xs text-slate-500 flex items-center gap-1">
-                    <span>Para: {{ selectedEmail.to }}</span>
+                    <span>To: {{ selectedEmail.to }}</span>
                   </div>
                 </div>
               </div>
@@ -546,9 +546,9 @@
                 <div class="flex items-center justify-between text-xs font-bold text-slate-900">
                   <span class="flex items-center gap-1.5 text-[#D7070D]">
                     <Sparkles class="w-4 h-4" />
-                    <span>Copiloto de Vendas Tony's Painting (IA):</span>
+                    <span>Tony's Sales AI Copilot:</span>
                   </span>
-                  <span class="text-[10px] text-slate-500 font-normal">Clique para gerar resposta comercial pronta</span>
+                  <span class="text-[10px] text-slate-500 font-normal">Click to generate one-click commercial responses</span>
                 </div>
 
                 <div class="flex flex-wrap gap-2">
@@ -557,21 +557,21 @@
                     :disabled="generatingAI"
                     class="bg-white hover:bg-red-50 text-slate-800 hover:text-[#D7070D] text-xs font-semibold px-3 py-1.5 rounded-xl border border-slate-200 hover:border-red-200 transition-all shadow-2xs flex items-center gap-1"
                   >
-                    <span>📄 Orçamento de Pintura & Garantia 5 Anos</span>
+                    <span>📄 Painting Estimate & 5-Year Warranty</span>
                   </button>
                   <button
                     @click="generateAIReply('schedule_estimate')"
                     :disabled="generatingAI"
                     class="bg-white hover:bg-red-50 text-slate-800 hover:text-[#D7070D] text-xs font-semibold px-3 py-1.5 rounded-xl border border-slate-200 hover:border-red-200 transition-all shadow-2xs flex items-center gap-1"
                   >
-                    <span>📅 Confirmar Vistoria no Local (Newton/MA)</span>
+                    <span>📅 Confirm On-Site Walkthrough (MA)</span>
                   </button>
                   <button
                     @click="generateAIReply('friendly_followup')"
                     :disabled="generatingAI"
                     class="bg-white hover:bg-red-50 text-slate-800 hover:text-[#D7070D] text-xs font-semibold px-3 py-1.5 rounded-xl border border-slate-200 hover:border-red-200 transition-all shadow-2xs flex items-center gap-1"
                   >
-                    <span>✍️ Contrato HIC & Depósito 1/3 (Lei MA)</span>
+                    <span>✍️ HIC Agreement & 1/3 Deposit (MA Law)</span>
                   </button>
                 </div>
               </div>
@@ -580,13 +580,13 @@
               <div class="border border-slate-300 rounded-2xl p-4 bg-white shadow-xs space-y-3">
                 <div class="flex items-center gap-2 text-xs text-slate-500">
                   <Reply class="w-4 h-4 text-slate-600" />
-                  <span>Responder para <strong>{{ selectedEmail.from }}</strong></span>
+                  <span>Reply to <strong>{{ selectedEmail.from }}</strong></span>
                 </div>
 
                 <textarea
                   v-model="replyText"
                   rows="4"
-                  placeholder="Escreva sua resposta corporativa ou use o Copiloto IA acima..."
+                  placeholder="Write your commercial response or use the Sales AI Copilot above..."
                   class="w-full text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none resize-y"
                 ></textarea>
 
@@ -596,12 +596,12 @@
                     :disabled="sendingReply || !replyText.trim()"
                     class="bg-[#D7070D] hover:bg-[#B0050A] text-white px-5 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition-colors disabled:opacity-50 shadow-xs"
                   >
-                    <span>{{ sendingReply ? 'Enviando...' : 'Enviar Resposta' }}</span>
+                    <span>{{ sendingReply ? 'Sending...' : 'Send Reply' }}</span>
                     <Send class="w-3.5 h-3.5" />
                   </button>
 
                   <div class="flex items-center gap-2 text-slate-400">
-                    <button class="p-1.5 hover:bg-slate-100 rounded-full" @click="replyText = ''" title="Limpar"><Trash2 class="w-4 h-4" /></button>
+                    <button class="p-1.5 hover:bg-slate-100 rounded-full" @click="replyText = ''" title="Clear"><Trash2 class="w-4 h-4" /></button>
                   </div>
                 </div>
               </div>
@@ -618,10 +618,10 @@
               <button
                 @click="toggleSelectAll"
                 class="p-2 hover:bg-slate-200 rounded-lg text-slate-700 transition-colors flex items-center gap-1.5"
-                title="Desmarcar todos"
+                title="Deselect all"
               >
                 <CheckSquare class="w-4 h-4 text-[#D7070D]" />
-                <span class="text-xs font-black text-slate-900">{{ selectedEmailIds.length }} selecionado(s)</span>
+                <span class="text-xs font-black text-slate-900">{{ selectedEmailIds.length }} selected</span>
               </button>
 
               <div class="h-5 w-px bg-slate-300 mx-0.5"></div>
@@ -630,27 +630,27 @@
               <button
                 @click="bulkDeleteSelected"
                 class="flex items-center gap-1.5 px-3 py-1.5 bg-[#D7070D] hover:bg-[#B0050A] text-white rounded-xl text-xs font-black transition-all shadow-sm active:scale-95 cursor-pointer"
-                title="Excluir todas as mensagens selecionadas de uma vez só"
+                title="Delete all selected messages"
               >
                 <Trash2 class="w-4 h-4 text-white" />
-                <span>Excluir Selecionados</span>
+                <span>Delete Selected</span>
               </button>
 
               <!-- Bulk Mark As Read -->
               <button
                 @click="bulkMarkRead(true)"
                 class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl text-xs font-bold transition-colors"
-                title="Marcar todos os selecionados como lidos"
+                title="Mark all selected as read"
               >
                 <Mail class="w-3.5 h-3.5 text-slate-600" />
-                <span class="hidden sm:inline">Marcar como Lido</span>
+                <span class="hidden sm:inline">Mark as Read</span>
               </button>
 
               <button
                 @click="selectedEmailIds = []"
                 class="text-xs text-slate-500 hover:text-slate-800 font-bold px-2 py-1 transition-colors"
               >
-                Desmarcar
+                Deselect
               </button>
             </div>
 
@@ -659,7 +659,7 @@
               <button
                 @click="toggleSelectAll"
                 class="p-2 hover:bg-slate-200 rounded-lg text-slate-600 transition-colors flex items-center gap-1"
-                title="Selecionar todos os e-mails"
+                title="Select all emails"
               >
                 <Square class="w-4 h-4 text-slate-500" />
               </button>
@@ -668,7 +668,7 @@
                 @click="fetchEmails"
                 :disabled="loading"
                 class="p-2 hover:bg-slate-200 rounded-lg text-slate-600 transition-colors"
-                title="Atualizar mensagens"
+                title="Refresh messages"
               >
                 <RotateCw class="w-4 h-4" :class="{ 'animate-spin': loading }" />
               </button>
@@ -680,39 +680,39 @@
                   class="px-2.5 py-1 rounded-lg text-xs font-bold transition-colors"
                   :class="activeFilterChip === 'ALL' ? 'bg-[#D7070D] text-white' : 'bg-slate-200/80 text-slate-700 hover:bg-slate-300'"
                 >
-                  Todas
+                  All
                 </button>
                 <button
                   @click="setFolder('CRM_LEADS')"
                   class="px-2.5 py-1 rounded-lg text-xs font-bold transition-colors"
                   :class="activeFolder === 'CRM_LEADS' ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-800 hover:bg-blue-100'"
                 >
-                  🎯 Com Lead CRM
+                  🎯 Linked Leads
                 </button>
                 <button
                   @click="setFolder('CRM_ESTIMATES')"
                   class="px-2.5 py-1 rounded-lg text-xs font-bold transition-colors"
                   :class="activeFolder === 'CRM_ESTIMATES' ? 'bg-emerald-600 text-white' : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100'"
                 >
-                  📋 Orçamentos
+                  📋 Estimates
                 </button>
               </div>
             </div>
 
             <!-- Right Controls: Pagination & Summary -->
             <div class="flex items-center gap-3 text-xs text-slate-500 font-mono">
-              <span>{{ emails.length }} mensagens</span>
+              <span>{{ emails.length }} messages</span>
             </div>
           </div>
 
           <!-- Email Rows List -->
           <div class="flex-1 overflow-y-auto divide-y divide-slate-100 bg-white">
             <div v-if="loading" class="p-12 text-center text-sm text-slate-400">
-              Sincronizando mensagens do servidor corporativo...
+              Syncing messages from corporate mail server...
             </div>
 
             <div v-else-if="emails.length === 0" class="p-16 text-center text-sm text-slate-400 italic">
-              Nenhuma mensagem encontrada nesta pasta do CRM.
+              No messages found in this CRM mailbox.
             </div>
 
             <!-- Individual Email Row -->
@@ -781,10 +781,10 @@
               <div class="shrink-0 flex items-center justify-end text-xs text-slate-500 w-28 text-right">
                 <!-- Hover Action Icons -->
                 <div class="hidden group-hover:flex items-center gap-1 text-slate-600 -mr-1" @click.stop>
-                  <button @click="deleteEmail(mail.id)" class="p-1.5 hover:bg-slate-200 rounded-lg" title="Excluir">
+                  <button @click="deleteEmail(mail.id)" class="p-1.5 hover:bg-slate-200 rounded-lg" title="Delete">
                     <Trash2 class="w-3.5 h-3.5" />
                   </button>
-                  <button @click="toggleRead(mail)" class="p-1.5 hover:bg-slate-200 rounded-lg" :title="mail.read ? 'Marcar como não lida' : 'Marcar como lida'">
+                  <button @click="toggleRead(mail)" class="p-1.5 hover:bg-slate-200 rounded-lg" :title="mail.read ? 'Mark as unread' : 'Mark as read'">
                     <Mail class="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -806,7 +806,7 @@
           <NuxtLink
             to="/dashboard/calendar"
             class="w-10 h-10 rounded-xl hover:bg-slate-200 flex items-center justify-center transition-colors text-slate-700 hover:text-[#D7070D]"
-            title="Agenda de Vistorias"
+            title="Walkthrough Calendar"
           >
             <Calendar class="w-5 h-5" />
           </NuxtLink>
@@ -815,7 +815,7 @@
           <NuxtLink
             to="/dashboard/leads"
             class="w-10 h-10 rounded-xl hover:bg-slate-200 flex items-center justify-center transition-colors text-slate-700 hover:text-[#D7070D]"
-            title="Kanban de Leads"
+            title="Leads Pipeline"
           >
             <Users class="w-5 h-5" />
           </NuxtLink>
@@ -824,7 +824,7 @@
           <NuxtLink
             to="/dashboard"
             class="w-10 h-10 rounded-xl hover:bg-slate-200 flex items-center justify-center transition-colors text-slate-700 hover:text-[#D7070D]"
-            title="Painel Geral"
+            title="CRM Dashboard"
           >
             <Building2 class="w-5 h-5" />
           </NuxtLink>
@@ -851,13 +851,13 @@
             <img src="/emblem.png" alt="Tony's Remodeling" class="w-8 h-8 rounded-full object-contain border border-slate-700 bg-white" />
             <div>
               <div class="flex items-center gap-2">
-                <span class="text-sm font-black tracking-wide uppercase text-white">Nova Mensagem Corporativa</span>
+                <span class="text-sm font-black tracking-wide uppercase text-white">New Corporate Message</span>
                 <span class="text-[10px] bg-red-600/30 text-red-300 border border-red-500/30 px-2 py-0.5 rounded-full font-mono font-semibold">
                   Amazon SES
                 </span>
               </div>
               <p class="text-[10px] text-slate-400 font-mono">
-                Remetente: {{ currentUser?.name || 'Tony Silva' }} &lt;{{ currentUser?.email || 'tony@tonyspainting.com' }}&gt;
+                From: {{ currentUser?.name || 'Tony Silva' }} &lt;{{ currentUser?.email || 'tony@tonyspainting.com' }}&gt;
               </p>
             </div>
           </div>
@@ -866,7 +866,7 @@
             <button
               @click="showComposeModal = false"
               class="p-2 hover:bg-slate-800 rounded-xl text-slate-400 hover:text-white transition-colors"
-              title="Fechar (Esc)"
+              title="Close (Esc)"
             >
               <X class="w-5 h-5" />
             </button>
@@ -878,11 +878,11 @@
           <!-- Recipient Row -->
           <div class="flex flex-col sm:flex-row sm:items-center gap-2">
             <div class="flex items-center gap-2 flex-1">
-              <span class="text-slate-400 w-16 font-bold uppercase text-[10px] shrink-0">Para:</span>
+              <span class="text-slate-400 w-16 font-bold uppercase text-[10px] shrink-0">To:</span>
               <input
                 v-model="composeForm.to"
                 type="email"
-                placeholder="cliente@exemplo.com ou selecione um lead do CRM ao lado"
+                placeholder="client@example.com or select a CRM lead on the right"
                 class="flex-1 bg-white px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#D7070D] focus:ring-2 focus:ring-[#D7070D]/20 focus:outline-none text-slate-900 font-semibold"
               />
             </div>
@@ -895,7 +895,7 @@
                 class="px-3.5 py-2.5 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl text-slate-700 text-xs font-bold flex items-center gap-2 transition-colors shadow-2xs shrink-0"
               >
                 <Users class="w-4 h-4 text-blue-600" />
-                <span>{{ selectedLeadForCompose ? selectedLeadForCompose.name : 'Vincular Lead do CRM' }}</span>
+                <span>{{ selectedLeadForCompose ? selectedLeadForCompose.name : 'Link CRM Lead' }}</span>
                 <ChevronDown class="w-3.5 h-3.5 text-slate-400" />
               </button>
 
@@ -905,7 +905,7 @@
                 class="absolute right-0 top-12 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-2 z-50 space-y-1 max-h-60 overflow-y-auto"
               >
                 <div class="px-2 py-1 text-[10px] font-black uppercase text-slate-400 tracking-wider">
-                  Leads Ativos no CRM:
+                  Active CRM Leads:
                 </div>
                 <button
                   v-for="l in crmLeads"
@@ -916,7 +916,7 @@
                 >
                   <div class="truncate mr-2">
                     <span class="font-bold block truncate">{{ l.name }}</span>
-                    <span class="text-[10px] text-slate-400 font-mono">{{ l.email || 'Sem e-mail' }}</span>
+                    <span class="text-[10px] text-slate-400 font-mono">{{ l.email || 'No email provided' }}</span>
                   </div>
                   <span class="text-[9px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 shrink-0 font-mono">
                     {{ l.city || 'MA' }}
@@ -928,11 +928,11 @@
 
           <!-- Subject Row -->
           <div class="flex items-center gap-2">
-            <span class="text-slate-400 w-16 font-bold uppercase text-[10px] shrink-0">Assunto:</span>
+            <span class="text-slate-400 w-16 font-bold uppercase text-[10px] shrink-0">Subject:</span>
             <input
               v-model="composeForm.subject"
               type="text"
-              placeholder="Ex: Proposta de Pintura Residencial & Termos de Garantia de 5 Anos"
+              placeholder="e.g. Formal Painting Estimate & 5-Year Warranty Terms"
               class="flex-1 bg-white px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#D7070D] focus:ring-2 focus:ring-[#D7070D]/20 focus:outline-none text-slate-900 font-bold"
             />
           </div>
@@ -942,7 +942,7 @@
         <div class="px-6 py-2.5 bg-red-50/70 border-b border-red-100 flex flex-wrap items-center justify-between gap-2 text-xs">
           <span class="font-bold text-slate-900 flex items-center gap-1.5">
             <Sparkles class="w-4 h-4 text-[#D7070D]" />
-            <span>Copiloto de Vendas Tony's (IA):</span>
+            <span>Tony's Sales AI Copilot:</span>
           </span>
           <div class="flex flex-wrap gap-1.5">
             <button
@@ -950,21 +950,21 @@
               :disabled="aiDrafting"
               class="bg-white hover:bg-red-50 text-slate-800 hover:text-[#D7070D] px-3 py-1 rounded-lg font-bold border border-slate-200 hover:border-red-200 transition-colors shadow-2xs"
             >
-              📄 Orçamento & Garantia 5 Anos
+              📄 Estimate & 5-Yr Warranty
             </button>
             <button
               @click="aiDraftEmail('inspection')"
               :disabled="aiDrafting"
               class="bg-white hover:bg-red-50 text-slate-800 hover:text-[#D7070D] px-3 py-1 rounded-lg font-bold border border-slate-200 hover:border-red-200 transition-colors shadow-2xs"
             >
-              📅 Confirmar Vistoria no Local
+              📅 Confirm On-Site Walkthrough
             </button>
             <button
               @click="aiDraftEmail('hic_contract')"
               :disabled="aiDrafting"
               class="bg-white hover:bg-red-50 text-slate-800 hover:text-[#D7070D] px-3 py-1 rounded-lg font-bold border border-slate-200 hover:border-red-200 transition-colors shadow-2xs"
             >
-              ✍️ Contrato MA HIC & Depósito 1/3
+              ✍️ MA HIC Contract & 1/3 Deposit
             </button>
           </div>
         </div>
@@ -974,7 +974,7 @@
           <textarea
             v-model="composeForm.bodyHtml"
             rows="12"
-            placeholder="Escreva sua mensagem profissional com os detalhes do projeto, escopo de trabalho ou orientações ao cliente..."
+            placeholder="Write your professional message with project details, scope of work, or client instructions..."
             class="w-full flex-1 min-h-[260px] sm:min-h-[340px] text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none resize-y leading-relaxed font-sans"
           ></textarea>
         </div>
@@ -987,7 +987,7 @@
               :disabled="sending"
               class="w-full sm:w-auto bg-gradient-to-r from-[#D7070D] to-[#B0050A] hover:from-[#B0050A] hover:to-[#900408] text-white text-xs font-black uppercase tracking-wider px-7 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 shadow-md shadow-red-950/25 active:scale-95"
             >
-              <span>{{ sending ? 'Disparando Mensagem via SES...' : 'Enviar Mensagem' }}</span>
+              <span>{{ sending ? 'Dispatching via Amazon SES...' : 'Send Message' }}</span>
               <Send class="w-4 h-4" />
             </button>
 
@@ -996,12 +996,12 @@
               type="button"
               class="px-4 py-3 rounded-xl hover:bg-slate-200 text-slate-600 hover:text-slate-900 text-xs font-bold transition-colors"
             >
-              Descartar
+              Discard
             </button>
           </div>
 
           <div class="text-[11px] text-slate-400 flex items-center gap-2 font-mono">
-            <span>🔒 Criptografia TLS • DKIM @tonyspainting.com</span>
+            <span>🔒 TLS Encryption • DKIM Verified @tonyspainting.com</span>
           </div>
         </div>
       </div>
@@ -1119,7 +1119,7 @@ async function fetchCrmLeads() {
       crmLeads.value = res.leads
     }
   } catch (err) {
-    console.error('Erro ao carregar leads para o seletor:', err)
+    console.error('Failed to load leads for selector:', err)
   }
 }
 
@@ -1139,7 +1139,7 @@ async function fetchEmails() {
       }
     }
   } catch (err) {
-    console.error('Erro ao buscar e-mails corporativos:', err)
+    console.error('Failed to fetch corporate emails:', err)
   } finally {
     loading.value = false
   }
@@ -1171,7 +1171,7 @@ async function toggleStar(mail) {
       stats.value.starredTotal = Math.max(0, stats.value.starredTotal - 1)
     }
   } catch (err) {
-    console.error('Erro ao favoritar e-mail:', err)
+    console.error('Failed to star email:', err)
   }
 }
 
@@ -1187,7 +1187,7 @@ async function toggleRead(mail, forceRead = null) {
       stats.value.inboxUnread = Math.max(0, stats.value.inboxUnread - 1)
     }
   } catch (err) {
-    console.error('Erro ao atualizar status de leitura:', err)
+    console.error('Failed to update read status:', err)
   }
 }
 
@@ -1211,7 +1211,7 @@ async function bulkDeleteSelected() {
   if (selectedEmailIds.value.length === 0) return
 
   const count = selectedEmailIds.value.length
-  const confirmMsg = `Deseja realmente excluir as ${count} mensagem(ns) selecionada(s)?`
+  const confirmMsg = `Are you sure you want to delete ${count} selected message(s)?`
   if (typeof window !== 'undefined' && !window.confirm(confirmMsg)) {
     return
   }
@@ -1232,12 +1232,12 @@ async function bulkDeleteSelected() {
         selectedEmail.value = null
       }
       selectedEmailIds.value = []
-      alert(res.message || `${count} mensagem(ns) excluída(s) com sucesso!`)
+      alert(res.message || `${count} message(s) deleted successfully!`)
       await fetchEmails()
     }
   } catch (err) {
-    console.error('Erro ao excluir e-mails em massa:', err)
-    alert('Erro ao excluir as mensagens selecionadas.')
+    console.error('Failed to bulk delete emails:', err)
+    alert('Error deleting selected messages.')
   }
 }
 
@@ -1254,7 +1254,7 @@ async function bulkMarkRead(read = true) {
           body: { emailId: id, read }
         })
       } catch (err) {
-        console.error(`Erro ao marcar leitura do email ${id}:`, err)
+        console.error(`Failed to mark read for email ${id}:`, err)
       }
     }
   }
@@ -1272,7 +1272,7 @@ async function deleteEmail(emailId) {
       }
     })
   } catch (err) {
-    console.error('Erro ao excluir mensagem no servidor:', err)
+    console.error('Failed to delete email on server:', err)
   }
 
   emails.value = emails.value.filter(e => e.id !== emailId)
@@ -1294,11 +1294,11 @@ async function convertEmailToLead(mail) {
       mail.lead = res.lead
       mail.leadId = res.lead.id
       stats.value.crmLeadsTotal++
-      alert(`Lead "${res.lead.name}" cadastrado com sucesso no CRM da Tony's!`)
+      alert(`Lead "${res.lead.name}" registered successfully in Tony's CRM!`)
     }
   } catch (err) {
-    console.error('Erro ao converter lead:', err)
-    alert('Erro ao converter e-mail em lead.')
+    console.error('Failed to convert lead:', err)
+    alert('Error converting email to lead.')
   } finally {
     convertingLead.value = false
   }
@@ -1339,7 +1339,7 @@ function selectLeadForCompose(lead) {
   composeForm.value.to = lead.email || ''
   composeForm.value.leadId = lead.id
   if (!composeForm.value.subject) {
-    composeForm.value.subject = `Tony's Painting: Proposta & Estimativa - ${lead.name}`
+    composeForm.value.subject = `Tony's Painting: Estimate & Scope - ${lead.name}`
   }
   showLeadDropdown.value = false
 }
@@ -1391,9 +1391,9 @@ async function sendQuickReply() {
       }
     })
     replyText.value = ''
-    alert('Resposta enviada com sucesso via Amazon SES!')
+    alert('Reply sent successfully via Amazon SES!')
   } catch (err) {
-    console.error('Erro ao enviar resposta:', err)
+    console.error('Failed to send reply:', err)
   } finally {
     sendingReply.value = false
   }
@@ -1401,7 +1401,7 @@ async function sendQuickReply() {
 
 async function sendEmail() {
   if (!composeForm.value.to || !composeForm.value.subject) {
-    alert('Preencha o destinatário e o assunto da mensagem!')
+    alert('Please provide both recipient and subject!')
     return
   }
   sending.value = true
@@ -1412,11 +1412,11 @@ async function sendEmail() {
     })
     if (res?.success) {
       showComposeModal.value = false
-      alert('E-mail corporativo enviado com sucesso via Amazon SES!')
+      alert('Corporate email sent successfully via Amazon SES!')
       await fetchEmails()
     }
   } catch (err) {
-    console.error('Erro ao enviar e-mail:', err)
+    console.error('Failed to send email:', err)
   } finally {
     sending.value = false
   }

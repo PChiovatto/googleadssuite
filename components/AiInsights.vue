@@ -153,7 +153,7 @@
             @click="copyOutput"
             class="text-[11px] text-slate-600 hover:text-purple-600 bg-white border border-slate-200 px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-2xs font-medium"
           >
-            <span>{{ copied ? 'Copiado!' : 'Copiar JSON/Texto' }}</span>
+            <span>{{ copied ? 'Copied!' : 'Copy JSON / Text' }}</span>
           </button>
         </div>
 

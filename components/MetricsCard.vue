@@ -18,9 +18,9 @@
       <div v-if="trend !== undefined" class="flex items-center gap-1 font-medium" :class="trend >= 0 ? 'text-emerald-600' : 'text-rose-600'">
         <span v-if="trend >= 0">↑</span>
         <span v-else>↓</span>
-        <span>{{ Math.abs(trend) }}% vs período anterior</span>
+        <span>{{ Math.abs(trend) }}% vs previous period</span>
       </div>
-      <span v-else class="text-slate-400">{{ subtitle || 'Últimos 30 dias' }}</span>
+      <span v-else class="text-slate-400">{{ subtitle || 'Last 30 days' }}</span>
     </div>
   </div>
 </template>
@@ -51,7 +51,7 @@ const props = defineProps({
 
 const formattedValue = computed(() => {
   if (typeof props.value === 'number') {
-    return props.value.toLocaleString('pt-BR', { maximumFractionDigits: 2 })
+    return props.value.toLocaleString('en-US', { maximumFractionDigits: 2 })
   }
   return props.value
 })

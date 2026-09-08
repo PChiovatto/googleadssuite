@@ -9,7 +9,7 @@
       {{ toastMessage }}
     </div>
 
-    <!-- PROTOCOLO DE RESGATE DE SLA (Opções 1, 2 e 3) -->
+    <!-- SLA EMERGENCY RESCUE PROTOCOL (Options 1, 2, and 3) -->
     <div
       v-if="breachedLeads.length > 0"
       class="bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white p-4 rounded-2xl shadow-xl border-2 border-red-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-pulse"
@@ -18,13 +18,13 @@
         <span class="text-3xl animate-bounce">🚨</span>
         <div>
           <div class="font-black text-sm flex items-center gap-2">
-            <span>ALERTA CRÍTICO: {{ breachedLeads.length }} lead(s) sem atendimento humano (> 2 min)!</span>
+            <span>CRITICAL SLA BREACH: {{ breachedLeads.length }} unassigned lead(s) exceeding 2-minute threshold!</span>
             <span class="px-2 py-0.5 rounded-full bg-white text-red-700 text-[10px] font-extrabold uppercase">
-              IA de Voz Acionada
+              Voice AI Deployed
             </span>
           </div>
           <p class="text-[11px] text-red-100 mt-0.5">
-            Todos os consultores humanos estão ocupados. A IA autônoma (OpenAI Realtime + Twilio) entra na linha para acolher o cliente e evitar perda para concorrentes.
+            All human estimators are currently in consultation. Autonomous Voice AI (OpenAI Realtime + Twilio) has dialed the client to capture project scope and prevent competitor loss.
           </p>
         </div>
       </div>
@@ -35,7 +35,7 @@
           class="px-4 py-2 bg-white hover:bg-slate-100 text-red-700 font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
         >
           <span>🤖</span>
-          <span>{{ rescuingSla ? 'Resgatando...' : 'Executar Resgate em Massa' }}</span>
+          <span>{{ rescuingSla ? 'Dispatching...' : 'Execute Bulk Voice Rescue' }}</span>
         </button>
       </div>
     </div>
@@ -45,14 +45,14 @@
       <div class="flex items-center gap-2">
         <span class="text-base">🖐️</span>
         <span class="font-medium text-slate-200">
-          <strong class="text-white font-bold">Pipeline Interativo:</strong> Arraste e solte os cards entre as colunas ou utilize os botões de ação rápida em cada etapa.
+          <strong class="text-white font-bold">Interactive Workflow:</strong> Drag and drop cards between stages or use quick-action buttons below.
         </span>
       </div>
       <div class="flex items-center gap-3 text-[11px] text-slate-300">
-        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> 1. Roleta</span>
-        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400"></span> 2. Atendimento</span>
-        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-blue-400"></span> 3. Proposta</span>
-        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-purple-400"></span> 4. Ganho</span>
+        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> 1. Inbound Queue</span>
+        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400"></span> 2. Discovery</span>
+        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-blue-400"></span> 3. Formal Quote</span>
+        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-purple-400"></span> 4. Contract Won</span>
       </div>
     </div>
 
@@ -99,11 +99,11 @@
               { 'opacity-40 ring-2 ring-blue-400': draggedLeadId === lead.id }
             ]"
           >
-            <!-- SLA Breach Urgency Tag (Opção 3) -->
+            <!-- SLA Breach Urgency Tag (Option 3) -->
             <div v-if="isSlaBreached(lead)" class="bg-red-600 text-white px-2 py-1 rounded-lg text-[10px] font-black flex items-center justify-between shadow-xs">
               <span class="flex items-center gap-1.5">
                 <span class="inline-block w-2 h-2 rounded-full bg-white animate-ping"></span>
-                <span>🚨 SLA ESTOURADO (&gt; 2 MIN)</span>
+                <span>🚨 SLA BREACHED (> 2 MIN)</span>
               </span>
               <span class="font-mono text-[9px] bg-black/40 px-1.5 py-0.5 rounded text-red-200 font-bold">
                 ⏳ {{ getElapsedTimeString(lead) }}
@@ -117,7 +117,7 @@
                   type="button"
                   @click="$emit('openLeadDetails', lead)"
                   class="font-black text-sm text-slate-900 hover:text-blue-600 transition-colors text-left truncate block w-full"
-                  title="Clique para ver Roteiro de IA e Detalhes"
+                  title="Click to view AI Sales Script and Lead Details"
                 >
                   {{ lead.name }}
                 </button>
@@ -130,7 +130,7 @@
                   >
                     📞 {{ lead.phone }}
                   </a>
-                  <span v-else class="text-slate-400">Sem telefone</span>
+                  <span v-else class="text-slate-400">No phone provided</span>
                 </div>
               </div>
 
@@ -143,13 +143,13 @@
                   'bg-slate-100 text-slate-600': lead.source === 'ORGANIC'
                 }"
               >
-                {{ lead.source === 'GOOGLE_LSA' ? 'LSA' : lead.source === 'GOOGLE_ADS' ? 'Google Ads' : lead.source === 'GOOGLE_BUSINESS' ? 'GBP Maps' : 'Orgânico' }}
+                {{ lead.source === 'GOOGLE_LSA' ? 'Google LSA' : lead.source === 'GOOGLE_ADS' ? 'Google Ads' : lead.source === 'GOOGLE_BUSINESS' ? 'GBP Maps' : 'Organic' }}
               </span>
             </div>
 
             <!-- Service & Location -->
             <p class="text-[11px] text-slate-700 line-clamp-2 font-medium bg-slate-50/70 p-1.5 rounded-lg border border-slate-100">
-              🛠️ {{ lead.serviceInterested || lead.serviceType || 'Pintura Residencial Geral' }}
+              🛠️ {{ lead.serviceInterested || lead.serviceType || 'Residential Painting & Carpentry' }}
             </p>
 
             <!-- ValueTrack Tag & City -->
@@ -167,7 +167,7 @@
 
             <!-- Quick Stage Selector Dropdown -->
             <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-1 text-[10px]">
-              <span class="text-slate-400 font-bold uppercase tracking-wider text-[9px]">Mudar Etapa:</span>
+              <span class="text-slate-400 font-bold uppercase tracking-wider text-[9px]">Move Stage:</span>
               <select
                 :value="lead.status"
                 @change="changeLeadStatus(lead.id, $event.target.value)"
@@ -182,14 +182,14 @@
 
             <!-- Contextual Stage Action Buttons -->
             <div class="space-y-1.5">
-              <!-- ETAPA 1: NOVO (Desbloqueio / Claim & SLA Rescue) -->
+              <!-- STAGE 1: NEW (Claim & SLA Rescue) -->
               <div v-if="lead.status === 'NOVO'" class="space-y-1.5">
                 <div v-if="isSlaBreached(lead)" class="p-2 rounded-lg bg-red-100/90 border border-red-300 text-[10px] text-red-900 font-semibold flex items-center justify-between">
                   <span class="flex items-center gap-1">
                     <span>🤖</span>
-                    <span>IA de Voz Acionada</span>
+                    <span>Voice AI Dispatched</span>
                   </span>
-                  <span class="text-[9px] font-bold text-red-700 uppercase">Auditado CallLog</span>
+                  <span class="text-[9px] font-bold text-red-700 uppercase">CallLog Audited</span>
                 </div>
                 <button
                   type="button"
@@ -198,11 +198,11 @@
                   class="w-full font-black text-xs uppercase py-2 px-3 rounded-lg shadow-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                   :class="isSlaBreached(lead) ? 'bg-red-600 hover:bg-red-700 text-white shadow-md' : 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white animate-pulse'"
                 >
-                  <span>⚡ ASSUMIR & LIGAR</span>
+                  <span>⚡ CLAIM & CALL LEAD</span>
                 </button>
               </div>
 
-              <!-- ETAPA 2: EM ATENDIMENTO -->
+              <!-- STAGE 2: IN DISCOVERY / IN CONTACT -->
               <div v-else-if="lead.status === 'EM_ATENDIMENTO'" class="space-y-1">
                 <button
                   type="button"
@@ -210,7 +210,7 @@
                   :disabled="updatingStatusId === lead.id"
                   class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs py-1.5 px-2.5 rounded-lg shadow-2xs flex items-center justify-center gap-1 transition-all"
                 >
-                  <span>📝 Avançar para Proposta</span>
+                  <span>📝 Advance to Proposal</span>
                   <span>→</span>
                 </button>
 
@@ -220,16 +220,16 @@
                     @click="scheduleQuickEstimate(lead)"
                     :disabled="schedulingId === lead.id"
                     class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold text-[10px] py-1 px-1 rounded-md transition-colors flex items-center justify-center gap-1"
-                    title="Agendar visita presencial de orçamento e disparar SMS"
+                    title="Schedule In-Home Estimate walkthrough and dispatch SMS confirmation"
                   >
-                    <span>📅 Agendar Visita</span>
+                    <span>📅 Schedule Visit</span>
                   </button>
                   <button
                     type="button"
                     @click="$emit('openLeadDetails', lead)"
                     class="bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-bold text-[10px] py-1 px-1 rounded-md transition-colors flex items-center justify-center gap-1"
                   >
-                    <span>💬 Roteiro IA</span>
+                    <span>💬 AI Script</span>
                   </button>
                 </div>
 
@@ -239,11 +239,11 @@
                   :disabled="updatingStatusId === lead.id"
                   class="w-full bg-slate-100 hover:bg-rose-50 text-slate-500 hover:text-rose-700 font-semibold text-[9px] py-0.5 rounded transition-colors"
                 >
-                  ✖ Descartar Lead / Perdido
+                  ✖ Discard / Closed Lost
                 </button>
               </div>
 
-              <!-- ETAPA 3: PROPOSTA ENVIADA -->
+              <!-- STAGE 3: PROPOSAL SENT -->
               <div v-else-if="lead.status === 'PROPOSTA'" class="space-y-1">
                 <button
                   type="button"
@@ -251,7 +251,7 @@
                   :disabled="updatingStatusId === lead.id"
                   class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs py-1.5 px-2.5 rounded-lg shadow-2xs flex items-center justify-center gap-1 transition-all"
                 >
-                  <span>✔ Fechar / Marcar Ganho</span>
+                  <span>✔ Mark Closed Won</span>
                   <span>🏆</span>
                 </button>
 
@@ -261,9 +261,9 @@
                   @click="generateLegalContract(lead)"
                   :disabled="generatingContractId === lead.id"
                   class="w-full bg-orange-50 hover:bg-orange-100 text-orange-800 border border-orange-200 font-bold text-[10px] py-1 px-2 rounded-md transition-colors flex items-center justify-center gap-1"
-                  title="Gerar Contrato Legal de Massachusetts (M.G.L. c. 142A) com Assinatura Digital e Depósito de 1/3"
+                  title="Generate Massachusetts HIC Legal Contract (M.G.L. c. 142A) with Electronic Signature & 1/3 Deposit"
                 >
-                  <span>📄 Gerar Contrato MA</span>
+                  <span>📄 Generate MA Contract</span>
                   <span class="text-[9px] bg-orange-200 text-orange-900 px-1 rounded font-black">HIC</span>
                 </button>
 
@@ -273,7 +273,7 @@
                     @click="generateStripeLink(lead)"
                     :disabled="creatingStripeId === lead.id"
                     class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold text-[10px] py-1 px-1 rounded-md transition-colors flex items-center justify-center gap-1"
-                    title="Gerar link de pagamento com cartão"
+                    title="Generate Stripe card payment link"
                   >
                     <span>💳 Stripe Link</span>
                   </button>
@@ -283,16 +283,16 @@
                     :disabled="updatingStatusId === lead.id"
                     class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-semibold text-[10px] py-1 px-1 rounded-md transition-colors"
                   >
-                    <span>✖ Perdido</span>
+                    <span>✖ Lost</span>
                   </button>
                 </div>
               </div>
 
-              <!-- ETAPA 4: CONVERTIDO / GANHO -->
+              <!-- STAGE 4: CONTRACT WON / CONVERTED -->
               <div v-else-if="lead.status === 'CONVERTIDO'" class="space-y-1">
                 <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-1.5 text-center text-emerald-800 font-extrabold text-[11px] flex items-center justify-center gap-1">
                   <span>🎉</span>
-                  <span>CONTRATO FECHADO!</span>
+                  <span>CONTRACT WON!</span>
                 </div>
 
                 <div class="grid grid-cols-2 gap-1 pt-0.5">
@@ -301,9 +301,9 @@
                     @click="sendOfflineConversion(lead)"
                     :disabled="sendingOfflineId === lead.id"
                     class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold text-[10px] py-1 px-1 rounded-md transition-colors flex items-center justify-center gap-1"
-                    title="Notifica Google Ads com GCLID para otimizar ROAS"
+                    title="Report offline conversion with GCLID to Google Ads to optimize ROAS"
                   >
-                    <span>🚀 Offline Ads</span>
+                    <span>🚀 Sync Ads ROAS</span>
                   </button>
 
                   <button
@@ -311,9 +311,9 @@
                     @click="requestGoogleReview(lead)"
                     :disabled="requestingReviewId === lead.id"
                     class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-bold text-[10px] py-1 px-1 rounded-md transition-colors flex items-center justify-center gap-1"
-                    title="Disparar SMS/E-mail solicitando avaliação 5 estrelas no Google Meu Negócio"
+                    title="Send SMS/Email requesting 5-star Google Business Profile review"
                   >
-                    <span>⭐ Pedir Review</span>
+                    <span>⭐ Request Review</span>
                   </button>
                 </div>
 
@@ -323,14 +323,14 @@
                   :disabled="creatingStripeId === lead.id"
                   class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold text-[10px] py-1 px-2 rounded-md transition-colors flex items-center justify-center gap-1"
                 >
-                  <span>💳 Depósito / Pagamento Stripe</span>
+                  <span>💳 Stripe Deposit / Payment Link</span>
                 </button>
               </div>
 
-              <!-- ETAPA 5: PERDIDO -->
+              <!-- STAGE 5: CLOSED LOST -->
               <div v-else-if="lead.status === 'PERDIDO'" class="space-y-1">
                 <div class="bg-slate-100 border border-slate-200 rounded-lg p-1 text-center text-slate-500 font-medium text-[10px]">
-                  Lead sem fit ou cancelado
+                  Unqualified or cancelled project
                 </div>
                 <button
                   type="button"
@@ -338,7 +338,7 @@
                   :disabled="updatingStatusId === lead.id"
                   class="w-full bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-[10px] py-1 px-2 rounded-md transition-colors flex items-center justify-center gap-1"
                 >
-                  <span>🔄 Reabrir Atendimento</span>
+                  <span>🔄 Reopen Lead</span>
                 </button>
               </div>
             </div>
@@ -348,11 +348,11 @@
               <span class="flex items-center gap-1">
                 <span>👤</span>
                 <span class="font-bold text-slate-700 truncate max-w-[110px]">
-                  {{ lead.owner?.name || (lead.status === 'NOVO' ? 'Na Roleta' : 'John Miller') }}
+                  {{ lead.owner?.name || (lead.status === 'NOVO' ? 'Unassigned Queue' : 'Tony Silva') }}
                 </span>
               </span>
               <span v-if="lead.aiScore" class="font-black text-purple-700 bg-purple-50 border border-purple-200 px-1 rounded">
-                AI: {{ lead.aiScore }}/10
+                AI Score: {{ lead.aiScore }}/10
               </span>
             </div>
           </div>
@@ -362,8 +362,8 @@
             v-if="getColumnLeads(col.id).length === 0"
             class="h-36 flex flex-col items-center justify-center text-[11px] text-slate-400 italic border-2 border-dashed border-slate-200/80 rounded-xl p-4 text-center"
           >
-            <span>Arraste um lead para cá</span>
-            <span class="text-[9px] text-slate-300 mt-1">Coluna vazia</span>
+            <span>Drag and drop a lead card here</span>
+            <span class="text-[9px] text-slate-300 mt-1">Empty stage</span>
           </div>
         </div>
       </div>
@@ -393,7 +393,7 @@ const requestingReviewId = ref(null)
 const toastMessage = ref('')
 const toastSuccess = ref(true)
 
-// SLA Breach Reactive Logic (Opções 1, 2 e 3)
+// SLA Breach Reactive Logic (Options 1, 2, and 3)
 const SLA_LIMIT_SECONDS = 120 // 2 minutes SLA threshold
 const rescuingSla = ref(false)
 const nowTick = ref(Date.now())
@@ -435,11 +435,11 @@ async function triggerMassSlaRescue() {
     })
     if (res.success) {
       toastSuccess.value = true
-      toastMessage.value = `🤖 Protocolo de Resgate por IA executado para ${res.breachedCount} lead(s)! Chamadas de emergência geradas no CallLog.`
+      toastMessage.value = `🤖 AI Rescue Protocol dispatched for ${res.breachedCount} lead(s)! Priority emergency calls logged in CallLog.`
       emit('refresh')
     }
   } catch (err) {
-    console.error('Erro ao acionar resgate de SLA:', err)
+    console.error('Failed to trigger SLA rescue:', err)
   } finally {
     rescuingSla.value = false
     setTimeout(() => {
@@ -454,11 +454,11 @@ const draggedLeadId = ref(null)
 const activeOverCol = ref(null)
 
 const columns = [
-  { id: 'NOVO', title: '1. Novos (Na Roleta)', dotColor: 'bg-emerald-500', bgClass: 'bg-emerald-50/20' },
-  { id: 'EM_ATENDIMENTO', title: '2. Em Atendimento', dotColor: 'bg-amber-500', bgClass: 'bg-amber-50/20' },
-  { id: 'PROPOSTA', title: '3. Proposta Enviada', dotColor: 'bg-blue-500', bgClass: 'bg-blue-50/20' },
-  { id: 'CONVERTIDO', title: '4. Fechado / Ganho', dotColor: 'bg-purple-500', bgClass: 'bg-purple-50/20' },
-  { id: 'PERDIDO', title: '5. Perdido', dotColor: 'bg-slate-400', bgClass: 'bg-slate-100/60' }
+  { id: 'NOVO', title: '1. Inbound Leads', dotColor: 'bg-emerald-500', bgClass: 'bg-emerald-50/20' },
+  { id: 'EM_ATENDIMENTO', title: '2. In Discovery & Contact', dotColor: 'bg-amber-500', bgClass: 'bg-amber-50/20' },
+  { id: 'PROPOSTA', title: '3. Proposal Sent', dotColor: 'bg-blue-500', bgClass: 'bg-blue-50/20' },
+  { id: 'CONVERTIDO', title: '4. Closed Won', dotColor: 'bg-purple-500', bgClass: 'bg-purple-50/20' },
+  { id: 'PERDIDO', title: '5. Closed Lost', dotColor: 'bg-slate-400', bgClass: 'bg-slate-100/60' }
 ]
 
 function getColumnLeads(status) {
@@ -515,15 +515,15 @@ async function changeLeadStatus(leadId, newStatus) {
     if (res.success) {
       const colTitle = columns.find(c => c.id === newStatus)?.title || newStatus
       toastSuccess.value = true
-      toastMessage.value = `Lead movido com sucesso para "${colTitle}"!`
+      toastMessage.value = `Lead successfully moved to "${colTitle}"!`
       emit('refresh')
     } else {
       toastSuccess.value = false
-      toastMessage.value = res.error || 'Falha ao atualizar etapa do lead.'
+      toastMessage.value = res.error || 'Failed to update lead pipeline stage.'
     }
   } catch (err) {
     toastSuccess.value = false
-    toastMessage.value = 'Erro de conexão ao mover etapa.'
+    toastMessage.value = 'Connection error while moving stage.'
   } finally {
     updatingStatusId.value = null
     setTimeout(() => {
@@ -543,16 +543,16 @@ async function claimLead(leadId) {
 
     if (res.success) {
       toastSuccess.value = true
-      toastMessage.value = res.message || 'Lead assumido com sucesso!'
+      toastMessage.value = res.message || 'Lead claimed successfully!'
       emit('refresh')
     } else {
       toastSuccess.value = false
-      toastMessage.value = res.message || 'Lead já assumido por outro consultor.'
+      toastMessage.value = res.message || 'Lead already claimed by another estimator.'
       emit('refresh')
     }
   } catch (err) {
     toastSuccess.value = false
-    toastMessage.value = 'Falha ao assumir contato.'
+    toastMessage.value = 'Failed to claim contact.'
   } finally {
     claimingId.value = null
     setTimeout(() => {
@@ -574,10 +574,10 @@ async function sendOfflineConversion(lead) {
       }
     })
     toastSuccess.value = true
-    toastMessage.value = res.message || 'Conversão Offline enviada ao Google Ads!'
+    toastMessage.value = res.message || 'Offline Conversion synced with Google Ads!'
   } catch (err) {
     toastSuccess.value = false
-    toastMessage.value = 'Erro ao enviar conversão offline.'
+    toastMessage.value = 'Error dispatching offline conversion.'
   } finally {
     sendingOfflineId.value = null
     setTimeout(() => {
@@ -595,7 +595,7 @@ async function generateStripeLink(lead) {
       body: {
         leadId: lead.id,
         amount: lead.dealValue || 1500,
-        description: lead.serviceInterested || 'Serviços de Pintura Contratados'
+        description: lead.serviceInterested || 'Contracted Painting Services'
       }
     })
 
@@ -604,16 +604,16 @@ async function generateStripeLink(lead) {
         await navigator.clipboard.writeText(res.checkoutUrl).catch(() => {})
       }
       toastSuccess.value = true
-      toastMessage.value = '💳 Link Stripe gerado e copiado! Pronto para envio ao cliente.'
+      toastMessage.value = '💳 Stripe deposit link generated and copied! Ready to send to client.'
       emit('refresh')
-      prompt('Link de pagamento Stripe gerado com sucesso! Copie para enviar ao cliente:', res.checkoutUrl)
+      prompt('Stripe checkout link generated successfully! Copy to send to client:', res.checkoutUrl)
     } else {
       toastSuccess.value = false
-      toastMessage.value = 'Falha ao gerar link Stripe.'
+      toastMessage.value = 'Failed to generate Stripe payment link.'
     }
   } catch (err) {
     toastSuccess.value = false
-    toastMessage.value = 'Erro ao conectar ao Stripe.'
+    toastMessage.value = 'Error connecting to Stripe.'
   } finally {
     creatingStripeId.value = null
     setTimeout(() => {
@@ -631,7 +631,7 @@ async function generateLegalContract(lead) {
       body: {
         leadId: lead.id,
         totalAmount: lead.dealValue || 4500,
-        title: `Contrato de Pintura Residencial MA - ${lead.serviceInterested || 'Serviços'}`
+        title: `MA Residential Painting Contract - ${lead.serviceInterested || 'Services'}`
       }
     })
 
@@ -641,16 +641,16 @@ async function generateLegalContract(lead) {
         await navigator.clipboard.writeText(fullUrl).catch(() => {})
       }
       toastSuccess.value = true
-      toastMessage.value = `📄 Contrato MA gerado! Link de assinatura copiado: ${res.signingUrl}`
+      toastMessage.value = `📄 MA Contract generated! E-signature link copied: ${res.signingUrl}`
       emit('refresh')
-      prompt('Contrato MA gerado (M.G.L. c. 142A)! Copie o link abaixo para enviar ao cliente assinar digitalmente:', fullUrl)
+      prompt('MA Contract generated (M.G.L. c. 142A)! Copy the link below to send to client for e-signature:', fullUrl)
     } else {
       toastSuccess.value = false
-      toastMessage.value = res.message || 'Erro ao gerar contrato.'
+      toastMessage.value = res.message || 'Failed to generate contract.'
     }
   } catch (err) {
     toastSuccess.value = false
-    toastMessage.value = 'Falha ao conectar com o gerador de contratos.'
+    toastMessage.value = 'Failed to connect with contract generator.'
   } finally {
     generatingContractId.value = null
     setTimeout(() => {
@@ -679,15 +679,15 @@ async function scheduleQuickEstimate(lead) {
 
     if (res.success) {
       toastSuccess.value = true
-      toastMessage.value = `📅 Visita agendada para amanhã às 10h! SMS de confirmação enviado a ${lead.name}.`
+      toastMessage.value = `📅 In-home walkthrough scheduled for tomorrow at 10:00 AM! Confirmation SMS sent to ${lead.name}.`
       emit('refresh')
     } else {
       toastSuccess.value = false
-      toastMessage.value = res.message || 'Erro ao agendar visita.'
+      toastMessage.value = res.message || 'Error scheduling walkthrough.'
     }
   } catch (err) {
     toastSuccess.value = false
-    toastMessage.value = 'Falha ao agendar visita.'
+    toastMessage.value = 'Failed to schedule walkthrough.'
   } finally {
     schedulingId.value = null
     setTimeout(() => {
@@ -710,14 +710,14 @@ async function requestGoogleReview(lead) {
 
     if (res.success) {
       toastSuccess.value = true
-      toastMessage.value = `⭐ Solicitação de review Google enviada com sucesso para ${lead.name}!`
+      toastMessage.value = `⭐ Google Review request successfully sent to ${lead.name}!`
     } else {
       toastSuccess.value = false
-      toastMessage.value = res.message || 'Falha ao enviar pedido de review.'
+      toastMessage.value = res.message || 'Failed to send review request.'
     }
   } catch (err) {
     toastSuccess.value = false
-    toastMessage.value = 'Erro ao solicitar avaliação Google.'
+    toastMessage.value = 'Error requesting Google review.'
   } finally {
     requestingReviewId.value = null
     setTimeout(() => {

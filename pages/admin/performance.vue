@@ -5,19 +5,19 @@
       <div>
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-bold mb-2">
           <span>👑</span>
-          <span>Painel do Gestor (Manager Executive Portal)</span>
+          <span>Executive Management Portal</span>
         </div>
         <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-          Performance & Auditoria de Consultores
+          Estimator Performance & SLA Audit
         </h1>
         <p class="text-xs text-slate-500">
-          Acompanhamento mensal de velocidade de atendimento (SLA), taxa de conversão individual e faturamento gerado.
+          Monthly audit of Speed-to-Lead (SLA), individual close conversion rates, and gross revenue generated.
         </p>
       </div>
 
       <div class="flex items-center gap-2">
         <span class="text-xs px-3 py-1.5 rounded-xl bg-slate-900 text-white font-bold">
-          Mês Atual: Setembro / 2026
+          Current Period: September 2026
         </span>
       </div>
     </div>
@@ -25,35 +25,35 @@
     <!-- Manager Summary Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm">
-        <span class="text-xs font-semibold uppercase text-slate-500">Faturamento Fechado</span>
+        <span class="text-xs font-semibold uppercase text-slate-500">Closed Won Revenue</span>
         <div class="text-2xl font-black text-slate-900 mt-1">
-          ${{ teamTotals.totalRevenue?.toLocaleString('pt-BR') || '35.200' }}
+          ${{ teamTotals.totalRevenue?.toLocaleString('en-US') || '35,200' }}
         </div>
-        <span class="text-[11px] text-emerald-600 font-semibold">Total em contratos de pintura</span>
+        <span class="text-[11px] text-emerald-600 font-semibold">Total contracted revenue</span>
       </div>
 
       <div class="bg-white rounded-2xl p-5 border border-purple-100 shadow-sm bg-purple-50/20">
-        <span class="text-xs font-semibold uppercase text-purple-600">SLA Médio de Atendimento</span>
+        <span class="text-xs font-semibold uppercase text-purple-600">Average Speed-to-Lead SLA</span>
         <div class="text-2xl font-black text-purple-900 mt-1">
           {{ teamTotals.teamAvgSlaMinutes || 2.3 }} min
         </div>
-        <span class="text-[11px] text-purple-600 font-semibold">Tempo do anúncio ao clique no fone</span>
+        <span class="text-[11px] text-purple-600 font-semibold">Ad submission to initial dial time</span>
       </div>
 
       <div class="bg-white rounded-2xl p-5 border border-blue-100 shadow-sm bg-blue-50/20">
-        <span class="text-xs font-semibold uppercase text-blue-600">Leads Assumidos</span>
+        <span class="text-xs font-semibold uppercase text-blue-600">Claimed Leads</span>
         <div class="text-2xl font-black text-blue-900 mt-1">
           {{ teamTotals.totalClaimed || 32 }}
         </div>
-        <span class="text-[11px] text-blue-500 font-semibold">Distribuídos na roleta de velocidade</span>
+        <span class="text-[11px] text-blue-500 font-semibold">Assigned through speed-to-lead queue</span>
       </div>
 
       <div class="bg-white rounded-2xl p-5 border border-emerald-100 shadow-sm bg-emerald-50/20">
-        <span class="text-xs font-semibold uppercase text-emerald-600">Taxa de Conversão da Equipe</span>
+        <span class="text-xs font-semibold uppercase text-emerald-600">Team Close Rate</span>
         <div class="text-2xl font-black text-emerald-900 mt-1">
           {{ teamTotals.teamConversionRate || 25.8 }}%
         </div>
-        <span class="text-[11px] text-emerald-600 font-semibold">Leads transformados em clientes</span>
+        <span class="text-[11px] text-emerald-600 font-semibold">Inbound leads converted to paying clients</span>
       </div>
     </div>
 
@@ -61,8 +61,8 @@
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
       <div class="p-5 border-b border-slate-100 flex items-center justify-between">
         <div>
-          <h2 class="text-base font-bold text-slate-900">Ranking Mensal de Consultores (Leaderboard)</h2>
-          <p class="text-xs text-slate-500">Métricas individuais de quem atendeu mais rápido e gerou maior caixa</p>
+          <h2 class="text-base font-bold text-slate-900">Monthly Estimator Leaderboard</h2>
+          <p class="text-xs text-slate-500">Individual rankings by speed-to-lead and total closed revenue</p>
         </div>
       </div>
 
@@ -71,12 +71,12 @@
           <thead>
             <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider">
               <th class="py-3.5 px-4 text-center">Rank</th>
-              <th class="py-3.5 px-4">Consultor</th>
-              <th class="py-3.5 px-4 text-right">Leads Assumidos</th>
-              <th class="py-3.5 px-4 text-right">Contratos Fechados</th>
-              <th class="py-3.5 px-4 text-right">Faturamento ($)</th>
-              <th class="py-3.5 px-4 text-right">Taxa de Conversão</th>
-              <th class="py-3.5 px-4 text-center">SLA de Resposta</th>
+              <th class="py-3.5 px-4">Estimator</th>
+              <th class="py-3.5 px-4 text-right">Claimed Leads</th>
+              <th class="py-3.5 px-4 text-right">Closed Won</th>
+              <th class="py-3.5 px-4 text-right">Revenue ($)</th>
+              <th class="py-3.5 px-4 text-right">Conversion Rate</th>
+              <th class="py-3.5 px-4 text-center">Response SLA</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100">
@@ -107,7 +107,7 @@
 
               <!-- Revenue -->
               <td class="py-3.5 px-4 text-right font-mono font-extrabold text-emerald-600 text-sm">
-                ${{ consultant.revenue.toLocaleString('pt-BR') }}
+                ${{ consultant.revenue.toLocaleString('en-US') }}
               </td>
 
               <!-- Conversion Rate -->
@@ -130,22 +130,22 @@
       </div>
     </div>
 
-    <!-- ZENITH PILLAR: Job Costing & Lucro Real por Obra -->
+    <!-- ZENITH PILLAR: Job Costing & Real Profitability -->
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden space-y-6 p-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
         <div>
           <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-xs font-bold mb-1">
             <span>📊</span>
-            <span>Job Costing & Lucratividade Real (Pilar Zenith)</span>
+            <span>Job Costing & Real Job Profitability</span>
           </div>
-          <h2 class="text-lg font-black text-slate-900">Demonstrativo de Custos & Lucro Líquido por Obra</h2>
+          <h2 class="text-lg font-black text-slate-900">Project Cost & Net Profit Statement</h2>
           <p class="text-xs text-slate-500">
-            Faturamento Stripe descontado do custo real de mão de obra (Ponto GPS $45/h) e pedidos de insumos (MaterialOrder).
+            Settled contract revenue net of direct labor costs (GPS Timesheets @ $45/hr) and materials procurement (MaterialOrder).
           </p>
         </div>
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold px-3 py-1 bg-slate-100 rounded-lg text-slate-700">
-            Mão de Obra Padrão: $45.00/h
+            Standard Field Labor: $45.00/hr
           </span>
         </div>
       </div>
@@ -153,23 +153,23 @@
       <!-- Job Costing KPIs -->
       <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
         <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
-          <span class="text-[10px] font-bold uppercase text-slate-500">Receita Total de Obras</span>
+          <span class="text-[10px] font-bold uppercase text-slate-500">Total Contract Value</span>
           <div class="text-xl font-black text-slate-900 mt-0.5">
             ${{ (jobCosting.totalRevenue || 0).toLocaleString('en-US') }}
           </div>
-          <span class="text-[10px] text-slate-400">Contratos vigentes</span>
+          <span class="text-[10px] text-slate-400">Active project contracts</span>
         </div>
 
         <div class="bg-blue-50/40 rounded-xl p-4 border border-blue-100">
-          <span class="text-[10px] font-bold uppercase text-blue-700">Mão de Obra (Horas GPS)</span>
+          <span class="text-[10px] font-bold uppercase text-blue-700">Labor (GPS Hours)</span>
           <div class="text-xl font-black text-blue-900 mt-0.5">
             ${{ (jobCosting.totalLabor || 0).toLocaleString('en-US') }}
           </div>
-          <span class="text-[10px] text-blue-600 font-semibold">Horas validadas em campo</span>
+          <span class="text-[10px] text-blue-600 font-semibold">Verified field clock-in hours</span>
         </div>
 
         <div class="bg-amber-50/40 rounded-xl p-4 border border-amber-100">
-          <span class="text-[10px] font-bold uppercase text-amber-700">Materiais & Tintas</span>
+          <span class="text-[10px] font-bold uppercase text-amber-700">Materials & Supplies</span>
           <div class="text-xl font-black text-amber-900 mt-0.5">
             ${{ (jobCosting.totalMaterials || 0).toLocaleString('en-US') }}
           </div>
@@ -177,19 +177,19 @@
         </div>
 
         <div class="bg-emerald-50 rounded-xl p-4 border border-emerald-200">
-          <span class="text-[10px] font-bold uppercase text-emerald-700">Lucro Líquido Real</span>
+          <span class="text-[10px] font-bold uppercase text-emerald-700">Real Net Margin</span>
           <div class="text-xl font-black text-emerald-700 mt-0.5">
             ${{ (jobCosting.totalNetProfit || 0).toLocaleString('en-US') }}
           </div>
-          <span class="text-[10px] text-emerald-600 font-semibold">Livre no caixa da Tony's</span>
+          <span class="text-[10px] text-emerald-600 font-semibold">Net cash flow for Tony's</span>
         </div>
 
         <div class="bg-purple-50/40 rounded-xl p-4 border border-purple-100 col-span-2 lg:col-span-1">
-          <span class="text-[10px] font-bold uppercase text-purple-700">Margem Líquida Média</span>
+          <span class="text-[10px] font-bold uppercase text-purple-700">Average Net Margin</span>
           <div class="text-xl font-black text-purple-900 mt-0.5">
             {{ jobCosting.avgMargin || 41.2 }}%
           </div>
-          <span class="text-[10px] text-purple-600 font-semibold">Meta de eficiência: > 35%</span>
+          <span class="text-[10px] text-purple-600 font-semibold">Efficiency target: > 35%</span>
         </div>
       </div>
 
@@ -198,14 +198,14 @@
         <table class="w-full text-left border-collapse text-xs">
           <thead>
             <tr class="bg-slate-50/90 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider">
-              <th class="py-3 px-3">Obra / Cliente</th>
-              <th class="py-3 px-3">Cidade (MA)</th>
-              <th class="py-3 px-3 text-right">Contrato ($)</th>
-              <th class="py-3 px-3 text-right">Horas GPS</th>
-              <th class="py-3 px-3 text-right">Mão de Obra</th>
-              <th class="py-3 px-3 text-right">Materiais</th>
-              <th class="py-3 px-3 text-right">Lucro Real ($)</th>
-              <th class="py-3 px-3 text-center">Margem</th>
+              <th class="py-3 px-3">Project / Client</th>
+              <th class="py-3 px-3">City (MA)</th>
+              <th class="py-3 px-3 text-right">Contract ($)</th>
+              <th class="py-3 px-3 text-right">GPS Hours</th>
+              <th class="py-3 px-3 text-right">Labor Cost</th>
+              <th class="py-3 px-3 text-right">Materials</th>
+              <th class="py-3 px-3 text-right">Net Profit ($)</th>
+              <th class="py-3 px-3 text-center">Margin</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100">
@@ -246,35 +246,35 @@
 
     <!-- ZENITH PILLARS: Rescue Lead Bot, Permit Compliance & Referral Loop -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- 1. AI Rescue Lead (GPT-4o) Engine -->
+      <!-- 1. AI Rescue Lead Engine -->
       <div class="bg-white rounded-2xl border border-rose-200/80 shadow-sm p-5 space-y-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <span class="text-xl">🤖</span>
             <div>
-              <h3 class="font-bold text-slate-900 text-sm">Rescue Lead (GPT-4o)</h3>
-              <p class="text-[11px] text-slate-500">Reengajamento de orçamentos parados > 48h</p>
+              <h3 class="font-bold text-slate-900 text-sm">Rescue Lead (AI Engine)</h3>
+              <p class="text-[11px] text-slate-500">Re-engaging stalled estimates > 48h</p>
             </div>
           </div>
           <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-100 text-rose-800">
-            {{ compliance.stalledProposalsCount || 2 }} pendentes
+            {{ compliance.stalledProposalsCount || 2 }} pending
           </span>
         </div>
 
         <p class="text-xs text-slate-600">
-          A IA analisa o histórico do orçamento, identifica a principal objeção de compra e gera um SMS/WhatsApp personalizado com garantia e desconto exclusivo no sinal.
+          AI analyzes proposal history, detects objections, and generates high-converting SMS/WhatsApp offers with deposit incentives.
         </p>
 
         <div v-if="rescueResult" class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
           <div class="flex items-center justify-between">
             <span class="font-bold text-slate-900">Lead: {{ rescueResult.lead?.name }}</span>
-            <span class="text-[10px] text-rose-600 font-bold font-mono">{{ rescueResult.stagnantHours }}h parado</span>
+            <span class="text-[10px] text-rose-600 font-bold font-mono">{{ rescueResult.stagnantHours }}h stalled</span>
           </div>
           <div class="p-2 bg-white rounded-lg border border-slate-200 text-[11px] font-mono text-slate-700">
             {{ rescueResult.rescue?.sms }}
           </div>
           <div class="text-[10px] text-emerald-700 font-semibold">
-            🎁 Oferta: {{ rescueResult.rescue?.recommendedOffer }}
+            🎁 Offer: {{ rescueResult.rescue?.recommendedOffer }}
           </div>
         </div>
 
@@ -283,8 +283,8 @@
           :disabled="isRescuing"
           class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-2"
         >
-          <span v-if="isRescuing">Disparando IA...</span>
-          <span v-else>⚡ Acionar Resgate Inteligente</span>
+          <span v-if="isRescuing">Dispatching AI...</span>
+          <span v-else>⚡ Trigger AI Rescue Engine</span>
         </button>
       </div>
 
@@ -295,32 +295,32 @@
             <span class="text-xl">⚖️</span>
             <div>
               <h3 class="font-bold text-slate-900 text-sm">Permit & Compliance MA</h3>
-              <p class="text-[11px] text-slate-500">Alvarás 780 CMR & EPA Lead-Safe</p>
+              <p class="text-[11px] text-slate-500">Building Permits 780 CMR & EPA Lead-Safe</p>
             </div>
           </div>
           <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-100 text-blue-800">
-            Licença #204891
+            MA HIC #204891
           </span>
         </div>
 
         <div class="grid grid-cols-2 gap-2 text-center">
           <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
             <div class="text-lg font-black text-slate-900">{{ compliance.approvedPermits || 3 }}</div>
-            <div class="text-[10px] text-emerald-600 font-bold">Aprovados / Isentos</div>
+            <div class="text-[10px] text-emerald-600 font-bold">Approved / Exempt</div>
           </div>
           <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
             <div class="text-lg font-black text-blue-700">{{ compliance.pendingPermits || 1 }}</div>
-            <div class="text-[10px] text-blue-600 font-bold">Em Análise Municipal</div>
+            <div class="text-[10px] text-blue-600 font-bold">Municipal Review</div>
           </div>
         </div>
 
         <p class="text-xs text-slate-600">
-          Validação automatizada de regras em Boston ISD, Cambridge, Wakefield, Somerville, Newton e Brookline com verificação de distritos históricos e casas pré-1978.
+          Automated regulatory compliance for Boston ISD, Cambridge, Wakefield, Somerville, Newton, and Brookline with historic district and pre-1978 lead paint screening.
         </p>
 
         <div class="pt-1">
-          <span class="text-[11px] font-semibold text-slate-500">Status Geral:</span>
-          <span class="ml-2 text-xs font-bold text-emerald-600">✓ 100% Em Conformidade Estadual</span>
+          <span class="text-[11px] font-semibold text-slate-500">Overall Compliance:</span>
+          <span class="ml-2 text-xs font-bold text-emerald-600">✓ 100% State Compliant (M.G.L. c. 142A)</span>
         </div>
       </div>
 
@@ -331,31 +331,31 @@
             <span class="text-xl">🎁</span>
             <div>
               <h3 class="font-bold text-slate-900 text-sm">Referral Loop & Cashback</h3>
-              <p class="text-[11px] text-slate-500">Programa de Indicação Boca a Boca</p>
+              <p class="text-[11px] text-slate-500">Client Referral & Word-of-Mouth Engine</p>
             </div>
           </div>
           <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-purple-100 text-purple-800">
-            $150 / Indicação
+            $150 / Referral
           </span>
         </div>
 
         <div class="grid grid-cols-2 gap-2 text-center">
           <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
             <div class="text-lg font-black text-purple-900">{{ compliance.totalReferrers || 5 }}</div>
-            <div class="text-[10px] text-purple-600 font-bold">Clientes com Link</div>
+            <div class="text-[10px] text-purple-600 font-bold">Active Referrers</div>
           </div>
           <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
             <div class="text-lg font-black text-emerald-700">$450</div>
-            <div class="text-[10px] text-emerald-600 font-bold">Cashback Liberado</div>
+            <div class="text-[10px] text-emerald-600 font-bold">Cashback Disbursed</div>
           </div>
         </div>
 
         <p class="text-xs text-slate-600">
-          Ao finalizar a pintura, o cliente recebe um link pessoal para indicar amigos. Ele ganha $150 via Stripe e o novo cliente ganha $100 de boas-vindas no orçamento.
+          Upon project completion, homeowners receive an automated referral link. They earn $150 via Stripe and their referred neighbor receives $100 off their quote.
         </p>
 
         <div class="pt-1">
-          <span class="text-[11px] font-semibold text-slate-500">Integração:</span>
+          <span class="text-[11px] font-semibold text-slate-500">Integration:</span>
           <span class="ml-2 text-xs font-bold text-purple-700">Stripe Connect & Transfer</span>
         </div>
       </div>
@@ -365,8 +365,8 @@
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 space-y-4">
       <div class="flex items-center justify-between">
         <div>
-          <h2 class="text-base font-bold text-slate-900">Trilha de Auditoria & Conformidade (Audit Trail)</h2>
-          <p class="text-xs text-slate-500">Registro imutável de quem clicou, alterou status ou registrou opt-in de TCPA</p>
+          <h2 class="text-base font-bold text-slate-900">Security Audit Trail & Compliance Log</h2>
+          <p class="text-xs text-slate-500">Immutable ledger of user actions, status transitions, and TCPA consent records</p>
         </div>
       </div>
 
@@ -374,15 +374,15 @@
         <table class="w-full text-left border-collapse text-xs">
           <thead>
             <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider">
-              <th class="py-3 px-3">Data / Hora (UTC)</th>
-              <th class="py-3 px-3">Ação</th>
-              <th class="py-3 px-3">Usuário / Sistema</th>
-              <th class="py-3 px-3">Detalhes Gravados</th>
+              <th class="py-3 px-3">Timestamp (UTC)</th>
+              <th class="py-3 px-3">Action</th>
+              <th class="py-3 px-3">User / System</th>
+              <th class="py-3 px-3">Logged Details</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100 font-mono text-[11px]">
             <tr v-for="log in auditLogs" :key="log.id" class="hover:bg-slate-50/50">
-              <td class="py-2.5 px-3 text-slate-400">{{ new Date(log.timestamp).toLocaleString('pt-BR') }}</td>
+              <td class="py-2.5 px-3 text-slate-400">{{ new Date(log.timestamp).toLocaleString('en-US') }}</td>
               <td class="py-2.5 px-3">
                 <span class="px-2 py-0.5 rounded font-bold bg-slate-100 text-slate-700">
                   {{ log.action }}

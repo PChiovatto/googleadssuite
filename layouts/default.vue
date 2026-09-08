@@ -32,7 +32,7 @@
             :class="$route.path === '/' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <Home class="w-4 h-4" />
-            <span>Início & Visão Geral</span>
+            <span>Overview & KPIs</span>
           </NuxtLink>
 
           <!-- Manager Only: Google Ads Dashboard -->
@@ -43,7 +43,7 @@
             :class="$route.path === '/dashboard' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <LayoutDashboard class="w-4 h-4" />
-            <span>Painel de Anúncios</span>
+            <span>Google Ads Analytics</span>
           </NuxtLink>
 
           <!-- Common: Leads & CRM Funnel -->
@@ -54,7 +54,7 @@
           >
             <div class="flex items-center gap-3">
               <Users class="w-4 h-4" />
-              <span>Funil de Leads & CRM</span>
+              <span>Leads Pipeline & CRM</span>
             </div>
             <span class="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300">
               Kanban
@@ -69,10 +69,10 @@
           >
             <div class="flex items-center gap-3">
               <Inbox class="w-4 h-4 text-amber-400" />
-              <span>Webmail In-App (SES)</span>
+              <span>Corporate Webmail</span>
             </div>
             <span class="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-300">
-              Gmail UI
+              SES In/Out
             </span>
           </NuxtLink>
 
@@ -83,7 +83,7 @@
             :class="$route.path === '/dashboard/calendar' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <Calendar class="w-4 h-4" />
-            <span>Agenda & In-Home Estimates</span>
+            <span>Estimates & Dispatch</span>
           </NuxtLink>
 
           <!-- Manager Only: Financial & Real ROAS -->
@@ -95,7 +95,7 @@
           >
             <div class="flex items-center gap-3">
               <TrendingUp class="w-4 h-4 text-emerald-400" />
-              <span>ROAS Real & Financeiro</span>
+              <span>Real ROAS & Job Costing</span>
             </div>
             <span class="text-[9px] font-bold px-1.5 rounded bg-emerald-500/20 text-emerald-300">Stripe</span>
           </NuxtLink>
@@ -107,7 +107,7 @@
             :class="$route.path === '/dashboard/calls' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <PhoneCall class="w-4 h-4" />
-            <span>Central VoIP & Áudios</span>
+            <span>VoIP Phone & Recordings</span>
           </NuxtLink>
 
           <!-- Common: Email Marketing Base & Broadcasts -->
@@ -117,7 +117,7 @@
             :class="$route.path === '/dashboard/marketing' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <Mail class="w-4 h-4" />
-            <span>Campanhas & E-mail Mkt</span>
+            <span>Campaigns & Email Mkt</span>
           </NuxtLink>
 
           <!-- Field Operations & GPS Geofencing (PWA) -->
@@ -128,7 +128,7 @@
           >
             <div class="flex items-center gap-3">
               <HardHat class="w-4 h-4 text-emerald-400" />
-              <span>Operação de Campo</span>
+              <span>Field Operations & Timesheet</span>
             </div>
             <span class="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300">
               PWA GPS
@@ -143,17 +143,17 @@
           >
             <div class="flex items-center gap-3">
               <Shield class="w-4 h-4 text-blue-400" />
-              <span>Portal do Cliente</span>
+              <span>Client Portal</span>
             </div>
             <span class="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-blue-500/20 text-blue-300">
-              Demo ↗
+              Live Demo ↗
             </span>
           </NuxtLink>
 
           <!-- Restricted Manager Section -->
           <div v-if="isManager" class="pt-2">
             <span class="text-[9px] uppercase font-black tracking-widest text-slate-500 px-3.5 block mb-1">
-              Painel Executivo (Manager)
+              Executive Management
             </span>
             <NuxtLink
               to="/admin/performance"
@@ -162,7 +162,7 @@
             >
               <div class="flex items-center gap-3">
                 <Award class="w-4 h-4 text-red-400" />
-                <span>Ranking, SLA & Job Costing</span>
+                <span>Team SLA & Job Costing</span>
               </div>
               <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-red-500/30 text-red-200">
                 PRO
@@ -175,7 +175,7 @@
               :class="$route.path === '/settings' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
             >
               <Sliders class="w-4 h-4" />
-              <span>Conexões & Credenciais</span>
+              <span>Integrations & Credentials</span>
             </NuxtLink>
           </div>
         </nav>
@@ -197,7 +197,7 @@
               class="text-[9px] font-black uppercase tracking-wider block"
               :class="isManager ? 'text-purple-400' : currentUser?.role === 'FIELD_WORKER' ? 'text-blue-400' : 'text-emerald-400'"
             >
-              {{ isManager ? '👑 GESTOR' : currentUser?.role === 'FIELD_WORKER' ? '👷 CAMPO / PINTOR' : '👤 CONSULTOR' }}
+              {{ isManager ? '👑 GENERAL MANAGER' : currentUser?.role === 'FIELD_WORKER' ? '👷 FIELD CREW' : '👤 SALES ESTIMATOR' }}
             </span>
           </div>
         </div>
@@ -212,7 +212,7 @@
         <div class="flex items-center gap-3">
           <div class="flex items-center gap-2.5">
             <img src="/emblem.png" alt="Tony's Emblem" class="w-7 h-7 rounded-full object-contain bg-white p-0.5 shadow-xs" />
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 hidden sm:inline">Perfil Ativo:</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 hidden sm:inline">Active Role:</span>
             <span
               class="text-xs font-bold px-2.5 py-1 rounded-lg border flex items-center gap-1.5"
               :class="isManager ? 'bg-red-50 text-[#D7070D] border-red-200' : currentUser?.role === 'FIELD_WORKER' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-slate-100 text-slate-800 border-slate-200'"
@@ -228,14 +228,14 @@
         <div class="flex items-center gap-3">
           <!-- Role Switcher for Multi-User Testing -->
           <div class="flex items-center gap-1.5 text-xs">
-            <span class="text-[11px] font-bold text-slate-500 hidden md:inline">Simular Usuário:</span>
+            <span class="text-[11px] font-bold text-slate-500 hidden md:inline">Switch User:</span>
             <select
               :value="currentUser?.id"
               @change="onSwitchUser($event.target.value)"
               class="text-xs font-bold py-1.5 px-2.5 rounded-xl border border-slate-300 bg-slate-50 hover:bg-white text-slate-800 cursor-pointer focus:ring-2 focus:ring-blue-500 shadow-2xs transition-colors"
             >
               <option v-for="u in teamUsers" :key="u.id" :value="u.id">
-                {{ u.role === 'MANAGER' ? '👑 Gestor: ' : u.role === 'FIELD_WORKER' ? '👷 Campo: ' : '👤 Consultor: ' }} {{ u.name }}
+                {{ u.role === 'MANAGER' ? '👑 Manager: ' : u.role === 'FIELD_WORKER' ? '👷 Crew: ' : '👤 Estimator: ' }} {{ u.name }}
               </option>
             </select>
           </div>
@@ -248,7 +248,7 @@
             class="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow-2xs transition-all disabled:opacity-50"
           >
             <RefreshCw class="w-3.5 h-3.5" :class="{ 'animate-spin': syncing }" />
-            <span class="hidden sm:inline">{{ syncing ? 'Sincronizando...' : 'Sync Ads' }}</span>
+            <span class="hidden sm:inline">{{ syncing ? 'Syncing...' : 'Sync Ads' }}</span>
           </button>
         </div>
       </header>
@@ -309,7 +309,7 @@ async function syncMetrics() {
       }, 4000)
     }
   } catch (error) {
-    toastMessage.value = 'Falha ao sincronizar métricas.'
+    toastMessage.value = 'Failed to synchronize Google Ads metrics.'
     setTimeout(() => {
       toastMessage.value = ''
     }, 4000)

@@ -4,11 +4,11 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
         <div class="flex items-center gap-2">
-          <h1 class="text-2xl font-black text-slate-900 tracking-tight">Relatório Financeiro & ROAS Real</h1>
+          <h1 class="text-2xl font-black text-slate-900 tracking-tight">Financial Analytics & Real ROAS</h1>
           <span class="bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase px-2 py-0.5 rounded-full">Stripe & Google Ads Live</span>
         </div>
         <p class="text-xs text-slate-500 mt-0.5">
-          Cruzamento dos custos de mídia da Google Ads API com os contratos reais fechados no CRM e depósitos liquidados.
+          Reconciliation of Google Ads API media costs with closed CRM contracts and settled Stripe deposits.
         </p>
       </div>
 
@@ -18,7 +18,7 @@
           class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5"
         >
           <span>🔄</span>
-          <span>Atualizar Métricas</span>
+          <span>Refresh Metrics</span>
         </button>
       </div>
     </div>
@@ -27,47 +27,47 @@
     <div class="grid grid-cols-2 lg:grid-cols-5 gap-3.5">
       <!-- Total Spend -->
       <div class="bg-white rounded-2xl p-4 border border-rose-100 shadow-xs bg-rose-50/10">
-        <span class="text-[11px] font-semibold uppercase text-rose-600">Investimento Google Ads</span>
+        <span class="text-[11px] font-semibold uppercase text-rose-600">Google Ads Spend</span>
         <div class="text-2xl font-black text-rose-700 mt-1">
           ${{ Number(financials.totalAdSpend || 0).toLocaleString('en-US', { minimumFractionDigits: 2 }) }}
         </div>
-        <span class="text-[10px] text-rose-500">{{ financials.totalAdClicks || 0 }} cliques recebidos</span>
+        <span class="text-[10px] text-rose-500">{{ financials.totalAdClicks || 0 }} clicks received</span>
       </div>
 
       <!-- Real Closed Revenue -->
       <div class="bg-white rounded-2xl p-4 border border-emerald-100 shadow-xs bg-emerald-50/20">
-        <span class="text-[11px] font-semibold uppercase text-emerald-600">Faturamento Real Fechado</span>
+        <span class="text-[11px] font-semibold uppercase text-emerald-600">Closed Revenue Won</span>
         <div class="text-2xl font-black text-emerald-700 mt-1">
           ${{ Number(financials.totalClosedRevenue || 0).toLocaleString('en-US', { minimumFractionDigits: 2 }) }}
         </div>
-        <span class="text-[10px] text-emerald-600 font-semibold">{{ financials.closedDealsCount || 0 }} contratos fechados</span>
+        <span class="text-[10px] text-emerald-600 font-semibold">{{ financials.closedDealsCount || 0 }} closed contracts</span>
       </div>
 
       <!-- Real ROAS -->
       <div class="bg-white rounded-2xl p-4 border border-purple-100 shadow-xs bg-purple-50/20">
-        <span class="text-[11px] font-semibold uppercase text-purple-600">ROAS Real (Retorno em $)</span>
+        <span class="text-[11px] font-semibold uppercase text-purple-600">Real ROAS (Revenue Return)</span>
         <div class="text-2xl font-black text-purple-700 mt-1">
           {{ financials.realRoas || 0 }}x
         </div>
-        <span class="text-[10px] text-purple-500">Para cada $1 investido</span>
+        <span class="text-[10px] text-purple-500">Per $1 ad spend</span>
       </div>
 
       <!-- Real CAC -->
       <div class="bg-white rounded-2xl p-4 border border-blue-100 shadow-xs bg-blue-50/20">
-        <span class="text-[11px] font-semibold uppercase text-blue-600">CAC Real por Cliente</span>
+        <span class="text-[11px] font-semibold uppercase text-blue-600">Real Blended CAC</span>
         <div class="text-2xl font-black text-blue-700 mt-1">
           ${{ Number(financials.realCac || 0).toLocaleString('en-US', { minimumFractionDigits: 2 }) }}
         </div>
-        <span class="text-[10px] text-blue-500">Custo de Aquisição</span>
+        <span class="text-[10px] text-blue-500">Customer Acquisition Cost</span>
       </div>
 
       <!-- Net Profit After Ads -->
       <div class="bg-white rounded-2xl p-4 border border-indigo-100 shadow-xs bg-indigo-50/20 col-span-2 lg:col-span-1">
-        <span class="text-[11px] font-semibold uppercase text-indigo-600">Lucro Bruto Líquido</span>
+        <span class="text-[11px] font-semibold uppercase text-indigo-600">Gross Margin After Ads</span>
         <div class="text-2xl font-black text-indigo-700 mt-1">
           ${{ Number(financials.netProfitAfterAds || 0).toLocaleString('en-US', { minimumFractionDigits: 2 }) }}
         </div>
-        <span class="text-[10px] text-indigo-500 font-bold">Margem de {{ financials.profitMarginPercent || 0 }}%</span>
+        <span class="text-[10px] text-indigo-500 font-bold">{{ financials.profitMarginPercent || 0 }}% gross profit margin</span>
       </div>
     </div>
 
@@ -75,24 +75,24 @@
     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
       <div class="p-4 border-b border-slate-100 flex items-center justify-between">
         <div>
-          <h2 class="text-sm font-bold text-slate-900">Performance e Retorno por Campanha</h2>
-          <p class="text-[11px] text-slate-500">Comparação direta do investimento do Google com a receita real de contratos</p>
+          <h2 class="text-sm font-bold text-slate-900">Campaign Performance & Real ROAS</h2>
+          <p class="text-[11px] text-slate-500">Direct comparison of Google Ads expenditure vs. signed contract revenue</p>
         </div>
-        <span class="text-[11px] font-mono text-slate-400">Moeda: USD ($)</span>
+        <span class="text-[11px] font-mono text-slate-400">Currency: USD ($)</span>
       </div>
 
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs">
           <thead class="bg-slate-50 text-slate-600 font-bold uppercase tracking-wider text-[10px]">
             <tr>
-              <th class="py-3 px-4">Campanha</th>
-              <th class="py-3 px-4">Tipo</th>
-              <th class="py-3 px-4 text-right">Gasto Google ($)</th>
-              <th class="py-3 px-4 text-center">Contratos Fechados</th>
-              <th class="py-3 px-4 text-right">Receita Contratada ($)</th>
-              <th class="py-3 px-4 text-center">ROAS Real</th>
+              <th class="py-3 px-4">Campaign</th>
+              <th class="py-3 px-4">Channel / Type</th>
+              <th class="py-3 px-4 text-right">Google Spend ($)</th>
+              <th class="py-3 px-4 text-center">Closed Won Deals</th>
+              <th class="py-3 px-4 text-right">Contracted Revenue ($)</th>
+              <th class="py-3 px-4 text-center">Real ROAS</th>
               <th class="py-3 px-4 text-right">CAC ($)</th>
-              <th class="py-3 px-4 text-center">Status</th>
+              <th class="py-3 px-4 text-center">Recommendation</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100">
@@ -121,7 +121,7 @@
                   class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider"
                   :class="c.status === 'HIGH_PERFORMER' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'"
                 >
-                  {{ c.status === 'HIGH_PERFORMER' ? 'Escalar Lance' : 'Otimizar' }}
+                  {{ c.status === 'HIGH_PERFORMER' ? 'Scale Target' : 'Optimize' }}
                 </span>
               </td>
             </tr>
@@ -133,8 +133,8 @@
     <!-- Top Keywords Breakdown -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-4">
       <div class="flex items-center justify-between">
-        <h3 class="text-sm font-bold text-slate-900">Palavras-Chave Mais Lucrativas (ROAS > 15x)</h3>
-        <span class="text-xs text-slate-400">Rastreamento ValueTrack Granular</span>
+        <h3 class="text-sm font-bold text-slate-900">Top Performing Keywords (ROAS > 15x)</h3>
+        <span class="text-xs text-slate-400">Granular ValueTrack Attribution</span>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -151,7 +151,7 @@
             <span class="font-black text-purple-700 bg-purple-100 px-1.5 py-0.2 rounded">{{ kw.roas }}x</span>
           </div>
           <div class="flex items-center justify-between text-[11px] text-slate-600">
-            <span>Receita:</span>
+            <span>Revenue:</span>
             <span class="font-bold text-emerald-700">${{ Number(kw.revenue).toLocaleString('en-US') }}</span>
           </div>
         </div>
@@ -176,7 +176,7 @@ async function fetchFinancials() {
       topKeywords.value = res.topKeywords || []
     }
   } catch (err) {
-    console.error('Erro ao buscar dados financeiros:', err)
+    console.error('Failed to fetch financial metrics:', err)
   }
 }
 

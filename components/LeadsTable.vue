@@ -3,8 +3,8 @@
     <!-- Header with Search & Filter -->
     <div class="p-5 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h3 class="text-base font-bold text-slate-900">Pipeline de Leads & Atendimento</h3>
-        <p class="text-xs text-slate-500">Contatos capturados via Google Ads e Google Meu Negócio</p>
+        <h3 class="text-base font-bold text-slate-900">Lead Pipeline & Inquiries</h3>
+        <p class="text-xs text-slate-500">Inbound contacts captured via Google Ads and Google Business Profile</p>
       </div>
 
       <div class="flex flex-wrap items-center gap-3">
@@ -13,7 +13,7 @@
           <input
             v-model="search"
             type="text"
-            placeholder="Buscar por nome, fone, serviço..."
+            placeholder="Search by name, phone, service..."
             class="pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white w-48 sm:w-60 transition-all"
           />
           <Search class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
@@ -24,10 +24,10 @@
           v-model="sourceFilter"
           class="text-xs bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 cursor-pointer"
         >
-          <option value="ALL">Todas as Origens</option>
+          <option value="ALL">All Sources</option>
           <option value="GOOGLE_ADS">Google Ads (Webhooks)</option>
-          <option value="GOOGLE_BUSINESS">Google Meu Negócio</option>
-          <option value="ORGANIC">Orgânico</option>
+          <option value="GOOGLE_BUSINESS">Google Business Profile</option>
+          <option value="ORGANIC">Organic</option>
         </select>
 
         <!-- Status Filter -->
@@ -35,12 +35,12 @@
           v-model="statusFilter"
           class="text-xs bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 cursor-pointer"
         >
-          <option value="ALL">Todos os Status</option>
-          <option value="NOVO">Novo</option>
-          <option value="EM_ATENDIMENTO">Em Atendimento</option>
-          <option value="PROPOSTA">Proposta Enviada</option>
-          <option value="CONVERTIDO">Convertido</option>
-          <option value="PERDIDO">Perdido</option>
+          <option value="ALL">All Statuses</option>
+          <option value="NOVO">Inbound / New</option>
+          <option value="EM_ATENDIMENTO">In Discovery</option>
+          <option value="PROPOSTA">Proposal Sent</option>
+          <option value="CONVERTIDO">Closed Won</option>
+          <option value="PERDIDO">Closed Lost</option>
         </select>
       </div>
     </div>
@@ -50,12 +50,12 @@
       <table class="w-full text-left border-collapse text-xs">
         <thead>
           <tr class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-semibold uppercase tracking-wider">
-            <th class="py-3.5 px-4">Origem</th>
-            <th class="py-3.5 px-4">Cliente / Contato</th>
-            <th class="py-3.5 px-4">Serviço de Interesse</th>
+            <th class="py-3.5 px-4">Source</th>
+            <th class="py-3.5 px-4">Client / Contact</th>
+            <th class="py-3.5 px-4">Scope / Service</th>
             <th class="py-3.5 px-3">Status</th>
-            <th class="py-3.5 px-3 text-center">Score IA</th>
-            <th class="py-3.5 px-4 text-right">Ações & Roteiro</th>
+            <th class="py-3.5 px-3 text-center">AI Score</th>
+            <th class="py-3.5 px-4 text-right">Actions & Script</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100">
@@ -75,8 +75,8 @@
                 }"
               >
                 <span v-if="lead.source === 'GOOGLE_ADS'">🎯 Ads Form</span>
-                <span v-else-if="lead.source === 'GOOGLE_BUSINESS'">📍 Meu Negócio</span>
-                <span v-else>🌐 Orgânico</span>
+                <span v-else-if="lead.source === 'GOOGLE_BUSINESS'">📍 Business Profile</span>
+                <span v-else>🌐 Organic</span>
               </span>
               <div v-if="lead.campaignName" class="text-[10px] text-slate-400 mt-1 truncate max-w-[140px]" :title="lead.campaignName">
                 {{ lead.campaignName }}
@@ -99,7 +99,7 @@
             <!-- Service Interested -->
             <td class="py-3.5 px-4 max-w-[220px]">
               <p class="font-medium text-slate-800 line-clamp-2" :title="lead.serviceInterested">
-                {{ lead.serviceInterested || 'Pintura Residencial Geral' }}
+                {{ lead.serviceInterested || 'General Residential Painting' }}
               </p>
               <p v-if="lead.notes" class="text-[10px] text-slate-400 mt-1 line-clamp-1 italic">
                 "{{ lead.notes }}"
@@ -120,11 +120,11 @@
                   'bg-rose-50 text-rose-700 border-rose-200': lead.status === 'PERDIDO'
                 }"
               >
-                <option value="NOVO">● Novo</option>
-                <option value="EM_ATENDIMENTO">● Em Atendimento</option>
-                <option value="PROPOSTA">📝 Proposta Enviada</option>
-                <option value="CONVERTIDO">✔ Convertido</option>
-                <option value="PERDIDO">✖ Perdido</option>
+                <option value="NOVO">● Inbound</option>
+                <option value="EM_ATENDIMENTO">● In Discovery</option>
+                <option value="PROPOSTA">📝 Proposal Sent</option>
+                <option value="CONVERTIDO">✔ Closed Won</option>
+                <option value="PERDIDO">✖ Closed Lost</option>
               </select>
             </td>
 
@@ -149,7 +149,7 @@
                 <button
                   @click="generateStripeLink(lead)"
                   class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 shadow-2xs"
-                  title="Gerar Link de Pagamento Stripe"
+                  title="Generate Stripe Deposit Link"
                 >
                   <span>💳</span>
                   <span>Stripe</span>
@@ -160,20 +160,20 @@
                   @click="qualifyWithAi(lead.id)"
                   :disabled="qualifyingId === lead.id"
                   class="bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 shadow-2xs"
-                  title="Qualificar Lead e Gerar Roteiro com Gemini"
+                  title="Qualify Lead & Generate Gemini Script"
                 >
                   <Sparkles class="w-3.5 h-3.5" :class="{ 'animate-spin': qualifyingId === lead.id }" />
-                  <span>{{ qualifyingId === lead.id ? 'Analisando...' : 'Qualificar' }}</span>
+                  <span>{{ qualifyingId === lead.id ? 'Analyzing...' : 'AI Qualify' }}</span>
                 </button>
 
                 <!-- WhatsApp Modal Button -->
                 <button
                   @click="$emit('openLeadDetails', lead)"
                   class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 shadow-2xs"
-                  title="Ver Roteiro de WhatsApp"
+                  title="View Outreach Script"
                 >
                   <MessageSquare class="w-3.5 h-3.5" />
-                  <span>Roteiro</span>
+                  <span>Script</span>
                 </button>
               </div>
             </td>
@@ -181,7 +181,7 @@
 
           <tr v-if="filteredLeads.length === 0">
             <td colspan="6" class="py-10 text-center text-slate-400">
-              Nenhum lead encontrado para os filtros selecionados.
+              No leads match the selected filters.
             </td>
           </tr>
         </tbody>
@@ -239,7 +239,7 @@ async function updateLeadStatus(leadId, status) {
     })
     emit('refresh')
   } catch (err) {
-    console.error('Falha ao atualizar status do lead:', err)
+    console.error('Failed to update lead status:', err)
   }
 }
 
@@ -255,7 +255,7 @@ async function qualifyWithAi(leadId) {
       emit('openLeadDetails', res.lead)
     }
   } catch (err) {
-    console.error('Erro ao qualificar lead:', err)
+    console.error('Failed to qualify lead:', err)
   } finally {
     qualifyingId.value = null
   }
@@ -268,15 +268,15 @@ async function generateStripeLink(lead) {
       body: {
         leadId: lead.id,
         amount: lead.dealValue || 1500,
-        description: lead.serviceInterested || 'Serviços de Pintura'
+        description: lead.serviceInterested || 'Painting & Remodeling Services'
       }
     })
     if (res.success && res.checkoutUrl) {
-      prompt('Link de pagamento Stripe gerado com sucesso! Copie para enviar ao cliente:', res.checkoutUrl)
+      prompt('Stripe payment link generated successfully! Copy to send to client:', res.checkoutUrl)
       emit('refresh')
     }
   } catch (err) {
-    alert('Falha ao gerar link Stripe.')
+    alert('Failed to generate Stripe payment link.')
   }
 }
 </script>

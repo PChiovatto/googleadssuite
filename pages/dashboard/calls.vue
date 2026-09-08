@@ -5,11 +5,11 @@
       <div>
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-bold mb-2">
           <span>📞</span>
-          <span>Central VoIP US • Twilio + OpenAI Realtime + Gemini Pro</span>
+          <span>US VoIP Phone Center • Twilio + OpenAI Realtime + Gemini Pro</span>
         </div>
-        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Discador & Gravações Telefônicas</h1>
+        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">VoIP Phone Dialer & Call Recordings</h1>
         <p class="text-xs text-slate-500">
-          Chamadas telefônicas VoIP com gravação automática, transcrição via Whisper e auditoria de negociação com Gemini Pro.
+          VoIP business phone calls with automatic audio recording, Whisper AI transcription, and Gemini Pro sales negotiation auditing.
         </p>
       </div>
 
@@ -21,7 +21,7 @@
           class="bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-2"
         >
           <span>🤖</span>
-          <span>Testar Voice AI (Realtime)</span>
+          <span>Test Realtime Voice AI</span>
         </button>
 
         <button
@@ -30,7 +30,7 @@
           class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-2"
         >
           <PhoneCall class="w-4 h-4" :class="{ 'animate-bounce': calling }" />
-          <span>{{ calling ? 'Ligando...' : 'Simular Ligação VoIP' }}</span>
+          <span>{{ calling ? 'Connecting Call...' : 'Simulate VoIP Outbound Call' }}</span>
         </button>
       </div>
     </div>
@@ -38,8 +38,8 @@
     <!-- Calls List & Gemini AI Transcripts -->
     <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 space-y-4">
       <h2 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center justify-between">
-        <span>Histórico de Gravações & Auditorias de Vendas</span>
-        <span class="text-xs text-slate-500 font-normal">{{ calls.length }} ligações gravadas</span>
+        <span>Call Recordings History & Sales Audits</span>
+        <span class="text-xs text-slate-500 font-normal">{{ calls.length }} recorded calls</span>
       </h2>
 
       <div class="space-y-4">
@@ -54,8 +54,8 @@
                 ☎️
               </div>
               <div>
-                <span class="font-bold text-slate-900 text-sm block">Consultor: {{ call.agentName || 'Tony Silva (Owner & GM)' }}</span>
-                <span class="text-[10px] text-slate-400">Duração: {{ Math.floor(call.durationSeconds / 60) }}m {{ call.durationSeconds % 60 }}s • {{ new Date(call.createdAt).toLocaleString('pt-BR') }}</span>
+                <span class="font-bold text-slate-900 text-sm block">Sales Consultant: {{ call.agentName || 'Tony Silva (Owner & GM)' }}</span>
+                <span class="text-[10px] text-slate-400">Duration: {{ Math.floor(call.durationSeconds / 60) }}m {{ call.durationSeconds % 60 }}s • {{ new Date(call.createdAt).toLocaleString('en-US') }}</span>
               </div>
             </div>
 
@@ -73,7 +73,7 @@
                 class="bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1"
               >
                 <span>✨</span>
-                <span>Auditoria Profunda</span>
+                <span>Deep Audit</span>
               </button>
             </div>
           </div>
@@ -82,7 +82,7 @@
           <div class="bg-white rounded-lg p-3.5 border border-slate-200 text-slate-800 space-y-1">
             <span class="text-[10px] uppercase font-bold text-purple-700 tracking-wider flex items-center gap-1">
               <span>🎙️</span>
-              <span>Resumo Gemini Pro / Whisper:</span>
+              <span>Gemini Pro / Whisper AI Executive Summary:</span>
             </span>
             <p class="leading-relaxed font-medium text-xs text-slate-700">
               {{ call.aiTranscript }}
@@ -102,8 +102,8 @@
           <div class="flex items-center gap-2">
             <span class="text-xl">🎙️</span>
             <div>
-              <h3 class="text-base font-black text-slate-900">Auditoria de Negociação & TCPA</h3>
-              <p class="text-[11px] text-slate-400">Processado com Whisper-1 + Gemini 1.5 Pro</p>
+              <h3 class="text-base font-black text-slate-900">Sales Negotiation & TCPA Compliance Audit</h3>
+              <p class="text-[11px] text-slate-400">Processed with Whisper-1 + Gemini 1.5 Pro</p>
             </div>
           </div>
           <button @click="selectedAudit = null" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
@@ -113,13 +113,13 @@
           <!-- Compliance & Sentiment Grid -->
           <div class="grid grid-cols-2 gap-3">
             <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
-              <span class="text-[10px] font-bold text-slate-500 uppercase block mb-0.5">Conformidade TCPA</span>
+              <span class="text-[10px] font-bold text-slate-500 uppercase block mb-0.5">TCPA Compliance Status</span>
               <span class="font-bold text-emerald-600 flex items-center gap-1">
-                <span>✓</span> Gravado e Informado
+                <span>✓</span> Recorded & Disclosure Provided
               </span>
             </div>
             <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
-              <span class="text-[10px] font-bold text-slate-500 uppercase block mb-0.5">Nota de Quebra de Objeção</span>
+              <span class="text-[10px] font-bold text-slate-500 uppercase block mb-0.5">Objection Handling Score</span>
               <span class="font-black text-purple-700 text-sm">
                 {{ selectedAudit.objectionHandlingScore || 9 }}/10
               </span>
@@ -128,7 +128,7 @@
 
           <!-- Transcript -->
           <div>
-            <span class="font-bold text-slate-800 block mb-1">Transcrição Completa da Chamada (Whisper):</span>
+            <span class="font-bold text-slate-800 block mb-1">Full Call Audio Transcription (Whisper AI):</span>
             <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 font-mono text-[11px] leading-relaxed text-slate-700 max-h-40 overflow-y-auto whitespace-pre-wrap">
               {{ selectedAudit.transcription }}
             </div>
@@ -136,7 +136,7 @@
 
           <!-- Coaching Tips -->
           <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 space-y-1">
-            <span class="font-bold block mb-1">💡 Dicas de Coaching para o Consultor:</span>
+            <span class="font-bold block mb-1">💡 Sales Coaching Recommendations:</span>
             <ul class="list-disc list-inside space-y-1 text-[11px]">
               <li v-for="(tip, i) in (selectedAudit.coachingTips || [])" :key="i">{{ tip }}</li>
             </ul>
@@ -144,7 +144,7 @@
 
           <!-- Next Steps -->
           <div class="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-950">
-            <span class="font-bold block mb-1">🎯 Próximo Passo Recomendado:</span>
+            <span class="font-bold block mb-1">🎯 Recommended Next Step:</span>
             <p class="text-[11px]">{{ selectedAudit.nextSteps }}</p>
           </div>
         </div>
@@ -154,7 +154,7 @@
             @click="selectedAudit = null"
             class="bg-slate-900 text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 transition-colors"
           >
-            Fechar Auditoria
+            Close Audit
           </button>
         </div>
       </div>
@@ -189,7 +189,7 @@ async function simulateCall() {
       body: {
         agentName: 'Tony Silva (Owner & GM)',
         durationSeconds: 210,
-        aiTranscript: 'Cliente confirmou interesse na restauração de deck e pintura externa de casa de 2 andares em Newton, MA. Muito satisfeito com a rapidez do primeiro contato (menos de 2 minutos). Visita de medição agendada.',
+        aiTranscript: 'Client confirmed interest in deck restoration and 2-story exterior house painting in Newton, MA. Highly satisfied with speed-to-lead initial contact (under 2 minutes). On-site estimate walkthrough scheduled.',
         sentiment: 'POSITIVE'
       }
     })
@@ -208,10 +208,10 @@ async function testVoiceAi() {
       method: 'POST',
       body: { callerPhone: '+16175550198' }
     })
-    alert(`Voice AI acionado! Status: ${res.status}. Roteando chamada para estimador principal.`)
+    alert(`Voice AI activated! Status: ${res.status}. Routing call to primary estimator.`)
     await fetchCalls()
   } catch (err) {
-    alert('Falha ao acionar Voice AI.')
+    alert('Failed to trigger Voice AI.')
   } finally {
     calling.value = false
   }
@@ -230,7 +230,7 @@ async function openDeepAudit(call) {
       selectedAudit.value = res.audit
     }
   } catch (err) {
-    alert('Erro ao carregar auditoria profunda.')
+    alert('Error loading deep call audit.')
   }
 }
 

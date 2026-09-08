@@ -10,7 +10,7 @@
           <img src="/tonys_favicon.png" alt="Tony's" class="w-7 h-7 rounded-full object-contain bg-white p-0.5 border border-red-600/30" />
           <div>
             <h1 class="text-sm font-black text-white tracking-wide uppercase leading-none">Tony's Field Operations</h1>
-            <span class="text-[9px] font-mono text-red-400 font-bold leading-none">PWA • Geofencing, Ponto & Payroll</span>
+            <span class="text-[9px] font-mono text-red-400 font-bold leading-none">PWA • Geofencing, Time Tracking & Payroll</span>
           </div>
         </div>
       </div>
@@ -19,13 +19,13 @@
       <div class="flex items-center gap-2 text-xs">
         <span class="w-2.5 h-2.5 rounded-full" :class="activeShift ? 'bg-emerald-500 animate-pulse' : 'bg-slate-500'"></span>
         <span class="font-bold hidden sm:inline" :class="activeShift ? 'text-emerald-400' : 'text-slate-400'">
-          {{ activeShift ? 'EM EXPEDIENTE' : 'FORA DE TURNO' }}
+          {{ activeShift ? 'ON DUTY' : 'OFF DUTY' }}
         </span>
       </div>
     </header>
 
     <div class="max-w-3xl mx-auto p-4 sm:p-6 space-y-6">
-      <!-- NAVIGATION TABS: OPERAÇÕES DE CAMPO VS MEU HOLERITE & HORAS -->
+      <!-- NAVIGATION TABS: FIELD OPERATIONS VS TIMESHEET & PAYROLL -->
       <div class="flex items-center gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 shadow-lg">
         <button
           @click="activeTab = 'OPERATIONS'"
@@ -33,7 +33,7 @@
           :class="activeTab === 'OPERATIONS' ? 'bg-[#D7070D] text-white shadow-md' : 'text-slate-400 hover:text-white'"
         >
           <Clock class="w-4 h-4" />
-          <span>Ponto & Canteiro (GPS)</span>
+          <span>Clock-In & Job Site (GPS)</span>
         </button>
         <button
           @click="activeTab = 'PAYROLL'; fetchPayroll()"
@@ -41,7 +41,7 @@
           :class="activeTab === 'PAYROLL' ? 'bg-[#D7070D] text-white shadow-md' : 'text-slate-400 hover:text-white'"
         >
           <DollarSign class="w-4 h-4" />
-          <span>Holerite & Horas (Timesheet)</span>
+          <span>Timesheet & Payroll</span>
         </button>
       </div>
 
@@ -58,12 +58,12 @@
             </div>
             <div class="space-y-0.5">
               <span class="text-[10px] font-black uppercase tracking-wider text-emerald-400">
-                Obra Mais Próxima Detectada via GPS
+                Nearest Job Site Detected via GPS
               </span>
               <h4 class="text-sm font-black text-white">{{ nearestJob.name }}</h4>
               <p class="text-xs text-slate-300 font-mono">
                 📍 {{ nearestJob.address || nearestJob.city || 'Massachusetts' }} •
-                <span class="text-emerald-400 font-bold">{{ nearestJob.distanceKm }} km de distância</span>
+                <span class="text-emerald-400 font-bold">{{ nearestJob.distanceKm }} km away</span>
               </p>
             </div>
           </div>
@@ -73,7 +73,7 @@
             class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black px-4 py-2.5 rounded-xl transition-all shadow-md shrink-0 flex items-center justify-center gap-1.5 active:scale-95"
           >
             <CheckCircle v-if="selectedLeadId === nearestJob.id" class="w-4 h-4" />
-            <span>{{ selectedLeadId === nearestJob.id ? '✓ Obra Selecionada' : 'Selecionar Esta Obra' }}</span>
+            <span>{{ selectedLeadId === nearestJob.id ? '✓ Job Selected' : 'Select This Job' }}</span>
           </button>
         </div>
 
@@ -85,10 +85,10 @@
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
             <div>
               <span class="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-bold block">
-                Ponto Eletrônico & Geofencing Massachusetts
+                Electronic Time Tracking & MA Geofencing
               </span>
               <h2 class="text-xl sm:text-2xl font-black text-white mt-1">
-                {{ activeShift ? 'Obra em Andamento' : 'Registrar Início de Turno' }}
+                {{ activeShift ? 'Job In Progress' : 'Start New Shift' }}
               </h2>
             </div>
 
@@ -99,7 +99,7 @@
                 GPS: {{ gpsCoords.lat.toFixed(4) }}, {{ gpsCoords.lng.toFixed(4) }}
               </span>
               <span v-else class="text-amber-300">
-                Obtendo GPS...
+                Acquiring GPS...
               </span>
             </div>
           </div>
@@ -108,28 +108,28 @@
           <div v-if="activeShift" class="space-y-4">
             <div class="bg-emerald-950/30 border border-emerald-500/30 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">Local do Trabalho / Cliente</span>
+                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">Job Location / Client</span>
                 <h3 class="text-base font-black text-white">{{ activeShift.lead?.name }}</h3>
                 <p class="text-xs text-slate-300 font-mono mt-0.5">
                   📍 {{ activeShift.lead?.address || activeShift.lead?.city || 'Massachusetts' }}
                 </p>
               </div>
               <div class="text-left sm:text-right">
-                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Tempo Decorrido</span>
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Elapsed Time</span>
                 <span class="text-2xl sm:text-3xl font-black text-emerald-400 font-mono tracking-tight">{{ shiftTimer }}</span>
-                <span class="text-[10px] text-slate-400 block">Entrada: {{ new Date(activeShift.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
+                <span class="text-[10px] text-slate-400 block">Clock-in: {{ new Date(activeShift.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
               </div>
             </div>
 
             <div class="flex items-center gap-2 text-xs text-slate-300 bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
               <ShieldCheck class="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>{{ activeShift.notes || 'Geofencing validado no perímetro da obra em Massachusetts.' }}</span>
+              <span>{{ activeShift.notes || 'Geofencing validated within Massachusetts job site perimeter.' }}</span>
             </div>
 
             <!-- Lunch deduction notice -->
             <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl text-xs text-slate-400 flex items-center justify-between">
-              <span>🍽️ Intervalo de Almoço Automático:</span>
-              <span class="text-emerald-400 font-bold">30 min deduzidos na saída</span>
+              <span>🍽️ Automatic Lunch Break:</span>
+              <span class="text-emerald-400 font-bold">30 min deducted upon clock-out</span>
             </div>
 
             <!-- Clock-out action button -->
@@ -139,7 +139,7 @@
               class="w-full bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-sm uppercase tracking-wider py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 active:scale-98 disabled:opacity-50 cursor-pointer"
             >
               <Square class="w-5 h-5 fill-current" />
-              <span>{{ loadingAction ? 'Finalizando Turno...' : 'Bater Ponto de Saída (Clock-Out)' }}</span>
+              <span>{{ loadingAction ? 'Clocking Out...' : 'Clock Out (End Shift)' }}</span>
             </button>
           </div>
 
@@ -147,13 +147,13 @@
           <div v-else class="space-y-4">
             <div>
               <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
-                Selecione a Obra / Cliente do Dia:
+                Select Today's Job Site / Client:
               </label>
               <select
                 v-model="selectedLeadId"
                 class="w-full bg-slate-800 border border-slate-700 text-white text-sm font-semibold rounded-2xl p-3.5 focus:ring-2 focus:ring-[#D7070D] focus:outline-none"
               >
-                <option value="" disabled>Escolha a obra no cronograma...</option>
+                <option value="" disabled>Select job from schedule...</option>
                 <option v-for="job in activeJobs" :key="job.id" :value="job.id">
                   {{ job.name }} — {{ job.serviceInterested }} ({{ job.city }}) {{ job.distanceKm ? `[${job.distanceKm} km]` : '' }}
                 </option>
@@ -162,12 +162,12 @@
 
             <div>
               <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                Observações / Tarefas Previstas Hoje:
+                Shift Notes / Planned Tasks:
               </label>
               <input
                 v-model="shiftNotes"
                 type="text"
-                placeholder="Ex: Lixamento das molduras e aplicação de primer Sherwin-Williams"
+                placeholder="e.g. Trim sanding, priming, and applying Benjamin Moore finish coats"
                 class="w-full bg-slate-800 border border-slate-700 text-white text-xs rounded-xl p-3 focus:ring-2 focus:ring-[#D7070D] focus:outline-none placeholder:text-slate-500"
               />
             </div>
@@ -179,7 +179,7 @@
               class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-sm uppercase tracking-wider py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 active:scale-98 disabled:opacity-40 cursor-pointer"
             >
               <Play class="w-5 h-5 fill-current" />
-              <span>{{ loadingAction ? 'Registrando Ponto GPS...' : 'Bater Ponto de Entrada (Clock-In)' }}</span>
+              <span>{{ loadingAction ? 'Clocking In (GPS)...' : 'Clock In (Start Shift)' }}</span>
             </button>
           </div>
         </div>
@@ -190,32 +190,32 @@
             <div class="flex items-center gap-2.5">
               <Camera class="w-5 h-5 text-red-500" />
               <div>
-                <h3 class="text-base font-black text-white">Fotos de Progresso da Obra</h3>
-                <p class="text-xs text-slate-400">Envie fotos diárias visíveis no Portal do Cliente</p>
+                <h3 class="text-base font-black text-white">Job Site Progress Photos</h3>
+                <p class="text-xs text-slate-400">Upload daily progress photos visible on the Client Portal</p>
               </div>
             </div>
             <span class="text-[10px] font-mono bg-slate-800 px-2.5 py-1 rounded-full text-slate-300">
-              Tablet / Câmera
+              Tablet / Camera
             </span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-bold text-slate-400 mb-1">URL da Imagem / Foto do Canteiro:</label>
+              <label class="block text-xs font-bold text-slate-400 mb-1">Image URL / Job Site Photo:</label>
               <input
                 v-model="photoForm.url"
                 type="text"
-                placeholder="https://... ou tire foto com tablet"
+                placeholder="https://... or capture photo on mobile/tablet"
                 class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-red-500"
               />
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-slate-400 mb-1">Descrição do Serviço Realizado:</label>
+              <label class="block text-xs font-bold text-slate-400 mb-1">Service & Scope Description:</label>
               <input
                 v-model="photoForm.description"
                 type="text"
-                placeholder="Ex: Primeira demão de acabamento aplicada na sala"
+                placeholder="e.g. First finish coat applied in living room & hallway"
                 class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-red-500"
               />
             </div>
@@ -224,7 +224,7 @@
           <div class="flex items-center justify-between pt-2">
             <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
               <input type="checkbox" v-model="photoForm.isPublic" class="w-4 h-4 rounded text-red-600 focus:ring-0" />
-              <span>Exibir no Portal do Morador (Customer Tracker)</span>
+              <span>Showcase on Client Portal (Customer Tracker)</span>
             </label>
 
             <button
@@ -232,7 +232,7 @@
               :disabled="!photoForm.url || uploadingPhoto"
               class="bg-[#D7070D] hover:bg-[#B0050A] disabled:opacity-50 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-colors shadow-md flex items-center gap-1.5 cursor-pointer"
             >
-              <span>{{ uploadingPhoto ? 'Salvando...' : 'Salvar Foto na Obra' }}</span>
+              <span>{{ uploadingPhoto ? 'Saving...' : 'Upload Job Photo' }}</span>
               <Upload class="w-3.5 h-3.5" />
             </button>
           </div>
@@ -244,8 +244,8 @@
             <div class="flex items-center gap-2.5">
               <PaintBucket class="w-5 h-5 text-amber-500" />
               <div>
-                <h3 class="text-base font-black text-white">Solicitar Materiais (Procurement)</h3>
-                <p class="text-xs text-slate-400">Peça tintas, rolos e materiais para entrega no canteiro</p>
+                <h3 class="text-base font-black text-white">Material Procurement Request</h3>
+                <p class="text-xs text-slate-400">Request paints, rollers, and supplies for job site delivery</p>
               </div>
             </div>
           </div>
@@ -255,7 +255,7 @@
               <input
                 v-model="materialForm.item"
                 type="text"
-                placeholder="Item (Ex: Galão Tinta Acetinada Branco Sherwin-Williams)"
+                placeholder="Item (e.g. 5 Gallons Regal Select Satin - Chantilly Lace)"
                 class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-500"
               />
             </div>
@@ -264,7 +264,7 @@
                 v-model="materialForm.quantity"
                 type="number"
                 min="1"
-                placeholder="Qtd"
+                placeholder="Qty"
                 class="w-20 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-amber-500 text-center"
               />
               <button
@@ -272,7 +272,7 @@
                 :disabled="!materialForm.item || requestingMaterial"
                 class="flex-1 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-colors disabled:opacity-50 cursor-pointer"
               >
-                Pedir
+                Order
               </button>
             </div>
           </div>
@@ -281,42 +281,42 @@
         <!-- 4. RECENT SHIFT LOGS -->
         <div class="bg-slate-950 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
           <h3 class="text-base font-black text-white border-b border-slate-800 pb-3">
-            Histórico Recente de Pontos Registrados
+            Recent Shift Logs
           </h3>
 
           <div v-if="timeLogs.length === 0" class="text-center py-6 text-xs text-slate-500 italic">
-            Nenhum registro de ponto registrado hoje.
+            No shift logs recorded today.
           </div>
 
           <div v-else class="divide-y divide-slate-800">
             <div v-for="log in timeLogs" :key="log.id" class="py-3 flex items-center justify-between gap-3 text-xs">
               <div class="space-y-0.5">
                 <div class="flex items-center gap-2">
-                  <span class="font-bold text-white">{{ log.lead?.name || 'Obra' }}</span>
+                  <span class="font-bold text-white">{{ log.lead?.name || 'Job Site' }}</span>
                   <span
                     class="text-[9px] font-mono px-2 py-0.2 rounded-full font-bold"
                     :class="log.isValidated ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-amber-950 text-amber-400 border border-amber-800'"
                   >
-                    {{ log.isValidated ? 'GPS OK' : 'Ressalva GPS' }}
+                    {{ log.isValidated ? 'GPS OK' : 'GPS Flag' }}
                   </span>
                   <span v-if="log.lunchDeducted" class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-400">
-                    -30m almoço
+                    -30m lunch
                   </span>
                 </div>
                 <p class="text-[11px] text-slate-400 font-mono">
-                  Entrada: {{ new Date(log.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
-                  <span v-if="log.checkOut"> • Saída: {{ new Date(log.checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
+                  In: {{ new Date(log.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
+                  <span v-if="log.checkOut"> • Out: {{ new Date(log.checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
                 </p>
               </div>
 
               <div class="text-right font-mono">
                 <span class="text-emerald-400 font-bold block">
-                  {{ log.totalHours !== null ? `${log.totalHours}h` : (log.checkOut ? `${(((new Date(log.checkOut) - new Date(log.checkIn)) / (1000 * 60 * 60)).toFixed(1))}h` : 'Em curso') }}
+                  {{ log.totalHours !== null ? `${log.totalHours}h` : (log.checkOut ? `${(((new Date(log.checkOut) - new Date(log.checkIn)) / (1000 * 60 * 60)).toFixed(1))}h` : 'Active') }}
                 </span>
                 <span v-if="log.earnedPay" class="text-[11px] text-emerald-300 font-bold block">
                   ${{ log.earnedPay.toFixed(2) }}
                 </span>
-                <span class="text-[10px] text-slate-500">{{ new Date(log.checkIn).toLocaleDateString('pt-BR', { month: 'short', day: 'numeric' }) }}</span>
+                <span class="text-[10px] text-slate-500">{{ new Date(log.checkIn).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) }}</span>
               </div>
             </div>
           </div>
@@ -333,22 +333,22 @@
             </div>
             <div>
               <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest font-bold block">
-                Colaborador de Campo Tony's
+                Tony's Field Crew Member
               </span>
-              <h3 class="text-lg font-black text-white">{{ payrollData?.worker?.name || 'Equipe Tony Silva' }}</h3>
+              <h3 class="text-lg font-black text-white">{{ payrollData?.worker?.name || 'Tony Silva Crew' }}</h3>
               <span class="text-xs text-slate-400 font-mono">
-                Função: {{ payrollData?.worker?.role || 'FIELD_WORKER' }}
+                Role: {{ payrollData?.worker?.role || 'FIELD_WORKER' }}
               </span>
             </div>
           </div>
 
           <!-- Hourly Rate Badge -->
           <div class="bg-slate-900/90 border border-slate-700/80 rounded-2xl px-4 py-3 text-right">
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Valor da Hora Base</span>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Base Hourly Rate</span>
             <span class="text-2xl font-black text-emerald-400 font-mono">
               ${{ payrollData?.worker?.hourlyRate ? payrollData.worker.hourlyRate.toFixed(2) : '35.00' }}
             </span>
-            <span class="text-[10px] text-slate-500 block">/ hora de trabalho</span>
+            <span class="text-[10px] text-slate-500 block">/ billable hour</span>
           </div>
         </div>
 
@@ -357,16 +357,16 @@
           <button
             @click="changeWeek(-1)"
             class="px-3 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-xs font-bold text-slate-300 flex items-center gap-1 transition-colors cursor-pointer"
-            title="Ver semana anterior"
+            title="View previous week"
           >
             <ChevronLeft class="w-4 h-4" />
-            <span>Semana Anterior</span>
+            <span>Previous Week</span>
           </button>
 
           <div class="text-center">
-            <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">Período Selecionado</span>
+            <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">Pay Period</span>
             <span class="text-xs sm:text-sm font-black text-white font-mono">
-              {{ payrollData?.weekLabel || 'Carregando semana...' }}
+              {{ payrollData?.weekLabel || 'Loading pay period...' }}
             </span>
           </div>
 
@@ -375,16 +375,16 @@
               v-if="weekOffset !== 0"
               @click="weekOffset = 0; fetchPayroll()"
               class="px-2.5 py-2 bg-slate-800 hover:bg-slate-700 text-red-400 rounded-xl text-xs font-bold transition-colors cursor-pointer"
-              title="Voltar para a semana atual"
+              title="Return to current week"
             >
-              Esta Semana
+              Current Week
             </button>
             <button
               @click="changeWeek(1)"
               class="px-3 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-xs font-bold text-slate-300 flex items-center gap-1 transition-colors cursor-pointer"
-              title="Ver próxima semana"
+              title="View next week"
             >
-              <span>Próxima</span>
+              <span>Next Week</span>
               <ChevronRight class="w-4 h-4" />
             </button>
           </div>
@@ -392,31 +392,31 @@
 
         <!-- 3 Executive KPI Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <!-- Card 1: Horas da Semana -->
+          <!-- Card 1: Weekly Hours -->
           <div class="bg-slate-950 border border-slate-800 rounded-3xl p-5 shadow-lg space-y-1">
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Horas da Semana</span>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Week Hours</span>
             <div class="flex items-baseline gap-1">
               <span class="text-3xl font-black text-white font-mono">{{ payrollData?.totalWeekHours || '0.0' }}</span>
               <span class="text-sm font-bold text-slate-400">h</span>
             </div>
-            <p class="text-[11px] text-slate-500">Almoço de 30m descontado por turno</p>
+            <p class="text-[11px] text-slate-500">30m lunch deducted per shift</p>
           </div>
 
-          <!-- Card 2: Ganhos da Semana -->
+          <!-- Card 2: Weekly Earnings -->
           <div class="bg-slate-950 border border-emerald-500/30 rounded-3xl p-5 shadow-lg space-y-1 bg-gradient-to-br from-emerald-950/20 to-slate-950">
-            <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">Ganhos da Semana</span>
+            <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">Weekly Earnings</span>
             <div class="flex items-baseline gap-1">
               <span class="text-3xl font-black text-emerald-400 font-mono">
                 ${{ payrollData?.totalWeekEarned ? payrollData.totalWeekEarned.toFixed(2) : '0.00' }}
               </span>
             </div>
-            <p class="text-[11px] text-emerald-400/70 font-mono">Total a receber no período</p>
+            <p class="text-[11px] text-emerald-400/70 font-mono">Gross earnings for period</p>
           </div>
 
-          <!-- Card 3: Previsão do Mês -->
+          <!-- Card 3: Monthly Projection -->
           <div class="bg-slate-950 border border-slate-800 rounded-3xl p-5 shadow-lg space-y-1">
             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-              Mês Acumulado ({{ payrollData?.monthSummary?.monthName || 'Mês' }})
+              Month-to-Date ({{ payrollData?.monthSummary?.monthName || 'Month' }})
             </span>
             <div class="flex items-baseline gap-1">
               <span class="text-2xl font-black text-amber-400 font-mono">
@@ -424,7 +424,7 @@
               </span>
             </div>
             <p class="text-[11px] text-slate-400">
-              Previsão: <strong>${{ payrollData?.monthSummary?.projectedEarned ? payrollData.monthSummary.projectedEarned.toFixed(2) : '0.00' }}</strong>
+              Projected: <strong>${{ payrollData?.monthSummary?.projectedEarned ? payrollData.monthSummary.projectedEarned.toFixed(2) : '0.00' }}</strong>
             </p>
           </div>
         </div>
@@ -433,11 +433,11 @@
         <div class="bg-slate-950 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5">
           <div class="flex items-center justify-between border-b border-slate-800 pb-3">
             <div>
-              <h3 class="text-base font-black text-white">Gráfico de Horas Diárias da Semana</h3>
-              <p class="text-xs text-slate-400">Distribuição de horas e valor apurado dia a dia (Seg a Dom)</p>
+              <h3 class="text-base font-black text-white">Daily Hours Breakdown</h3>
+              <p class="text-xs text-slate-400">Daily hours and gross earnings breakdown (Mon - Sun)</p>
             </div>
             <span class="text-[10px] font-mono bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-full text-emerald-400 font-bold">
-              Base: ${{ payrollData?.worker?.hourlyRate || 35 }}/h
+              Rate: ${{ payrollData?.worker?.hourlyRate || 35 }}/h
             </span>
           </div>
 
@@ -479,14 +479,14 @@
         <!-- DETAILED SHIFTS TABLE FOR THE SELECTED WEEK -->
         <div class="bg-slate-950 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
           <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-            <h3 class="text-base font-black text-white">Detalhamento dos Turnos da Semana</h3>
+            <h3 class="text-base font-black text-white">Weekly Shift Breakdown</h3>
             <span class="text-xs text-slate-400 font-mono">
-              {{ payrollData?.weekLogs?.length || 0 }} turno(s) registrado(s)
+              {{ payrollData?.weekLogs?.length || 0 }} shift(s) logged
             </span>
           </div>
 
           <div v-if="!payrollData?.weekLogs || payrollData.weekLogs.length === 0" class="py-8 text-center text-xs text-slate-500 italic">
-            Nenhum turno registrado nesta semana. Utilize o botão "Semana Anterior" para consultar históricos passados.
+            No shifts logged for this week. Use "Previous Week" to inspect past records.
           </div>
 
           <div v-else class="divide-y divide-slate-800">
@@ -497,33 +497,33 @@
             >
               <div class="space-y-1">
                 <div class="flex items-center gap-2">
-                  <span class="font-bold text-white text-sm">{{ log.lead?.name || 'Obra Tony\'s' }}</span>
+                  <span class="font-bold text-white text-sm">{{ log.lead?.name || 'Tony\'s Job Site' }}</span>
                   <span
                     class="text-[9px] font-mono px-2 py-0.5 rounded-full font-bold"
                     :class="log.isValidated ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-amber-950 text-amber-400 border border-amber-800'"
                   >
-                    {{ log.isValidated ? 'GPS OK' : 'Ressalva GPS' }}
+                    {{ log.isValidated ? 'GPS OK' : 'GPS Flag' }}
                   </span>
                   <span class="text-[9px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
-                    Almoço: 30m deduzido
+                    Lunch: 30m deducted
                   </span>
                 </div>
                 <p class="text-slate-400 font-mono text-[11px]">
                   📍 {{ log.lead?.address || log.lead?.city || 'MA' }} •
-                  Entrada: {{ new Date(log.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
-                  <span v-if="log.checkOut"> ➔ Saída: {{ new Date(log.checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
+                  In: {{ new Date(log.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
+                  <span v-if="log.checkOut"> ➔ Out: {{ new Date(log.checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
                 </p>
               </div>
 
               <div class="text-left sm:text-right font-mono flex sm:flex-col justify-between items-center sm:items-end">
                 <span class="text-sm font-black text-white">
-                  {{ log.totalHours !== null ? `${log.totalHours}h líquidas` : 'Em curso' }}
+                  {{ log.totalHours !== null ? `${log.totalHours}h net` : 'Active' }}
                 </span>
                 <span class="text-sm font-black text-emerald-400">
                   ${{ log.earnedPay ? log.earnedPay.toFixed(2) : '0.00' }}
                 </span>
                 <span class="text-[10px] text-slate-500">
-                  {{ new Date(log.checkIn).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit' }) }}
+                  {{ new Date(log.checkIn).toLocaleDateString('en-US', { weekday: 'short', day: '2-digit', month: '2-digit' }) }}
                 </span>
               </div>
             </div>
@@ -608,7 +608,7 @@ function obtainGpsLocation() {
         fetchFieldData()
       },
       (err) => {
-        console.warn('GPS não obtido automaticamente, usando aproximação de Boston:', err.message)
+        console.warn('GPS not acquired automatically, defaulting to Boston area approximation:', err.message)
         gpsCoords.value = { lat: 42.3601, lng: -71.0589 }
         fetchFieldData()
       }
@@ -643,7 +643,7 @@ async function fetchFieldData() {
       }
     }
   } catch (err) {
-    console.error('Erro ao carregar dados de campo:', err)
+    console.error('Error loading job site field data:', err)
   }
 }
 
@@ -657,7 +657,7 @@ async function fetchPayroll() {
       payrollData.value = res
     }
   } catch (err) {
-    console.error('Erro ao carregar holerite do colaborador:', err)
+    console.error('Error loading employee payroll timesheet:', err)
   } finally {
     loadingPayroll.value = false
   }
@@ -706,8 +706,8 @@ async function clockIn() {
       await fetchPayroll()
     }
   } catch (err) {
-    console.error('Erro ao bater ponto:', err)
-    alert('Erro ao registrar ponto de entrada.')
+    console.error('Failed to clock in:', err)
+    alert('Failed to register clock-in.')
   } finally {
     loadingAction.value = false
   }
@@ -730,8 +730,8 @@ async function clockOut() {
       await fetchPayroll()
     }
   } catch (err) {
-    console.error('Erro ao encerrar ponto:', err)
-    alert('Erro ao registrar ponto de saída.')
+    console.error('Failed to clock out:', err)
+    alert('Failed to register clock-out.')
   } finally {
     loadingAction.value = false
   }
@@ -740,7 +740,7 @@ async function clockOut() {
 async function uploadProgressPhoto() {
   const currentLeadId = activeShift.value?.leadId || selectedLeadId.value || activeJobs.value[0]?.id
   if (!currentLeadId || !photoForm.value.url) {
-    alert('Selecione uma obra e informe o link da foto.')
+    alert('Please select a job site and provide a photo URL.')
     return
   }
 
@@ -750,17 +750,17 @@ async function uploadProgressPhoto() {
       method: 'POST',
       body: {
         leadId: currentLeadId,
-        item: `Foto de Progresso: ${photoForm.value.description || 'Execução de Pintura'}`,
+        item: `Progress Photo: ${photoForm.value.description || 'Painting Execution'}`,
         quantity: 1,
-        unit: 'registro',
+        unit: 'photo',
         unitCost: 0
       }
     })
 
-    alert('Foto de progresso registrada e sincronizada com o Portal do Morador!')
+    alert('Progress photo saved and synced with Client Portal!')
     photoForm.value.description = ''
   } catch (err) {
-    console.error('Erro ao enviar foto:', err)
+    console.error('Failed to upload photo:', err)
   } finally {
     uploadingPhoto.value = false
   }
@@ -778,7 +778,7 @@ async function requestMaterial() {
         leadId: currentLeadId,
         item: materialForm.value.item,
         quantity: materialForm.value.quantity,
-        unit: 'galões',
+        unit: 'gallons',
         unitCost: 65.0, // Benchmark gallon price
         supplier: 'Sherwin-Williams / Benjamin Moore',
         status: 'PENDING'
@@ -786,11 +786,11 @@ async function requestMaterial() {
     })
 
     if (res?.success) {
-      alert('Pedido de material enviado com sucesso para a central de compras!')
+      alert('Material procurement request successfully submitted to purchasing!')
       materialForm.value.item = ''
     }
   } catch (err) {
-    console.error('Erro ao pedir material:', err)
+    console.error('Failed to request materials:', err)
   } finally {
     requestingMaterial.value = false
   }
