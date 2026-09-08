@@ -12,10 +12,11 @@ model User {
   email     String         @unique
   name      String?
   password  String         @default("admin123")
-  role      String         @default("CONSULTANT") // "CONSULTANT" or "MANAGER"
+  role      String         @default("CONSULTANT") // "CONSULTANT", "MANAGER", "FIELD_WORKER"
   avatarUrl String?
   leads     Lead[]
   emails    EmailMessage[]
+  timeLogs  TimeLog[]
   createdAt DateTime       @default(now())
 }
 
@@ -107,7 +108,10 @@ model Lead {
   stripePaymentStatus String? @default("UNPAID") // UNPAID, PENDING, PAID
   
   // Pipeline, Ownership & Speed-to-Lead Gamification
-  status            String    @default("NOVO") // NOVO, EM_ATENDIMENTO, PROPOSTA, CONVERTIDO, PERDIDO
+  status            String    @default("NOVO") // NOVO, EM_ATENDIMENTO, PROPOSTA, CONVERTIDO, EM_EXECUCAO, FINALIZADO, PERDIDO
+  portalToken       String?   @unique
+  referralToken     String?   @unique // Link exclusivo de indicação do cliente com cashback
+  netProfit         Float?    // Job Costing: dealValue - (materials + labor)
   ownerId           String?
   owner             User?     @relation(fields: [ownerId], references: [id])
   
@@ -129,11 +133,16 @@ model Lead {
   reviewRequests    ReviewRequest[]
   emails            EmailMessage[]
   media             Media[]
+  timeLogs          TimeLog[]
+  materialOrders    MaterialOrder[]
+  permits           PermitCompliance[]
 
   @@index([source])
   @@index([status])
   @@index([ownerId])
   @@index([createdAt])
+  @@index([portalToken])
+  @@index([referralToken])
 }
 
 model Media {
@@ -141,9 +150,44 @@ model Media {
   leadId     String
   lead       Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
   url        String   // S3 Bucket URL ou upload local
-  type       String   // 'FOTO_ORIGINAL', 'RENDER_DALLE'
+  type       String   // 'FOTO_ORIGINAL', 'RENDER_DALLE', 'PROGRESSO_OBRA'
+  isPublic   Boolean  @default(false) // Visível no Portal do Cliente?
   aiAnalysis String?  // Dados de estimativa (metragem, materiais, galões de tinta) em JSON
   createdAt  DateTime @default(now())
+
+  @@index([leadId])
+}
+
+model TimeLog {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leadId      String
+  lead        Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  checkIn     DateTime  @default(now())
+  checkOut    DateTime?
+  gpsLat      Float?
+  gpsLng      Float?
+  isValidated Boolean   @default(false) // Validado via Geofencing
+  notes       String?
+  createdAt   DateTime  @default(now())
+
+  @@index([userId])
+  @@index([leadId])
+}
+
+model MaterialOrder {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  item      String   // Ex: Galão de Tinta Sherwin-Williams Emerald
+  quantity  Float
+  unit      String   @default("galões") // galões, rolos, caixas, unidades
+  unitCost  Float    @default(0)
+  totalCost Float    @default(0)
+  status    String   @default("PENDING") // 'PENDING', 'PURCHASED'
+  supplier  String?  @default("Sherwin-Williams")
+  createdAt DateTime @default(now())
 
   @@index([leadId])
 }
@@ -251,6 +295,21 @@ model EmailMessage {
   @@index([leadId])
   @@index([folder])
   @@index([createdAt])
+}
+
+model PermitCompliance {
+  id             String   @id @default(cuid())
+  leadId         String
+  lead           Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  city           String
+  requiresPermit Boolean  @default(false)
+  status         String   @default("PENDING") // 'PENDING', 'APPROVED', 'EXEMPT'
+  permitType     String?  // 'BUILDING_PERMIT', 'HISTORIC_DISTRICT', 'EPA_LEAD_SAFE'
+  notes          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([leadId])
 }
 
 

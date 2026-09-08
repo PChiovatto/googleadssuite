@@ -120,6 +120,36 @@
             <span>Campanhas & E-mail Mkt</span>
           </NuxtLink>
 
+          <!-- Field Operations & GPS Geofencing (PWA) -->
+          <NuxtLink
+            to="/field"
+            class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
+            :class="$route.path === '/field' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+          >
+            <div class="flex items-center gap-3">
+              <HardHat class="w-4 h-4 text-emerald-400" />
+              <span>Operação de Campo</span>
+            </div>
+            <span class="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300">
+              PWA GPS
+            </span>
+          </NuxtLink>
+
+          <!-- Customer Progress Tracker Portal Demo -->
+          <NuxtLink
+            to="/portal/tony-demo"
+            target="_blank"
+            class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-white hover:bg-slate-800/60"
+          >
+            <div class="flex items-center gap-3">
+              <Shield class="w-4 h-4 text-blue-400" />
+              <span>Portal do Cliente</span>
+            </div>
+            <span class="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-blue-500/20 text-blue-300">
+              Demo ↗
+            </span>
+          </NuxtLink>
+
           <!-- Restricted Manager Section -->
           <div v-if="isManager" class="pt-2">
             <span class="text-[9px] uppercase font-black tracking-widest text-slate-500 px-3.5 block mb-1">
@@ -132,7 +162,7 @@
             >
               <div class="flex items-center gap-3">
                 <Award class="w-4 h-4 text-red-400" />
-                <span>Ranking & SLA da Equipe</span>
+                <span>Ranking, SLA & Job Costing</span>
               </div>
               <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-red-500/30 text-red-200">
                 PRO
@@ -165,9 +195,9 @@
             </span>
             <span
               class="text-[9px] font-black uppercase tracking-wider block"
-              :class="isManager ? 'text-purple-400' : 'text-emerald-400'"
+              :class="isManager ? 'text-purple-400' : currentUser?.role === 'FIELD_WORKER' ? 'text-blue-400' : 'text-emerald-400'"
             >
-              {{ isManager ? '👑 GESTOR' : '👤 CONSULTOR' }}
+              {{ isManager ? '👑 GESTOR' : currentUser?.role === 'FIELD_WORKER' ? '👷 CAMPO / PINTOR' : '👤 CONSULTOR' }}
             </span>
           </div>
         </div>
@@ -181,13 +211,13 @@
         <!-- Left: Account & Role Indicator -->
         <div class="flex items-center gap-3">
           <div class="flex items-center gap-2.5">
-            <img src="/emblem.png" alt="Tony's Emblem" class="w-7 h-7 rounded-full object-contain shadow-xs" />
+            <img src="/emblem.png" alt="Tony's Emblem" class="w-7 h-7 rounded-full object-contain bg-white p-0.5 shadow-xs" />
             <span class="text-xs font-bold uppercase tracking-wider text-slate-400 hidden sm:inline">Perfil Ativo:</span>
             <span
               class="text-xs font-bold px-2.5 py-1 rounded-lg border flex items-center gap-1.5"
-              :class="isManager ? 'bg-red-50 text-[#D7070D] border-red-200' : 'bg-slate-100 text-slate-800 border-slate-200'"
+              :class="isManager ? 'bg-red-50 text-[#D7070D] border-red-200' : currentUser?.role === 'FIELD_WORKER' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-slate-100 text-slate-800 border-slate-200'"
             >
-              <span>{{ isManager ? '👑' : '👤' }}</span>
+              <span>{{ isManager ? '👑' : currentUser?.role === 'FIELD_WORKER' ? '👷' : '👤' }}</span>
               <span>{{ currentUser?.name || 'Tony Silva (Owner & GM)' }}</span>
               <span class="text-[10px] font-mono opacity-70">({{ currentUser?.role || 'MANAGER' }})</span>
             </span>
@@ -205,7 +235,7 @@
               class="text-xs font-bold py-1.5 px-2.5 rounded-xl border border-slate-300 bg-slate-50 hover:bg-white text-slate-800 cursor-pointer focus:ring-2 focus:ring-blue-500 shadow-2xs transition-colors"
             >
               <option v-for="u in teamUsers" :key="u.id" :value="u.id">
-                {{ u.role === 'MANAGER' ? '👑 Gestor: ' : '👤 Consultor: ' }} {{ u.name }}
+                {{ u.role === 'MANAGER' ? '👑 Gestor: ' : u.role === 'FIELD_WORKER' ? '👷 Campo: ' : '👤 Consultor: ' }} {{ u.name }}
               </option>
             </select>
           </div>
@@ -253,7 +283,9 @@ import {
   RefreshCw,
   Calendar,
   TrendingUp,
-  Inbox
+  Inbox,
+  HardHat,
+  Shield
 } from 'lucide-vue-next'
 import { useWorkspaceAuth } from '~/composables/useWorkspaceAuth'
 
