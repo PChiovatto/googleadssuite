@@ -4,17 +4,22 @@
     <aside class="w-full md:w-64 bg-slate-900 text-white flex flex-col justify-between shrink-0 border-r border-slate-800">
       <div>
         <!-- App Logo & Title -->
-        <div class="p-5 border-b border-slate-800/80 flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-500 flex items-center justify-center font-black text-xl shadow-lg">
-              ⚡
-            </div>
-            <div>
-              <span class="font-black text-sm tracking-tight text-white block leading-tight">TONY'S PAINTING</span>
-              <span class="text-[10px] uppercase tracking-wider text-orange-400 font-bold block">
-                & Remodeling • {{ isManager ? 'Gestor' : 'Consultor' }}
-              </span>
-            </div>
+        <div class="p-4 border-b border-slate-800 bg-slate-950/70">
+          <div class="bg-white rounded-2xl p-2.5 shadow-md flex items-center justify-center border border-slate-200">
+            <img
+              src="/logo.png"
+              alt="Tony's Remodeling - Painting & Carpentry"
+              class="w-full h-auto max-h-12 object-contain mx-auto"
+            />
+          </div>
+          <div class="flex items-center justify-between mt-2.5 px-1">
+            <span class="text-[9px] font-black uppercase tracking-wider text-[#D7070D] flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#D7070D] animate-pulse"></span>
+              SHOWROOM WORKSPACE
+            </span>
+            <span class="text-[9px] font-bold text-slate-400 uppercase font-mono">
+              MA HIC #204891
+            </span>
           </div>
         </div>
 
@@ -24,7 +29,7 @@
           <NuxtLink
             to="/"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
-            :class="$route.path === '/' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+            :class="$route.path === '/' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <Home class="w-4 h-4" />
             <span>Início & Visão Geral</span>
@@ -35,7 +40,7 @@
             v-if="isManager"
             to="/dashboard"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
-            :class="$route.path === '/dashboard' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+            :class="$route.path === '/dashboard' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <LayoutDashboard class="w-4 h-4" />
             <span>Painel de Anúncios</span>
@@ -45,7 +50,7 @@
           <NuxtLink
             to="/dashboard/leads"
             class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
-            :class="$route.path === '/dashboard/leads' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+            :class="$route.path === '/dashboard/leads' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <div class="flex items-center gap-3">
               <Users class="w-4 h-4" />
@@ -60,7 +65,7 @@
           <NuxtLink
             to="/mail"
             class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
-            :class="$route.path === '/mail' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+            :class="$route.path === '/mail' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <div class="flex items-center gap-3">
               <Inbox class="w-4 h-4 text-amber-400" />
@@ -75,7 +80,7 @@
           <NuxtLink
             to="/dashboard/calendar"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
-            :class="$route.path === '/dashboard/calendar' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+            :class="$route.path === '/dashboard/calendar' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <Calendar class="w-4 h-4" />
             <span>Agenda & In-Home Estimates</span>
@@ -86,7 +91,7 @@
             v-if="isManager"
             to="/dashboard/financial"
             class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
-            :class="$route.path === '/dashboard/financial' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+            :class="$route.path === '/dashboard/financial' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <div class="flex items-center gap-3">
               <TrendingUp class="w-4 h-4 text-emerald-400" />
@@ -99,7 +104,7 @@
           <NuxtLink
             to="/dashboard/calls"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
-            :class="$route.path === '/dashboard/calls' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+            :class="$route.path === '/dashboard/calls' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <PhoneCall class="w-4 h-4" />
             <span>Central VoIP & Áudios</span>
@@ -109,7 +114,7 @@
           <NuxtLink
             to="/dashboard/marketing"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
-            :class="$route.path === '/dashboard/marketing' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+            :class="$route.path === '/dashboard/marketing' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
           >
             <Mail class="w-4 h-4" />
             <span>Campanhas & E-mail Mkt</span>
@@ -123,13 +128,13 @@
             <NuxtLink
               to="/admin/performance"
               class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
-              :class="$route.path === '/admin/performance' ? 'bg-purple-600 text-white shadow-sm' : 'text-purple-300 hover:text-white hover:bg-purple-950/40'"
+              :class="$route.path === '/admin/performance' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-red-300 hover:text-white hover:bg-slate-800/60'"
             >
               <div class="flex items-center gap-3">
-                <Award class="w-4 h-4 text-purple-400" />
+                <Award class="w-4 h-4 text-red-400" />
                 <span>Ranking & SLA da Equipe</span>
               </div>
-              <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-purple-500/30 text-purple-200">
+              <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-red-500/30 text-red-200">
                 PRO
               </span>
             </NuxtLink>
@@ -137,7 +142,7 @@
             <NuxtLink
               to="/settings"
               class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all mt-1"
-              :class="$route.path === '/settings' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+              :class="$route.path === '/settings' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
             >
               <Sliders class="w-4 h-4" />
               <span>Conexões & Credenciais</span>
@@ -175,15 +180,16 @@
       <header class="h-16 bg-white border-b border-slate-200/80 px-5 flex items-center justify-between sticky top-0 z-30 shadow-2xs">
         <!-- Left: Account & Role Indicator -->
         <div class="flex items-center gap-3">
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2.5">
+            <img src="/emblem.png" alt="Tony's Emblem" class="w-7 h-7 rounded-full object-contain shadow-xs" />
             <span class="text-xs font-bold uppercase tracking-wider text-slate-400 hidden sm:inline">Perfil Ativo:</span>
             <span
               class="text-xs font-bold px-2.5 py-1 rounded-lg border flex items-center gap-1.5"
-              :class="isManager ? 'bg-purple-50 text-purple-800 border-purple-200' : 'bg-emerald-50 text-emerald-800 border-emerald-200'"
+              :class="isManager ? 'bg-red-50 text-[#D7070D] border-red-200' : 'bg-slate-100 text-slate-800 border-slate-200'"
             >
               <span>{{ isManager ? '👑' : '👤' }}</span>
               <span>{{ currentUser?.name || 'Tony Silva (Owner & GM)' }}</span>
-              <span class="text-[10px] font-mono text-slate-400">({{ currentUser?.role || 'MANAGER' }})</span>
+              <span class="text-[10px] font-mono opacity-70">({{ currentUser?.role || 'MANAGER' }})</span>
             </span>
           </div>
         </div>

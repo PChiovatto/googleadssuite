@@ -16,22 +16,31 @@
       <!-- Contract Document Card -->
       <div v-else class="bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
         <!-- Top Official Header -->
-        <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 p-6 sm:p-8 text-white border-b-4 border-orange-500">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <span class="bg-orange-500/20 text-orange-400 border border-orange-500/30 text-[10px] font-black uppercase px-2.5 py-1 rounded-full tracking-wider">
-                MASSACHUSETTS HIC COMPLIANT AGREEMENT
-              </span>
-              <h1 class="text-2xl sm:text-3xl font-black tracking-tight mt-2 text-white">
-                TONY'S PAINTING AND REMODELING INC.
-              </h1>
-              <p class="text-xs text-slate-400 mt-1 font-mono">
-                MA Home Improvement Contractor Registration #204891 • Fully Licensed & Insured • EPA Lead-Safe
-              </p>
+        <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 p-6 sm:p-8 text-white border-b-4 border-[#D7070D]">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+            <div class="flex items-center gap-4">
+              <div class="bg-white rounded-2xl p-2.5 shadow-md shrink-0 border border-slate-700/50">
+                <img
+                  src="/emblem.png"
+                  alt="Tony's Remodeling Emblem"
+                  class="w-14 h-14 sm:w-16 sm:h-16 object-contain"
+                />
+              </div>
+              <div>
+                <span class="bg-[#D7070D]/20 text-red-400 border border-[#D7070D]/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full tracking-wider">
+                  MASSACHUSETTS HIC COMPLIANT AGREEMENT
+                </span>
+                <h1 class="text-xl sm:text-2xl font-black tracking-tight mt-1.5 text-white">
+                  TONY'S REMODELING & PAINTING
+                </h1>
+                <p class="text-xs text-slate-400 font-mono">
+                  MA Home Improvement Contractor Registration #204891 • Fully Licensed & Insured • EPA Lead-Safe
+                </p>
+              </div>
             </div>
-            <div class="text-right sm:text-right">
+            <div class="text-left sm:text-right">
               <span class="text-xs text-slate-400 block font-mono">CONTRATO Nº</span>
-              <span class="text-base font-black text-orange-400 font-mono">{{ contract.contractNumber }}</span>
+              <span class="text-base font-black text-[#D7070D] font-mono">{{ contract.contractNumber }}</span>
               <span class="text-[11px] text-slate-400 block mt-1">Data: {{ new Date(contract.createdAt).toLocaleDateString('en-US') }}</span>
             </div>
           </div>
@@ -80,12 +89,12 @@
                 </span>
                 <span class="text-[10px] text-slate-400">Total contratado</span>
               </div>
-              <div class="p-3.5 rounded-xl border-2 border-orange-500 bg-orange-50/50">
-                <span class="text-[10px] font-black text-orange-800 uppercase block">Sinal Inicial (Máx. 1/3 Lei MA)</span>
-                <span class="text-xl font-black text-orange-600 mt-1 block">
+              <div class="p-3.5 rounded-xl border-2 border-[#D7070D] bg-red-50/60">
+                <span class="text-[10px] font-black text-[#D7070D] uppercase block">Sinal Inicial (Máx. 1/3 Lei MA)</span>
+                <span class="text-xl font-black text-[#D7070D] mt-1 block">
                   ${{ Number(contract.depositAmount).toLocaleString('en-US', { minimumFractionDigits: 2 }) }}
                 </span>
-                <span class="text-[10px] text-orange-700 font-semibold">Devido no aceite do contrato</span>
+                <span class="text-[10px] text-red-700 font-semibold">Devido no aceite do contrato</span>
               </div>
               <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50">
                 <span class="text-[10px] font-bold text-slate-500 uppercase block">Saldo na Conclusão</span>
@@ -156,7 +165,7 @@
                   v-model="signerName"
                   type="text"
                   :placeholder="contract.lead?.name || 'Ex: John Miller'"
-                  class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none bg-white text-slate-900 font-semibold"
+                  class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-[#D7070D] focus:outline-none bg-white text-slate-900 font-semibold"
                 />
               </div>
 
@@ -165,7 +174,7 @@
                   v-model="termsAgreed"
                   id="agreeTerms"
                   type="checkbox"
-                  class="mt-1 w-4 h-4 rounded text-orange-600 focus:ring-orange-500 cursor-pointer"
+                  class="mt-1 w-4 h-4 rounded text-[#D7070D] focus:ring-[#D7070D] cursor-pointer"
                 />
                 <label for="agreeTerms" class="text-xs text-slate-600 cursor-pointer">
                   Confirmo que sou o proprietário legal do imóvel, revisei o escopo dos serviços e autorizo o início dos trabalhos com o depósito de 1/3.
@@ -176,7 +185,7 @@
                 type="button"
                 @click="signAgreement"
                 :disabled="!signerName || !termsAgreed || signing"
-                class="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 disabled:opacity-50 text-white font-black text-sm uppercase py-4 px-6 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2"
+                class="w-full bg-gradient-to-r from-[#D7070D] to-[#B0050A] hover:from-[#B0050A] hover:to-[#900408] disabled:opacity-50 text-white font-black text-sm uppercase py-4 px-6 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2"
               >
                 <span>{{ signing ? 'Gravando Assinatura Legal...' : '✍️ ASSINAR CONTRATO DIGITALMENTE' }}</span>
               </button>

@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrapper font-sans text-[#222222] bg-white antialiased">
     <!-- Top Bar -->
-    <div class="bg-[#ff7902] text-white text-xs py-2 px-4 text-center font-bold tracking-wider flex items-center justify-center gap-3">
+    <div class="bg-[#D7070D] text-white text-xs py-2.5 px-4 text-center font-bold tracking-wider flex items-center justify-center gap-3 shadow-sm">
       <span>⭐ LICENSED AND INSURED SINCE 2015</span>
       <span class="hidden sm:inline">• SERVING {{ dynamicCity.toUpperCase() }}, {{ dynamicState.toUpperCase() }} & GREATER BOSTON</span>
       <span>• FREE SAME-DAY ESTIMATES!</span>
@@ -10,19 +10,22 @@
     <!-- Header Section -->
     <header class="section-light py-8 px-4 border-b border-gray-100">
       <div class="max-w-4xl mx-auto text-center">
-        <p class="font-bold text-gray-500 text-sm mb-3 uppercase tracking-wide">
-          Licensed and Insured<br>since 2015
+        <!-- Official Logo Banner -->
+        <div class="my-4 max-w-xl mx-auto p-4 bg-white rounded-2xl shadow-xl border-2 border-slate-100 flex items-center justify-center">
+          <img
+            src="/logo.png"
+            alt="Tony's Remodeling - Painting & Carpentry"
+            class="w-full h-auto max-h-24 sm:max-h-28 object-contain mx-auto"
+          />
+        </div>
+
+        <p class="font-bold text-gray-500 text-xs sm:text-sm uppercase tracking-wider mt-2">
+          Licensed and Insured in Massachusetts • MA HIC #204891
         </p>
 
         <!-- Dynamic ValueTrack Tag -->
-        <div v-if="keywordParam" class="inline-block mb-3 px-4 py-1 rounded-full bg-orange-100 text-[#ff7902] font-black text-xs uppercase tracking-wider">
+        <div v-if="keywordParam" class="inline-block my-3 px-4 py-1.5 rounded-full bg-red-50 text-[#D7070D] border border-red-200 font-black text-xs uppercase tracking-wider">
           🔍 Searching for: {{ keywordParam }} in {{ dynamicCity }}
-        </div>
-
-        <div class="inline-block bg-black text-[#ff7902] p-4 sm:p-6 border-4 border-[#ff7902] rounded-lg my-3 shadow-xl">
-          <h1 class="text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#ff7902]">
-            TONY'S PAINTING AND REMODELING
-          </h1>
         </div>
 
         <h2 class="text-xl sm:text-2xl md:text-3xl font-black text-[#222222] uppercase tracking-wide mt-2">
@@ -30,12 +33,12 @@
         </h2>
 
         <div class="bg-gray-100 p-4 rounded-lg my-4 max-w-2xl mx-auto shadow-inner">
-          <p class="text-[#fc0000] font-black text-base sm:text-xl uppercase tracking-wide">
+          <p class="text-[#D7070D] font-black text-base sm:text-xl uppercase tracking-wide">
             Wall paper removal, kitchen cabinets, power washing, rotted wood replacement, sanding we do it all
           </p>
         </div>
 
-        <h3 class="text-[#ff7902] text-xl sm:text-2xl font-black uppercase mt-4">
+        <h3 class="text-[#D7070D] text-xl sm:text-2xl font-black uppercase mt-4">
           WE COME TO YOUR HOME<br>FOR FREE ESTIMATE
         </h3>
 
@@ -388,12 +391,14 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-black text-white py-10 px-4 text-center border-t-4 border-[#ff7902]">
-      <div class="max-w-4xl mx-auto">
-        <img src="https://doorbridgefix.com/wp-content/uploads/2026/03/Package-Services-Instagram-Post.png" alt="Logo" class="w-14 mx-auto mb-3" />
-        <p class="font-bold text-gray-400 text-xs">Licensed and Insured<br>since 2015</p>
-        <p class="text-[11px] text-gray-600 mt-4">
-          Copyright © 2026 TONY'S PAINTING AND REMODELING CORP.™. All rights reserved.
+    <footer class="bg-black text-white py-12 px-4 text-center border-t-4 border-[#D7070D]">
+      <div class="max-w-4xl mx-auto space-y-4">
+        <div class="inline-block bg-white p-3 rounded-2xl shadow-md">
+          <img src="/logo.png" alt="Tony's Remodeling Logo" class="w-52 sm:w-64 mx-auto object-contain" />
+        </div>
+        <p class="font-bold text-gray-400 text-xs">Licensed and Insured in Massachusetts since 2015 • MA HIC #204891</p>
+        <p class="text-[11px] text-gray-500">
+          Copyright © 2026 TONY'S REMODELING CORP.™. All rights reserved.
         </p>
       </div>
     </footer>
@@ -546,7 +551,7 @@ async function submitLead() {
   max-width: 500px;
   margin: 20px auto;
   padding: 16px 24px;
-  background: linear-gradient(to bottom, #fc0000, #d30000);
+  background: linear-gradient(to bottom, #D7070D, #B0050A);
   color: #fff !important;
   font-family: 'Oswald', sans-serif;
   font-size: 1.5rem;
@@ -555,25 +560,25 @@ async function submitLead() {
   text-align: center;
   text-decoration: none;
   border-radius: 60px;
-  border: 3px solid #ff4d4d;
-  box-shadow: 0 10px 20px rgba(252, 0, 0, 0.3);
+  border: 3px solid #f87171;
+  box-shadow: 0 10px 25px rgba(215, 7, 13, 0.4);
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .cta-btn:hover {
-  background: linear-gradient(to bottom, #d30000, #fc0000);
+  background: linear-gradient(to bottom, #B0050A, #8E0408);
   transform: scale(1.03);
-  box-shadow: 0 15px 30px rgba(252, 0, 0, 0.5);
+  box-shadow: 0 15px 35px rgba(215, 7, 13, 0.6);
 }
 
 .cta-orange {
-  background: linear-gradient(to bottom, #ff7902, #d86600);
-  border-color: #ffa44d;
-  box-shadow: 0 10px 20px rgba(255, 121, 2, 0.3);
+  background: linear-gradient(to bottom, #D7070D, #B0050A);
+  border-color: #f87171;
+  box-shadow: 0 10px 25px rgba(215, 7, 13, 0.4);
 }
 
 .cta-orange:hover {
-  background: linear-gradient(to bottom, #d86600, #ff7902);
+  background: linear-gradient(to bottom, #B0050A, #8E0408);
 }
 </style>

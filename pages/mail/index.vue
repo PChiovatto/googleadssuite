@@ -27,9 +27,10 @@
         <!-- Quick Switcher Back to CRM -->
         <NuxtLink
           to="/dashboard/leads"
-          class="ml-2 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-2.5 py-1 rounded-lg flex items-center gap-1 transition-colors"
+          class="ml-2 text-xs font-bold text-[#D7070D] bg-red-50 hover:bg-red-100 border border-red-200 px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors shadow-xs"
           title="Alternar para o Kanban de Leads do CRM"
         >
+          <img src="/emblem.png" alt="Tony's" class="w-4 h-4 object-contain rounded-full shadow-xs" />
           <span>← CRM Tony's</span>
         </NuxtLink>
       </div>
