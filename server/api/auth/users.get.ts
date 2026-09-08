@@ -22,22 +22,22 @@ export default defineEventHandler(async () => {
     if (users.length < 3) {
       const defaultUsers = [
         {
-          name: 'Marcos Silva (Owner & General Manager)',
-          email: 'marcos@bostonpaintersandservices.com',
+          name: 'Tony Silva (Owner & General Manager)',
+          email: 'tony@tonyspainting.com',
           password: 'admin',
           role: 'MANAGER',
           avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
         },
         {
           name: 'John Miller (Senior Commercial Estimator)',
-          email: 'john@bostonpaintersandservices.com',
+          email: 'john@tonyspainting.com',
           password: '123',
           role: 'CONSULTANT',
           avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80'
         },
         {
           name: 'Sarah Jenkins (Residential Sales Specialist)',
-          email: 'sarah@bostonpaintersandservices.com',
+          email: 'sarah@tonyspainting.com',
           password: '123',
           role: 'CONSULTANT',
           avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80'

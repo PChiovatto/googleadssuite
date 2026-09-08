@@ -21,7 +21,7 @@
 
         <div class="inline-block bg-black text-[#ff7902] p-4 sm:p-6 border-4 border-[#ff7902] rounded-lg my-3 shadow-xl">
           <h1 class="text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#ff7902]">
-            BOSTON PAINTERS AND SERVICES
+            TONY'S PAINTING AND REMODELING
           </h1>
         </div>
 
@@ -393,7 +393,7 @@
         <img src="https://doorbridgefix.com/wp-content/uploads/2026/03/Package-Services-Instagram-Post.png" alt="Logo" class="w-14 mx-auto mb-3" />
         <p class="font-bold text-gray-400 text-xs">Licensed and Insured<br>since 2015</p>
         <p class="text-[11px] text-gray-600 mt-4">
-          Copyright © 2026 BOSTON PAINTERS AND SERVICES CORP.™. All rights reserved.
+          Copyright © 2026 TONY'S PAINTING AND REMODELING CORP.™. All rights reserved.
         </p>
       </div>
     </footer>

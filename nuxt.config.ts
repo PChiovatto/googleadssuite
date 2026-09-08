@@ -28,17 +28,17 @@ export default defineNuxtConfig({
 
     // Public keys exposed to the client
     public: {
-      appName: 'Google Ads & AI Intelligence Suite',
+      appName: "Tony's Painting & Remodeling - Omni-Agent Suite",
       apiVersion: 'v1.0'
     }
   },
   app: {
     head: {
-      title: 'Google Ads & AI Intelligence Suite',
+      title: "Tony's Painting and Remodeling - Omni-Agent CRM & PWA Workspace",
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Painel inteligente de monitoramento, auditoria e otimização do Google Ads com IA Gemini.' }
+        { name: 'description', content: "Tony's Painting and Remodeling - CRM Omni-Agent com IA Gemini, discador Twilio, contratos MA HIC e Webmail corporativo." }
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },

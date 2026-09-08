@@ -128,11 +128,24 @@ model Lead {
   contracts         Contract[]
   reviewRequests    ReviewRequest[]
   emails            EmailMessage[]
+  media             Media[]
 
   @@index([source])
   @@index([status])
   @@index([ownerId])
   @@index([createdAt])
+}
+
+model Media {
+  id         String   @id @default(cuid())
+  leadId     String
+  lead       Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  url        String   // S3 Bucket URL ou upload local
+  type       String   // 'FOTO_ORIGINAL', 'RENDER_DALLE'
+  aiAnalysis String?  // Dados de estimativa (metragem, materiais, galões de tinta) em JSON
+  createdAt  DateTime @default(now())
+
+  @@index([leadId])
 }
 
 model CallLog {

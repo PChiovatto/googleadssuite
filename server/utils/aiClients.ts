@@ -160,11 +160,11 @@ export function simulateGPT4oFollowup(lead: any) {
   return {
     isSimulation: true,
     modelUsed: 'gpt-4o (Simulated Engine)',
-    smsMessage: `Hi ${name}, this is First Boston Painters! Still need help with your ${service} in ${city}? We have a free quote spot open this week. Reply YES to grab it! Reply STOP to opt out.`,
-    emailSubject: `Your Free Quote for ${service} in ${city} - First Boston Painters`,
+    smsMessage: `Hi ${name}, this is Tony's Painting and Remodeling! Still need help with your ${service} in ${city}? We have a free quote spot open this week. Reply YES to grab it! Reply STOP to opt out.`,
+    emailSubject: `Your Free Quote for ${service} in ${city} - Tony's Painting and Remodeling`,
     emailBodyHtml: `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #222;">
-        <h2 style="color: #ff7902;">First Boston Painters & Services</h2>
+        <h2 style="color: #ff7902;">Tony's Painting & Remodeling</h2>
         <p>Hi <strong>${name}</strong>,</p>
         <p>We noticed you were looking into <strong>${service}</strong> in <strong>${city}</strong>. We want to ensure your home gets the premium care and prep work it deserves.</p>
         <p><strong>Why homeowners in Massachusetts choose us:</strong></p>
@@ -174,8 +174,8 @@ export function simulateGPT4oFollowup(lead: any) {
           <li>Free, no-obligation on-site estimates</li>
         </ul>
         <p>Would you like our estimator to stop by this week?</p>
-        <p><a href="https://doorbridgefix.com/#quote-form" style="display:inline-block; background:#fc0000; color:#fff; padding:12px 24px; text-decoration:none; border-radius:30px; font-weight:bold;">SCHEDULE YOUR FREE ESTIMATE</a></p>
-        <p style="font-size: 12px; color: #777; margin-top: 30px;">First Boston Painters and Services Corp. Licensed & Insured. Reply STOP to unsubscribe.</p>
+        <p><a href="#quote-form" style="display:inline-block; background:#fc0000; color:#fff; padding:12px 24px; text-decoration:none; border-radius:30px; font-weight:bold;">SCHEDULE YOUR FREE ESTIMATE</a></p>
+        <p style="font-size: 12px; color: #777; margin-top: 30px;">Tony's Painting and Remodeling Corp. Licensed & Insured. Reply STOP to unsubscribe.</p>
       </div>
     `
   }
@@ -186,7 +186,7 @@ export function simulateDallERender(prompt: string) {
     isSimulation: true,
     modelUsed: 'dall-e-3 (Simulated Engine)',
     prompt,
-    imageUrl: 'https://doorbridgefix.com/wp-content/uploads/2026/03/26539541-164C-4A19-8C68-8BF55A6CDDCF_1_105_c.jpg',
+    imageUrl: 'https://images.unsplash.com/photo-1562663474-6cbb3eaa4d14?auto=format&fit=crop&w=1200&q=80',
     aspectRatio: '16:9',
     revisedPrompt: `A photorealistic modern residential home in Boston Massachusetts, freshly painted exterior with clean trim, pristine landscaping, sunny morning light, architectural photography style.`
   }

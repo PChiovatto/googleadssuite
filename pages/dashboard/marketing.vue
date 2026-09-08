@@ -282,16 +282,16 @@ async function loadContacts() {
 function openBroadcastModal() {
   broadcastForm.value.subject = 'Boston Painters & Services: Free Home Estimate This Week'
   broadcastForm.value.bodyHtml = `<div style="font-family: Arial, sans-serif; color: #222; line-height: 1.6;">
-  <h2 style="color: #ff7902;">First Boston Painters and Services</h2>
+  <h2 style="color: #ff7902;">Tony's Painting and Remodeling</h2>
   <p>Hello homeowner,</p>
   <p>Are you considering an interior or exterior refresh for your property in Greater Boston? We have licensed crews available for <strong>free on-site estimates</strong> this week.</p>
   <ul>
     <li>Licensed & Insured since 2015</li>
     <li>Complete prep work: power washing, caulking, rotted wood replacement</li>
-    <li>Zero upfront deposit required</li>
+    <li>Zero upfront deposit required to quote</li>
   </ul>
-  <p><a href="https://doorbridgefix.com/#quote-form" style="background:#fc0000; color:#fff; padding:12px 24px; text-decoration:none; border-radius:30px; font-weight:bold; display:inline-block;">SCHEDULE FREE QUOTE</a></p>
-  <p style="font-size:11px; color:#888; margin-top:20px;">First Boston Painters and Services Corp. Reply STOP to opt out.</p>
+  <p><a href="#quote-form" style="background:#fc0000; color:#fff; padding:12px 24px; text-decoration:none; border-radius:30px; font-weight:bold; display:inline-block;">SCHEDULE FREE QUOTE</a></p>
+  <p style="font-size:11px; color:#888; margin-top:20px;">Tony's Painting and Remodeling Corp. Reply STOP to opt out.</p>
 </div>`
   showModal.value = true
 }
