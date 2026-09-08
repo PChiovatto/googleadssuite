@@ -13,8 +13,9 @@ export function useWorkspaceAuth() {
   const isFieldWorker = computed(() => currentUser.value?.role === 'FIELD_WORKER')
 
   // Feature permission checks
-  // 1. Settings / Credentials / Integrations: ONLY MASTER
+  // 1. Settings / Credentials / Integrations & User Profile Configuration: ONLY MASTER
   const canAccessSettings = computed(() => isMaster.value)
+  const canAccessUserManagement = computed(() => isMaster.value)
 
   // 2. Overview / Google Ads Analytics / Real ROAS / Marketing / Performance: MASTER or CEO
   const canAccessOverview = computed(() => isMaster.value || isCeo.value)
@@ -68,8 +69,13 @@ export function useWorkspaceAuth() {
     }
 
     if (r === 'CEO' || r === 'MANAGER') {
-      // CEO cannot access /settings
-      if (path === '/settings' || path.startsWith('/settings/')) {
+      // CEO cannot access /settings or /admin/users (Profile Configuration)
+      if (
+        path === '/settings' ||
+        path.startsWith('/settings/') ||
+        path === '/admin/users' ||
+        path.startsWith('/admin/users/')
+      ) {
         return false
       }
       return true
@@ -129,6 +135,7 @@ export function useWorkspaceAuth() {
     isConsultant,
     isFieldWorker,
     canAccessSettings,
+    canAccessUserManagement,
     canAccessOverview,
     canAccessAds,
     canAccessFinancials,

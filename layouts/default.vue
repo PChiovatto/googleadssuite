@@ -178,6 +178,22 @@
               </span>
             </NuxtLink>
 
+            <!-- Master ONLY: User Profiles & Role Configuration (RBAC) -->
+            <NuxtLink
+              v-if="canAccessSettings"
+              to="/admin/users"
+              class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all mt-1"
+              :class="$route.path === '/admin/users' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+            >
+              <div class="flex items-center gap-3">
+                <UserCheck class="w-4 h-4 text-amber-400" />
+                <span>Profile Configuration</span>
+              </div>
+              <span class="text-[9px] font-black px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300">
+                MASTER
+              </span>
+            </NuxtLink>
+
             <!-- Master ONLY: Integrations & API Credentials -->
             <NuxtLink
               v-if="canAccessSettings"
@@ -296,7 +312,8 @@ import {
   TrendingUp,
   Inbox,
   HardHat,
-  Shield
+  Shield,
+  UserCheck
 } from 'lucide-vue-next'
 import { useWorkspaceAuth } from '~/composables/useWorkspaceAuth'
 

@@ -1,6 +1,29 @@
 <template>
   <div class="max-w-4xl mx-auto space-y-8">
+    <!-- Master Admin Management Switcher Tabs -->
+    <div class="flex items-center gap-2 border-b border-slate-200 pb-3">
+      <NuxtLink
+        to="/admin/users"
+        class="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 flex items-center gap-2 transition-all"
+      >
+        <span>🛡️</span>
+        <span>User Profiles & Role Configuration</span>
+        <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-amber-100 text-amber-800">MASTER ONLY</span>
+      </NuxtLink>
+      <NuxtLink
+        to="/settings"
+        class="px-4 py-2.5 rounded-xl text-xs font-bold bg-[#D7070D] text-white shadow-sm flex items-center gap-2 transition-all"
+      >
+        <span>🔑</span>
+        <span>API Connections & Credentials</span>
+      </NuxtLink>
+    </div>
+
     <div>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold mb-2 border border-amber-300">
+        <span>🛡️</span>
+        <span class="uppercase tracking-wide">MASTER ADMINISTRATOR EXCLUSIVE</span>
+      </div>
       <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">API Connections & Credentials</h1>
       <p class="text-xs text-slate-500">
         Manage API integration keys, credentials, and webhooks for Google Ads, Google Cloud, Gemini AI, and local database storage.
