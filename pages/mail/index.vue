@@ -793,106 +793,181 @@
       </aside>
     </div>
 
-    <!-- 3. Floating Compose Window (Corporate Style) -->
+    <!-- 3. Centered Compose Modal with Backdrop Blur -->
     <div
       v-if="showComposeModal"
-      class="fixed bottom-0 right-8 z-50 w-[600px] max-w-[95vw] bg-white rounded-t-2xl shadow-2xl border-2 border-slate-300 flex flex-col overflow-hidden"
+      class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/60 backdrop-blur-xs transition-opacity duration-200"
+      @click.self="showComposeModal = false"
     >
-      <!-- Window Title Bar -->
-      <div class="h-11 px-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
-        <div class="flex items-center gap-2">
-          <PenSquare class="w-4 h-4 text-red-400" />
-          <span class="text-xs font-black tracking-wide uppercase">Nova Mensagem Corporativa — Tony's Remodeling</span>
-        </div>
-        <div class="flex items-center gap-1">
-          <button @click="showComposeModal = false" class="p-1 hover:bg-slate-800 rounded text-slate-300 transition-colors">
-            <X class="w-4 h-4" />
-          </button>
-        </div>
-      </div>
+      <div
+        class="w-full max-w-4xl max-h-[92vh] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+      >
+        <!-- Modal Title Bar -->
+        <div class="h-14 px-6 bg-slate-900 text-white flex items-center justify-between shrink-0 border-b border-slate-800">
+          <div class="flex items-center gap-3">
+            <img src="/emblem.png" alt="Tony's Remodeling" class="w-8 h-8 rounded-full object-contain border border-slate-700 bg-white" />
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-black tracking-wide uppercase text-white">Nova Mensagem Corporativa</span>
+                <span class="text-[10px] bg-red-600/30 text-red-300 border border-red-500/30 px-2 py-0.5 rounded-full font-mono font-semibold">
+                  Amazon SES
+                </span>
+              </div>
+              <p class="text-[10px] text-slate-400 font-mono">
+                Remetente: {{ currentUser?.name || 'Tony Silva' }} &lt;{{ currentUser?.email || 'tony@tonyspainting.com' }}&gt;
+              </p>
+            </div>
+          </div>
 
-      <!-- Fields: To & Subject -->
-      <div class="p-3 space-y-2 border-b border-slate-100 text-xs">
-        <div class="flex items-center gap-2">
-          <span class="text-slate-400 w-16 font-bold uppercase text-[10px]">Para:</span>
-          <input
-            v-model="composeForm.to"
-            type="email"
-            placeholder="cliente@exemplo.com"
-            class="flex-1 focus:outline-none text-slate-900 font-semibold"
-          />
+          <div class="flex items-center gap-2">
+            <button
+              @click="showComposeModal = false"
+              class="p-2 hover:bg-slate-800 rounded-xl text-slate-400 hover:text-white transition-colors"
+              title="Fechar (Esc)"
+            >
+              <X class="w-5 h-5" />
+            </button>
+          </div>
         </div>
-        <div class="flex items-center gap-2 pt-2 border-t border-slate-100">
-          <span class="text-slate-400 w-16 font-bold uppercase text-[10px]">Assunto:</span>
-          <input
-            v-model="composeForm.subject"
-            type="text"
-            placeholder="Assunto da mensagem corporativa"
-            class="flex-1 focus:outline-none text-slate-900 font-bold"
-          />
+
+        <!-- Fields: Recipient, Lead Selector & Subject -->
+        <div class="p-4 sm:p-5 space-y-3 border-b border-slate-100 bg-slate-50/50 text-xs">
+          <!-- Recipient Row -->
+          <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+            <div class="flex items-center gap-2 flex-1">
+              <span class="text-slate-400 w-16 font-bold uppercase text-[10px] shrink-0">Para:</span>
+              <input
+                v-model="composeForm.to"
+                type="email"
+                placeholder="cliente@exemplo.com ou selecione um lead do CRM ao lado"
+                class="flex-1 bg-white px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#D7070D] focus:ring-2 focus:ring-[#D7070D]/20 focus:outline-none text-slate-900 font-semibold"
+              />
+            </div>
+
+            <!-- Quick Lead Selector Dropdown Button -->
+            <div class="relative">
+              <button
+                type="button"
+                @click="showLeadDropdown = !showLeadDropdown"
+                class="px-3.5 py-2.5 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl text-slate-700 text-xs font-bold flex items-center gap-2 transition-colors shadow-2xs shrink-0"
+              >
+                <Users class="w-4 h-4 text-blue-600" />
+                <span>{{ selectedLeadForCompose ? selectedLeadForCompose.name : 'Vincular Lead do CRM' }}</span>
+                <ChevronDown class="w-3.5 h-3.5 text-slate-400" />
+              </button>
+
+              <!-- Dropdown Menu -->
+              <div
+                v-if="showLeadDropdown"
+                class="absolute right-0 top-12 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-2 z-50 space-y-1 max-h-60 overflow-y-auto"
+              >
+                <div class="px-2 py-1 text-[10px] font-black uppercase text-slate-400 tracking-wider">
+                  Leads Ativos no CRM:
+                </div>
+                <button
+                  v-for="l in crmLeads"
+                  :key="l.id"
+                  @click="selectLeadForCompose(l)"
+                  class="w-full text-left px-2.5 py-2 rounded-xl hover:bg-red-50 text-xs flex items-center justify-between transition-colors"
+                  :class="composeForm.leadId === l.id ? 'bg-red-50 text-[#D7070D] font-bold' : 'text-slate-800'"
+                >
+                  <div class="truncate mr-2">
+                    <span class="font-bold block truncate">{{ l.name }}</span>
+                    <span class="text-[10px] text-slate-400 font-mono">{{ l.email || 'Sem e-mail' }}</span>
+                  </div>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 shrink-0 font-mono">
+                    {{ l.city || 'MA' }}
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subject Row -->
+          <div class="flex items-center gap-2">
+            <span class="text-slate-400 w-16 font-bold uppercase text-[10px] shrink-0">Assunto:</span>
+            <input
+              v-model="composeForm.subject"
+              type="text"
+              placeholder="Ex: Proposta de Pintura Residencial & Termos de Garantia de 5 Anos"
+              class="flex-1 bg-white px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#D7070D] focus:ring-2 focus:ring-[#D7070D]/20 focus:outline-none text-slate-900 font-bold"
+            />
+          </div>
         </div>
-      </div>
 
-      <!-- AI Copilot Toolbar Bar inside Compose -->
-      <div class="px-3 py-2 bg-red-50/70 border-b border-red-100 flex items-center justify-between text-[11px]">
-        <span class="font-bold text-slate-900 flex items-center gap-1.5">
-          <Sparkles class="w-3.5 h-3.5 text-[#D7070D]" />
-          <span>Copiloto de Vendas (IA):</span>
-        </span>
-        <div class="flex gap-1.5">
-          <button
-            @click="aiDraftEmail('quote')"
-            :disabled="aiDrafting"
-            class="bg-white hover:bg-red-50 text-slate-800 hover:text-[#D7070D] px-2 py-0.5 rounded-md font-bold border border-slate-200 transition-colors"
-          >
-            Orçamento
-          </button>
-          <button
-            @click="aiDraftEmail('inspection')"
-            :disabled="aiDrafting"
-            class="bg-white hover:bg-red-50 text-slate-800 hover:text-[#D7070D] px-2 py-0.5 rounded-md font-bold border border-slate-200 transition-colors"
-          >
-            Vistoria
-          </button>
-          <button
-            @click="aiDraftEmail('hic_contract')"
-            :disabled="aiDrafting"
-            class="bg-white hover:bg-red-50 text-slate-800 hover:text-[#D7070D] px-2 py-0.5 rounded-md font-bold border border-slate-200 transition-colors"
-          >
-            Contrato MA
-          </button>
+        <!-- AI Copilot Toolbar Bar inside Compose -->
+        <div class="px-6 py-2.5 bg-red-50/70 border-b border-red-100 flex flex-wrap items-center justify-between gap-2 text-xs">
+          <span class="font-bold text-slate-900 flex items-center gap-1.5">
+            <Sparkles class="w-4 h-4 text-[#D7070D]" />
+            <span>Copiloto de Vendas Tony's (IA):</span>
+          </span>
+          <div class="flex flex-wrap gap-1.5">
+            <button
+              @click="aiDraftEmail('quote')"
+              :disabled="aiDrafting"
+              class="bg-white hover:bg-red-50 text-slate-800 hover:text-[#D7070D] px-3 py-1 rounded-lg font-bold border border-slate-200 hover:border-red-200 transition-colors shadow-2xs"
+            >
+              📄 Orçamento & Garantia 5 Anos
+            </button>
+            <button
+              @click="aiDraftEmail('inspection')"
+              :disabled="aiDrafting"
+              class="bg-white hover:bg-red-50 text-slate-800 hover:text-[#D7070D] px-3 py-1 rounded-lg font-bold border border-slate-200 hover:border-red-200 transition-colors shadow-2xs"
+            >
+              📅 Confirmar Vistoria no Local
+            </button>
+            <button
+              @click="aiDraftEmail('hic_contract')"
+              :disabled="aiDrafting"
+              class="bg-white hover:bg-red-50 text-slate-800 hover:text-[#D7070D] px-3 py-1 rounded-lg font-bold border border-slate-200 hover:border-red-200 transition-colors shadow-2xs"
+            >
+              ✍️ Contrato MA HIC & Depósito 1/3
+            </button>
+          </div>
         </div>
-      </div>
 
-      <!-- Body Area -->
-      <textarea
-        v-model="composeForm.bodyHtml"
-        rows="9"
-        placeholder="Escreva a mensagem corporativa da Tony's Painting and Remodeling..."
-        class="p-4 text-xs sm:text-sm text-slate-800 focus:outline-none resize-none flex-1"
-      ></textarea>
+        <!-- Body Area: Spacious and Comfortable -->
+        <div class="flex-1 p-6 overflow-y-auto flex flex-col bg-white">
+          <textarea
+            v-model="composeForm.bodyHtml"
+            rows="12"
+            placeholder="Escreva sua mensagem profissional com os detalhes do projeto, escopo de trabalho ou orientações ao cliente..."
+            class="w-full flex-1 min-h-[260px] sm:min-h-[340px] text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none resize-y leading-relaxed font-sans"
+          ></textarea>
+        </div>
 
-      <!-- Bottom Actions Toolbar -->
-      <div class="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
-        <button
-          @click="sendEmail"
-          :disabled="sending"
-          class="bg-[#D7070D] hover:bg-[#B0050A] text-white text-xs font-bold px-6 py-2.5 rounded-xl transition-colors flex items-center gap-2 disabled:opacity-50 shadow-md shadow-red-950/20"
-        >
-          <span>{{ sending ? 'Disparando via SES...' : 'Enviar Mensagem' }}</span>
-          <Send class="w-3.5 h-3.5" />
-        </button>
+        <!-- Bottom Actions Toolbar -->
+        <div class="p-4 sm:p-5 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+          <div class="flex items-center gap-3 w-full sm:w-auto">
+            <button
+              @click="sendEmail"
+              :disabled="sending"
+              class="w-full sm:w-auto bg-gradient-to-r from-[#D7070D] to-[#B0050A] hover:from-[#B0050A] hover:to-[#900408] text-white text-xs font-black uppercase tracking-wider px-7 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 shadow-md shadow-red-950/25 active:scale-95"
+            >
+              <span>{{ sending ? 'Disparando Mensagem via SES...' : 'Enviar Mensagem' }}</span>
+              <Send class="w-4 h-4" />
+            </button>
 
-        <button @click="showComposeModal = false" class="p-2 text-slate-400 hover:text-slate-600 rounded-lg">
-          <Trash2 class="w-4 h-4" />
-        </button>
+            <button
+              @click="showComposeModal = false"
+              type="button"
+              class="px-4 py-3 rounded-xl hover:bg-slate-200 text-slate-600 hover:text-slate-900 text-xs font-bold transition-colors"
+            >
+              Descartar
+            </button>
+          </div>
+
+          <div class="text-[11px] text-slate-400 flex items-center gap-2 font-mono">
+            <span>🔒 Criptografia TLS • DKIM @tonyspainting.com</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import {
   Menu,
   Search,
@@ -917,7 +992,8 @@ import {
   CheckSquare,
   X,
   UserPlus,
-  ExternalLink
+  ExternalLink,
+  ChevronDown
 } from 'lucide-vue-next'
 import { useWorkspaceAuth } from '~/composables/useWorkspaceAuth'
 
@@ -933,6 +1009,10 @@ const selectAll = ref(false)
 const activeFilterChip = ref('ALL')
 
 const emails = ref([])
+const crmLeads = ref([])
+const showLeadDropdown = ref(false)
+const selectedLeadForCompose = ref(null)
+
 const stats = ref({
   inboxTotal: 0,
   inboxUnread: 0,
@@ -961,6 +1041,7 @@ const aiDrafting = ref(false)
 
 const composeForm = ref({
   to: '',
+  leadId: null,
   subject: '',
   bodyHtml: ''
 })
@@ -968,7 +1049,35 @@ const composeForm = ref({
 onMounted(async () => {
   await fetchAuth()
   await fetchEmails()
+  await fetchCrmLeads()
+  if (typeof window !== 'undefined') {
+    window.addEventListener('keydown', handleKeydown)
+  }
 })
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('keydown', handleKeydown)
+  }
+})
+
+function handleKeydown(e) {
+  if (e.key === 'Escape' && showComposeModal.value) {
+    showComposeModal.value = false
+    showLeadDropdown.value = false
+  }
+}
+
+async function fetchCrmLeads() {
+  try {
+    const res = await $fetch('/api/leads')
+    if (res?.leads) {
+      crmLeads.value = res.leads
+    }
+  } catch (err) {
+    console.error('Erro ao carregar leads para o seletor:', err)
+  }
+}
 
 async function fetchEmails() {
   loading.value = true
@@ -1087,10 +1196,24 @@ function formatEmailDate(dateStr) {
 function openComposeModal() {
   composeForm.value = {
     to: '',
+    leadId: null,
     subject: '',
     bodyHtml: ''
   }
+  selectedLeadForCompose.value = null
+  showLeadDropdown.value = false
   showComposeModal.value = true
+}
+
+function selectLeadForCompose(lead) {
+  if (!lead) return
+  selectedLeadForCompose.value = lead
+  composeForm.value.to = lead.email || ''
+  composeForm.value.leadId = lead.id
+  if (!composeForm.value.subject) {
+    composeForm.value.subject = `Tony's Painting: Proposta & Estimativa - ${lead.name}`
+  }
+  showLeadDropdown.value = false
 }
 
 async function aiDraftEmail(type) {
