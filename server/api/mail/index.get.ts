@@ -102,13 +102,40 @@ export default defineEventHandler(async (event) => {
       where.direction = 'OUTBOUND'
     } else if (folder === 'ALL') {
       // no folder restriction
-    } else if (folder === 'AI_INBOX') {
+    } else if (folder === 'CRM_LEADS') {
+      where.leadId = { not: null }
+    } else if (folder === 'CRM_ESTIMATES') {
       where.OR = [
-        { subject: { contains: 'AI' } },
-        { subject: { contains: 'Gemini' } },
-        { subject: { contains: 'Claude' } },
-        { subject: { contains: 'Tony\'s' } }
+        { subject: { contains: 'estimate' } },
+        { subject: { contains: 'orçamento' } },
+        { subject: { contains: 'quote' } },
+        { subject: { contains: 'vistoria' } },
+        { body: { contains: 'estimate' } },
+        { body: { contains: 'orçamento' } },
+        { body: { contains: 'quote' } }
       ]
+    } else if (folder === 'CRM_CONTRACTS') {
+      where.OR = [
+        { subject: { contains: 'contract' } },
+        { subject: { contains: 'contrato' } },
+        { subject: { contains: 'hic' } },
+        { subject: { contains: 'agreement' } },
+        { body: { contains: 'contract' } },
+        { body: { contains: 'contrato' } }
+      ]
+    } else if (folder === 'CRM_PAYMENTS') {
+      where.OR = [
+        { subject: { contains: 'deposit' } },
+        { subject: { contains: 'stripe' } },
+        { subject: { contains: 'pagamento' } },
+        { subject: { contains: 'sinal' } },
+        { body: { contains: 'deposit' } },
+        { body: { contains: 'stripe' } }
+      ]
+    } else if (folder === 'DRAFTS') {
+      where.folder = 'DRAFTS'
+    } else if (folder === 'TRASH') {
+      where.folder = 'TRASH'
     } else if (folder === 'INBOX') {
       where.folder = 'INBOX'
     } else if (folder) {
@@ -119,7 +146,8 @@ export default defineEventHandler(async (event) => {
       where.OR = [
         { subject: { contains: search } },
         { from: { contains: search } },
-        { to: { contains: search } }
+        { to: { contains: search } },
+        { body: { contains: search } }
       ]
     }
 
@@ -156,13 +184,14 @@ export default defineEventHandler(async (event) => {
 
     const stats = {
       inboxTotal: allUserEmails.filter(e => e.folder === 'INBOX').length,
-      inboxUnread: 79, // Display authentic badge matching screenshot
+      inboxUnread: allUserEmails.filter(e => e.folder === 'INBOX' && !e.read).length,
       sentTotal: allUserEmails.filter(e => e.direction === 'OUTBOUND').length,
       starredTotal: allUserEmails.filter(e => e.starred).length,
-      spamTotal: 267,
-      updatesTotal: 72,
-      promotionsTotal: 77,
-      purchasesTotal: 6
+      draftsTotal: allUserEmails.filter(e => e.folder === 'DRAFTS').length,
+      crmLeadsTotal: allUserEmails.filter(e => e.leadId !== null).length,
+      crmEstimatesTotal: allUserEmails.filter(e => /estimate|orçamento|quote|vistoria/i.test((e.subject || '') + ' ' + (e.body || ''))).length,
+      crmContractsTotal: allUserEmails.filter(e => /contract|contrato|hic|agreement/i.test((e.subject || '') + ' ' + (e.body || ''))).length,
+      crmPaymentsTotal: allUserEmails.filter(e => /deposit|stripe|pagamento|sinal/i.test((e.subject || '') + ' ' + (e.body || ''))).length
     }
 
     return {
