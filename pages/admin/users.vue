@@ -335,15 +335,77 @@
             </span>
           </div>
 
-          <!-- Avatar URL -->
-          <div class="space-y-1">
-            <label class="font-bold text-slate-700">Avatar Photo URL (Optional)</label>
-            <input
-              v-model="form.avatarUrl"
-              type="url"
-              placeholder="https://images.unsplash.com/photo-..."
-              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-[#D7070D] focus:outline-none text-slate-900 font-mono text-[11px]"
-            />
+          <!-- Profile Photo / Avatar Upload -->
+          <div class="space-y-2 border border-slate-200 rounded-2xl p-4 bg-slate-50/70">
+            <div class="flex items-center justify-between">
+              <label class="font-bold text-slate-800 text-xs">Profile Photo (Avatar)</label>
+              <span class="text-[10px] text-slate-400 font-mono">Custom photo for team recognition</span>
+            </div>
+
+            <div class="flex items-center gap-4">
+              <!-- Avatar Preview -->
+              <div class="relative shrink-0">
+                <img
+                  v-if="form.avatarUrl"
+                  :src="form.avatarUrl"
+                  alt="Avatar Preview"
+                  class="w-16 h-16 rounded-full object-cover border-2 border-[#D7070D]/40 shadow-sm"
+                />
+                <div
+                  v-else
+                  class="w-16 h-16 rounded-full bg-slate-900 text-white font-black text-xl flex items-center justify-center border-2 border-slate-300"
+                >
+                  {{ form.name?.charAt(0) || 'U' }}
+                </div>
+                <button
+                  v-if="form.avatarUrl"
+                  type="button"
+                  @click="form.avatarUrl = ''"
+                  class="absolute -top-1 -right-1 bg-red-600 hover:bg-red-700 text-white rounded-full p-1 shadow-xs transition-colors cursor-pointer"
+                  title="Remove photo"
+                >
+                  <X class="w-3 h-3" />
+                </button>
+              </div>
+
+              <!-- Upload Button & Info -->
+              <div class="space-y-1.5 flex-1">
+                <input
+                  type="file"
+                  ref="fileInputRef"
+                  accept="image/png,image/jpeg,image/webp,image/jpg"
+                  class="hidden"
+                  @change="handleFileUpload($event)"
+                />
+                <div class="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    @click="$refs.fileInputRef.click()"
+                    :disabled="uploadingAvatar"
+                    class="bg-white hover:bg-slate-100 border border-slate-300 text-slate-800 text-xs font-bold px-3 py-2 rounded-xl shadow-2xs transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer disabled:opacity-50"
+                  >
+                    <Upload class="w-3.5 h-3.5 text-[#D7070D]" />
+                    <span>{{ uploadingAvatar ? 'Uploading...' : 'Upload Photo from Computer' }}</span>
+                  </button>
+                </div>
+                <p class="text-[10px] text-slate-500">
+                  Select a photo of the person so the team can identify them. (JPG, PNG, WebP)
+                </p>
+              </div>
+            </div>
+
+            <!-- Optional Direct Link fallback -->
+            <div class="pt-2 border-t border-slate-200/60">
+              <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
+                Or enter Image URL:
+              </label>
+              <input
+                v-model="form.avatarUrl"
+                type="text"
+                placeholder="https://... or /avatars/my-photo.jpg"
+                class="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-[11px] font-mono text-slate-700 bg-white"
+              />
+            </div>
           </div>
 
           <!-- Actions -->
@@ -387,7 +449,10 @@ import {
   Edit3,
   Trash2,
   LogIn,
-  RefreshCw
+  RefreshCw,
+  Upload,
+  X,
+  Camera
 } from 'lucide-vue-next'
 import { useWorkspaceAuth } from '~/composables/useWorkspaceAuth'
 
@@ -399,6 +464,8 @@ const saving = ref(false)
 const showModal = ref(false)
 const isEditing = ref(false)
 const toastMessage = ref('')
+const uploadingAvatar = ref(false)
+const fileInputRef = ref(null)
 
 const form = ref({
   id: '',
@@ -409,6 +476,45 @@ const form = ref({
   hourlyRate: 35.0,
   avatarUrl: ''
 })
+
+async function handleFileUpload(event) {
+  const file = event.target?.files?.[0]
+  if (!file) return
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert('File size exceeds 5MB limit. Please select a smaller photo.')
+    return
+  }
+
+  uploadingAvatar.value = true
+  const reader = new FileReader()
+  reader.onload = async (e) => {
+    try {
+      const base64 = e.target?.result
+      const res = await $fetch('/api/upload/avatar', {
+        method: 'POST',
+        body: {
+          image: base64,
+          fileName: file.name,
+          userId: form.value.id || undefined
+        }
+      })
+
+      if (res?.success && res?.url) {
+        form.value.avatarUrl = res.url
+        showToast('Photo uploaded successfully!')
+      } else {
+        alert(res?.message || 'Failed to upload photo.')
+      }
+    } catch (err) {
+      console.error('Failed to upload photo:', err)
+      alert('Error processing photo upload.')
+    } finally {
+      uploadingAvatar.value = false
+    }
+  }
+  reader.readAsDataURL(file)
+}
 
 onMounted(async () => {
   if (!isMaster.value) {

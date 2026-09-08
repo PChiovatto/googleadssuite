@@ -208,16 +208,32 @@
         </nav>
       </div>
 
-      <!-- User Active Session Card / Footer -->
-      <div class="p-3.5 border-t border-slate-800/80 bg-slate-950/40">
-        <div class="flex items-center gap-2.5">
-          <img
-            :src="currentUser?.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'"
-            alt="User Avatar"
-            class="w-8 h-8 rounded-full border border-slate-700 object-cover shrink-0"
-          />
+      <!-- User Active Session Card / Footer (Click to change photo) -->
+      <div class="p-3 border-t border-slate-800/80 bg-slate-950/40">
+        <button
+          @click="openMyAvatarModal"
+          class="w-full text-left flex items-center gap-2.5 p-1 rounded-xl hover:bg-slate-800/80 transition-colors group cursor-pointer"
+          title="Click to change your profile photo"
+        >
+          <div class="relative shrink-0">
+            <img
+              v-if="currentUser?.avatarUrl"
+              :src="currentUser.avatarUrl"
+              alt="User Avatar"
+              class="w-8 h-8 rounded-full border border-slate-700 object-cover group-hover:border-red-500 transition-colors"
+            />
+            <div
+              v-else
+              class="w-8 h-8 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center border border-slate-700 group-hover:border-red-500"
+            >
+              {{ currentUser?.name?.charAt(0) || 'U' }}
+            </div>
+            <span class="absolute -bottom-1 -right-1 text-[8px] bg-slate-900 border border-slate-700 rounded-full w-3.5 h-3.5 flex items-center justify-center">
+              📷
+            </span>
+          </div>
           <div class="overflow-hidden flex-1">
-            <span class="text-xs font-bold text-slate-200 block truncate leading-tight">
+            <span class="text-xs font-bold text-slate-200 block truncate leading-tight group-hover:text-white">
               {{ currentUser?.name || 'Master Admin' }}
             </span>
             <span
@@ -227,7 +243,7 @@
               {{ roleIcon }} {{ roleTitle }}
             </span>
           </div>
-        </div>
+        </button>
       </div>
     </aside>
 
@@ -235,11 +251,30 @@
     <div class="flex-1 flex flex-col min-w-0">
       <!-- Top Header Bar with RBAC Switcher -->
       <header class="h-16 bg-white border-b border-slate-200/80 px-5 flex items-center justify-between sticky top-0 z-30 shadow-2xs">
-        <!-- Left: Account & Role Indicator -->
+        <!-- Left: Account & Role Indicator (Click to change photo) -->
         <div class="flex items-center gap-3">
-          <div class="flex items-center gap-2.5">
-            <img src="/emblem.png" alt="Tony's Emblem" class="w-7 h-7 rounded-full object-contain bg-white p-0.5 shadow-xs" />
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 hidden sm:inline">Active Role:</span>
+          <button
+            @click="openMyAvatarModal"
+            class="flex items-center gap-2 p-1 -ml-1 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer group text-left"
+            title="Click to update your photo"
+          >
+            <div class="relative shrink-0">
+              <img
+                v-if="currentUser?.avatarUrl"
+                :src="currentUser.avatarUrl"
+                alt="Avatar"
+                class="w-7 h-7 rounded-full object-cover border border-slate-300 group-hover:border-red-500 transition-colors shadow-2xs"
+              />
+              <div
+                v-else
+                class="w-7 h-7 rounded-full bg-slate-800 text-white font-bold text-[10px] flex items-center justify-center border border-slate-300"
+              >
+                {{ currentUser?.name?.charAt(0) || 'U' }}
+              </div>
+              <span class="absolute -bottom-0.5 -right-0.5 text-[7px] bg-white border border-slate-300 rounded-full w-3 h-3 flex items-center justify-center shadow-xs">
+                📷
+              </span>
+            </div>
             <span
               class="text-xs font-bold px-2.5 py-1 rounded-lg border flex items-center gap-1.5"
               :class="roleBadgeHeader"
@@ -248,7 +283,7 @@
               <span>{{ currentUser?.name || 'Master Admin' }}</span>
               <span class="text-[10px] font-mono opacity-70">({{ currentUser?.role || 'MASTER' }})</span>
             </span>
-          </div>
+          </button>
         </div>
 
         <!-- Right: Team Member Switcher (RBAC Mode Switch) & Actions -->
@@ -289,6 +324,87 @@
         <span>{{ toastMessage }}</span>
       </div>
 
+      <!-- User Personal Avatar Upload Modal -->
+      <div
+        v-if="showMyAvatarModal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs animate-in fade-in duration-200"
+      >
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-sm w-full overflow-hidden">
+          <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">📷</span>
+              <div>
+                <h3 class="font-black text-slate-900 text-sm leading-tight">Update Profile Photo</h3>
+                <p class="text-[11px] text-slate-500 font-mono">{{ currentUser?.name }}</p>
+              </div>
+            </div>
+            <button
+              @click="showMyAvatarModal = false"
+              class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-200 transition-colors cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
+
+          <div class="p-6 space-y-4 text-center">
+            <!-- Photo Preview -->
+            <div class="relative w-28 h-28 mx-auto">
+              <img
+                v-if="currentUser?.avatarUrl"
+                :src="currentUser.avatarUrl"
+                alt="Profile Photo"
+                class="w-28 h-28 rounded-full object-cover border-4 border-[#D7070D]/20 shadow-md"
+              />
+              <div
+                v-else
+                class="w-28 h-28 rounded-full bg-slate-900 text-white font-black text-3xl flex items-center justify-center border-4 border-slate-200 shadow-md"
+              >
+                {{ currentUser?.name?.charAt(0) || 'U' }}
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <input
+                type="file"
+                ref="myFileInputRef"
+                accept="image/png,image/jpeg,image/webp,image/jpg"
+                class="hidden"
+                @change="onMyFileSelected($event)"
+              />
+              <button
+                type="button"
+                @click="$refs.myFileInputRef.click()"
+                :disabled="uploadingMyAvatar"
+                class="w-full py-2.5 px-4 rounded-xl bg-[#D7070D] hover:bg-red-700 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer disabled:opacity-50"
+              >
+                <Upload class="w-4 h-4" />
+                <span>{{ uploadingMyAvatar ? 'Uploading Photo...' : 'Upload Photo from Computer' }}</span>
+              </button>
+              <p class="text-[11px] text-slate-400">
+                Upload your picture so your colleagues know who is in the system. (JPG, PNG, WebP)
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex gap-2">
+              <button
+                type="button"
+                @click="clearMyAvatar"
+                class="flex-1 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 border border-slate-200 transition-colors cursor-pointer"
+              >
+                Reset to Initial
+              </button>
+              <button
+                type="button"
+                @click="showMyAvatarModal = false"
+                class="flex-1 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-black text-white transition-colors cursor-pointer"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Page Content -->
       <main class="flex-1 p-5 md:p-7 max-w-7xl w-full mx-auto">
         <slot />
@@ -313,7 +429,9 @@ import {
   Inbox,
   HardHat,
   Shield,
-  UserCheck
+  UserCheck,
+  Upload,
+  X
 } from 'lucide-vue-next'
 import { useWorkspaceAuth } from '~/composables/useWorkspaceAuth'
 
@@ -392,6 +510,88 @@ async function syncMetrics() {
     }, 4000)
   } finally {
     syncing.value = false
+  }
+}
+
+const showMyAvatarModal = ref(false)
+const uploadingMyAvatar = ref(false)
+const myFileInputRef = ref(null)
+
+function openMyAvatarModal() {
+  showMyAvatarModal.value = true
+}
+
+async function onMyFileSelected(event) {
+  const file = event.target?.files?.[0]
+  if (!file) return
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert('File size exceeds 5MB limit.')
+    return
+  }
+
+  uploadingMyAvatar.value = true
+  const reader = new FileReader()
+  reader.onload = async (e) => {
+    try {
+      const base64 = e.target?.result
+      const res = await $fetch('/api/upload/avatar', {
+        method: 'POST',
+        body: {
+          image: base64,
+          fileName: file.name,
+          userId: currentUser.value?.id
+        }
+      })
+
+      if (res?.success && res?.url) {
+        if (currentUser.value) {
+          currentUser.value.avatarUrl = res.url
+        }
+        toastMessage.value = 'Profile photo updated successfully!'
+        setTimeout(() => {
+          toastMessage.value = ''
+        }, 4000)
+        showMyAvatarModal.value = false
+        // Refresh team users so all components and switchers get the new avatar
+        await fetchAuth()
+      } else {
+        alert(res?.message || 'Failed to upload photo.')
+      }
+    } catch (err) {
+      console.error('Failed to upload photo:', err)
+      alert('Error updating profile photo.')
+    } finally {
+      uploadingMyAvatar.value = false
+    }
+  }
+  reader.readAsDataURL(file)
+}
+
+async function clearMyAvatar() {
+  if (!currentUser.value?.id) return
+  try {
+    await $fetch('/api/admin/users', {
+      method: 'PUT',
+      body: {
+        id: currentUser.value.id,
+        avatarUrl: ''
+      }
+    })
+    if (currentUser.value) {
+      currentUser.value.avatarUrl = ''
+    }
+    showMyAvatarModal.value = false
+    toastMessage.value = 'Profile photo cleared.'
+    setTimeout(() => {
+      toastMessage.value = ''
+    }, 4000)
+    await fetchAuth()
+  } catch (err) {
+    if (currentUser.value) {
+      currentUser.value.avatarUrl = ''
+    }
+    showMyAvatarModal.value = false
   }
 }
 

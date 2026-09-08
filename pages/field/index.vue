@@ -6,9 +6,15 @@
       class="bg-blue-950/95 border-b border-blue-500/40 px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-2 text-blue-200 sticky top-0 z-40 shadow-md backdrop-blur-md"
     >
       <div class="flex items-center gap-2">
-        <span class="text-sm">👷</span>
+        <img
+          v-if="currentUser?.avatarUrl"
+          :src="currentUser.avatarUrl"
+          alt="Avatar"
+          class="w-6 h-6 rounded-full object-cover border border-blue-400"
+        />
+        <span v-else class="text-sm">👷</span>
         <span>
-          Currently testing as <strong>Carlos Santos (Field Crew)</strong>. Scoped to Field Operations PWA.
+          Currently testing as <strong>{{ currentUser?.name || 'Carlos Santos' }}</strong>. Scoped to Field Operations PWA.
         </span>
       </div>
       <div class="flex items-center gap-2">
