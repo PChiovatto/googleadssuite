@@ -201,10 +201,13 @@ model CallLog {
   recordingUrl    String?
   aiTranscript    String?  // Call transcript & summary from Gemini
   sentiment       String?  // POSITIVE, NEUTRAL, OBJECTION
+  isAiRescue      Boolean  @default(false) // Triggered automatically when SLA exceeds 2 minutes
+  rescueReason    String?  // 'SLA_BREACH_OVER_2_MIN'
   createdAt       DateTime @default(now())
 
   @@index([leadId])
   @@index([agentId])
+  @@index([isAiRescue])
 }
 
 model AuditLog {

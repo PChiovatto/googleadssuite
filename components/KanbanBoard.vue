@@ -9,6 +9,37 @@
       {{ toastMessage }}
     </div>
 
+    <!-- PROTOCOLO DE RESGATE DE SLA (Opções 1, 2 e 3) -->
+    <div
+      v-if="breachedLeads.length > 0"
+      class="bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white p-4 rounded-2xl shadow-xl border-2 border-red-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-pulse"
+    >
+      <div class="flex items-center gap-3">
+        <span class="text-3xl animate-bounce">🚨</span>
+        <div>
+          <div class="font-black text-sm flex items-center gap-2">
+            <span>ALERTA CRÍTICO: {{ breachedLeads.length }} lead(s) sem atendimento humano (> 2 min)!</span>
+            <span class="px-2 py-0.5 rounded-full bg-white text-red-700 text-[10px] font-extrabold uppercase">
+              IA de Voz Acionada
+            </span>
+          </div>
+          <p class="text-[11px] text-red-100 mt-0.5">
+            Todos os consultores humanos estão ocupados. A IA autônoma (OpenAI Realtime + Twilio) entra na linha para acolher o cliente e evitar perda para concorrentes.
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <button
+          @click="triggerMassSlaRescue"
+          :disabled="rescuingSla"
+          class="px-4 py-2 bg-white hover:bg-slate-100 text-red-700 font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+        >
+          <span>🤖</span>
+          <span>{{ rescuingSla ? 'Resgatando...' : 'Executar Resgate em Massa' }}</span>
+        </button>
+      </div>
+    </div>
+
     <!-- Instructions Bar -->
     <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white px-4 py-2.5 rounded-xl text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-sm border border-slate-700/60">
       <div class="flex items-center gap-2">
@@ -60,9 +91,25 @@
             draggable="true"
             @dragstart="onDragStart($event, lead)"
             @dragend="onDragEnd"
-            class="bg-white rounded-xl p-3.5 shadow-xs border border-slate-200/90 hover:shadow-md transition-all space-y-2.5 text-xs cursor-grab active:cursor-grabbing hover:border-slate-300 select-none relative group"
-            :class="{ 'opacity-40 ring-2 ring-blue-400': draggedLeadId === lead.id }"
+            class="rounded-xl p-3.5 shadow-xs transition-all space-y-2.5 text-xs cursor-grab active:cursor-grabbing select-none relative group"
+            :class="[
+              isSlaBreached(lead)
+                ? 'bg-red-50/90 border-2 border-red-600 ring-2 ring-red-400 shadow-lg shadow-red-200 animate-pulse'
+                : 'bg-white border border-slate-200/90 hover:shadow-md hover:border-slate-300',
+              { 'opacity-40 ring-2 ring-blue-400': draggedLeadId === lead.id }
+            ]"
           >
+            <!-- SLA Breach Urgency Tag (Opção 3) -->
+            <div v-if="isSlaBreached(lead)" class="bg-red-600 text-white px-2 py-1 rounded-lg text-[10px] font-black flex items-center justify-between shadow-xs">
+              <span class="flex items-center gap-1.5">
+                <span class="inline-block w-2 h-2 rounded-full bg-white animate-ping"></span>
+                <span>🚨 SLA ESTOURADO (&gt; 2 MIN)</span>
+              </span>
+              <span class="font-mono text-[9px] bg-black/40 px-1.5 py-0.5 rounded text-red-200 font-bold">
+                ⏳ {{ getElapsedTimeString(lead) }}
+              </span>
+            </div>
+
             <!-- Lead Card Top Row: Name & Source -->
             <div class="flex items-start justify-between gap-1">
               <div class="flex-1 min-w-0">
@@ -135,13 +182,21 @@
 
             <!-- Contextual Stage Action Buttons -->
             <div class="space-y-1.5">
-              <!-- ETAPA 1: NOVO (Desbloqueio / Claim) -->
-              <div v-if="lead.status === 'NOVO'">
+              <!-- ETAPA 1: NOVO (Desbloqueio / Claim & SLA Rescue) -->
+              <div v-if="lead.status === 'NOVO'" class="space-y-1.5">
+                <div v-if="isSlaBreached(lead)" class="p-2 rounded-lg bg-red-100/90 border border-red-300 text-[10px] text-red-900 font-semibold flex items-center justify-between">
+                  <span class="flex items-center gap-1">
+                    <span>🤖</span>
+                    <span>IA de Voz Acionada</span>
+                  </span>
+                  <span class="text-[9px] font-bold text-red-700 uppercase">Auditado CallLog</span>
+                </div>
                 <button
                   type="button"
                   @click="claimLead(lead.id)"
                   :disabled="claimingId === lead.id"
-                  class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs uppercase py-2 px-3 rounded-lg shadow-xs flex items-center justify-center gap-1.5 transition-all animate-pulse"
+                  class="w-full font-black text-xs uppercase py-2 px-3 rounded-lg shadow-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  :class="isSlaBreached(lead) ? 'bg-red-600 hover:bg-red-700 text-white shadow-md' : 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white animate-pulse'"
                 >
                   <span>⚡ ASSUMIR & LIGAR</span>
                 </button>
@@ -317,7 +372,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
   leads: {
@@ -337,6 +392,61 @@ const schedulingId = ref(null)
 const requestingReviewId = ref(null)
 const toastMessage = ref('')
 const toastSuccess = ref(true)
+
+// SLA Breach Reactive Logic (Opções 1, 2 e 3)
+const SLA_LIMIT_SECONDS = 120 // 2 minutes SLA threshold
+const rescuingSla = ref(false)
+const nowTick = ref(Date.now())
+let tickerInterval = null
+
+onMounted(() => {
+  tickerInterval = setInterval(() => {
+    nowTick.value = Date.now()
+  }, 5000)
+})
+
+onUnmounted(() => {
+  if (tickerInterval) clearInterval(tickerInterval)
+})
+
+function isSlaBreached(lead) {
+  if (!lead || lead.status !== 'NOVO' || lead.ownerId) return false
+  const elapsed = Math.round((nowTick.value - new Date(lead.createdAt).getTime()) / 1000)
+  return elapsed >= SLA_LIMIT_SECONDS
+}
+
+function getElapsedTimeString(lead) {
+  const elapsed = Math.max(0, Math.round((nowTick.value - new Date(lead.createdAt).getTime()) / 1000))
+  const minutes = Math.floor(elapsed / 60)
+  const seconds = elapsed % 60
+  return `${minutes}m ${seconds.toString().padStart(2, '0')}s`
+}
+
+const breachedLeads = computed(() => {
+  return props.leads.filter(isSlaBreached)
+})
+
+async function triggerMassSlaRescue() {
+  rescuingSla.value = true
+  try {
+    const res = await $fetch('/api/leads/sla-rescue', {
+      method: 'POST',
+      body: {}
+    })
+    if (res.success) {
+      toastSuccess.value = true
+      toastMessage.value = `🤖 Protocolo de Resgate por IA executado para ${res.breachedCount} lead(s)! Chamadas de emergência geradas no CallLog.`
+      emit('refresh')
+    }
+  } catch (err) {
+    console.error('Erro ao acionar resgate de SLA:', err)
+  } finally {
+    rescuingSla.value = false
+    setTimeout(() => {
+      toastMessage.value = ''
+    }, 5000)
+  }
+}
 
 // Drag and drop state
 const draggedLead = ref(null)

@@ -28,33 +28,42 @@ export default defineEventHandler(async (event) => {
     return twiml
   }
 
-  // If called from the frontend VoIP test simulator
+  // If called from the frontend VoIP test simulator or SLA auto-rescue trigger
   const simulatedCallId = 'CALL_' + Date.now().toString(36).toUpperCase()
   const callerNumber = body.callerPhone || '+16174921100'
   const callerName = body.callerName || 'Homeowner in Cambridge'
+  const isRescue = body.isRescue === true || body.rescueReason === 'SLA_BREACH_OVER_2_MIN'
 
-  // Log incoming call
+  // Log incoming/outbound call
   const callLog = await prisma.callLog.create({
     data: {
       leadId: body.leadId || 'UNLINKED',
       agentId: 'AI_VOICE_ASSISTANT',
-      agentName: 'Autonomous Voice AI (OpenAI Realtime + Twilio)',
-      durationSeconds: 118,
+      agentName: isRescue 
+        ? 'Autonomous SLA Rescue Voice AI (OpenAI Realtime + Twilio)' 
+        : 'Autonomous Voice AI (OpenAI Realtime + Twilio)',
+      durationSeconds: isRescue ? 142 : 118,
       recordingUrl: 'https://api.twilio.com/mock-recordings/voice_realtime_01.mp3',
-      aiTranscript: 'Call handled by Voice AI. Homeowner requested estimate for 3,000 sq ft exterior in Newton MA. Availability: Thursday afternoon.',
-      sentiment: 'POSITIVE'
+      aiTranscript: isRescue
+        ? `[SLA EMERGENCY RESCUE] Call initiated by Autonomous Voice AI after human team queue exceeded 2 minutes. Lead: ${callerName}. Captured: 2-story colonial interior painting in Wakefield MA, needs quote before Friday. Status: Successfully pre-qualified & retained.`
+        : 'Call handled by Voice AI. Homeowner requested estimate for 3,000 sq ft exterior in Newton MA. Availability: Thursday afternoon.',
+      sentiment: 'POSITIVE',
+      isAiRescue: isRescue,
+      rescueReason: isRescue ? (body.rescueReason || 'SLA_BREACH_OVER_2_MIN') : null
     }
   })
 
   await prisma.auditLog.create({
     data: {
-      action: 'VOICE_AI_CALL_HANDLED',
+      action: isRescue ? 'AI_VOICE_SLA_RESCUE_EXECUTED' : 'VOICE_AI_CALL_HANDLED',
       userId: 'SYSTEM_VOICE_AI',
       userName: 'OpenAI Realtime Voice Assistant',
       details: JSON.stringify({
         callLogId: callLog.id,
         caller: callerNumber,
-        status: 'QUALIFIED_FOR_TRANSFER'
+        isRescue,
+        leadId: body.leadId,
+        status: isRescue ? 'SLA_BREACH_RESOLVED' : 'QUALIFIED_FOR_TRANSFER'
       })
     }
   })
@@ -63,16 +72,19 @@ export default defineEventHandler(async (event) => {
     success: true,
     callId: simulatedCallId,
     callLogId: callLog.id,
+    isAiRescue: isRescue,
     agent: 'OpenAI Realtime Voice Assistant',
-    status: 'ACTIVE_CALL_ROUTED',
+    status: isRescue ? 'SLA_RESCUE_ACTIVE' : 'ACTIVE_CALL_ROUTED',
     script: {
-      greeting: "Hello! Thank you for calling Tony's Painting and Remodeling. Are you looking for interior, exterior painting, or remodeling?",
+      greeting: isRescue
+        ? `Hello ${callerName}! This is the emergency assistant at Tony's Painting and Remodeling. We noticed you requested a painting estimate on our site, and all our human estimators are currently on active calls. I wanted to connect with you instantly so you don't have to wait. What area of your home are you looking to paint?`
+        : "Hello! Thank you for calling Tony's Painting and Remodeling. Are you looking for interior, exterior painting, or remodeling?",
       qualifyingQuestions: [
         "What is the approximate square footage of the project?",
         "What is your ZIP code in Greater Boston?",
         "Would you prefer an on-site visit on weekdays or Saturday?"
       ],
-      closing: "Great, I have noted your project details. Let me transfer you directly to our lead estimator now."
+      closing: "Great, I have noted all your project specifications! I am routing this directly to Tony Silva with urgent priority."
     }
   }
 })
