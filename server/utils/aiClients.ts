@@ -22,6 +22,12 @@ export function getGeminiClient(): GoogleGenerativeAI | null {
   return geminiClient
 }
 
+export function getGeminiModel(modelName = 'gemini-1.5-flash') {
+  const client = getGeminiClient()
+  if (!client) return null
+  return client.getGenerativeModel({ model: modelName })
+}
+
 export function getAnthropicClient(): Anthropic | null {
   const apiKey = process.env.ANTHROPIC_API_KEY
   if (!apiKey || apiKey.trim() === '' || apiKey.includes('your_anthropic')) {

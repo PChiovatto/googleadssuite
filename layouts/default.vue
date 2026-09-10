@@ -63,6 +63,38 @@
             </span>
           </NuxtLink>
 
+          <!-- Master, CEO & Sales: Unified Conversations Hub -->
+          <NuxtLink
+            v-if="canAccessLeads"
+            to="/dashboard/conversations"
+            class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
+            :class="$route.path === '/dashboard/conversations' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+          >
+            <div class="flex items-center gap-3">
+              <MessageSquare class="w-4 h-4 text-emerald-400" />
+              <span>Conversations Hub</span>
+            </div>
+            <span class="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300">
+              Omni + AI
+            </span>
+          </NuxtLink>
+
+          <!-- Master, CEO & Sales: Interactive Estimates (Good/Better/Best) -->
+          <NuxtLink
+            v-if="canAccessLeads"
+            to="/dashboard/estimates"
+            class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all"
+            :class="$route.path === '/dashboard/estimates' ? 'bg-[#D7070D] text-white shadow-md shadow-red-950/40 font-bold' : 'text-slate-400 hover:text-white hover:bg-slate-800/60'"
+          >
+            <div class="flex items-center gap-3">
+              <FileText class="w-4 h-4 text-amber-400" />
+              <span>Interactive Estimates</span>
+            </div>
+            <span class="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-300">
+              3 Tiers
+            </span>
+          </NuxtLink>
+
           <!-- Master, CEO & Sales: In-App Webmail -->
           <NuxtLink
             v-if="canAccessMail"
@@ -431,6 +463,8 @@ import {
   Shield,
   UserCheck,
   Upload,
+  MessageSquare,
+  FileText,
   X
 } from 'lucide-vue-next'
 import { useWorkspaceAuth } from '~/composables/useWorkspaceAuth'
